@@ -1,0 +1,90 @@
+
+<div class="h-full w-full overflow-hidden" fxLayout="column">
+
+    <div class="py-4 px-gutter" fxFlex="none" fxLayout="row" fxLayoutAlign="start center" vexContainer>
+      <h1 class="title m-0">Estados de Créditos</h1>
+      <span fxFlex></span>
+    </div>
+  
+    <div @stagger
+         cdkDropList
+         cdkDropListOrientation="horizontal"
+         class="px-gutter pb-gutter min-h-0 overflow-x-auto"
+         fxFlex="auto"
+         fxLayout="row"
+         fxLayoutAlign="start start"
+         fxLayoutGap="24px"
+         vexContainer
+         style="border-radius: 15px;">
+
+      <div *ngFor="let estado of estados;"
+           @fadeInUp
+           cdkDrag
+           cdkDropListGroup
+           class="bg-app-bar overflow-hidden max-h-full w-full max-w-xxs"
+           fxFlex="none"
+           fxLayout="column"
+           style="border-radius: 15px;">
+        <div cdkDragHandle class="p-4 cursor-pointer" fxFlex="none">
+          <h2 class="subheading-2 font-medium m-0 select-none" fxFlex="none">{{estado.estado}}</h2>
+        </div>
+
+        <div cdkDropList
+             style="margin-top: 1%;"
+             class="px-4 pb-4">
+
+          <div *ngFor="let data of dataCreditos;" style="margin-top: 1%; border-radius: 15px;"
+               cdkDrag
+               class="scrumboard-card card w-full cursor-pointer overflow-hidden" (click)="detallePrestamo(data.idPrestamo, data.estado)">
+            
+            <div class="p-4" *ngIf="estado.estado == data.estado">
+              
+              <h6><span class="badge badge-primary" style="margin-bottom: 5px"> {{data.producto}} </span></h6>
+              
+              <hr>
+              <h3 class="body-2 m-0 select-none" >Fecha Solicitud: {{data.fecha | date: 'dd/MM/yyyy'}}</h3>
+              <h3 class="body-2 m-0 select-none" >Tipo: {{data.tipoPrestamo}} </h3>
+              <h3 class="body-2 m-0 select-none" >N° Préstamo: {{data.idPrestamo}} </h3>
+              <h3 class="body-2 m-0 select-none" >Monto: ${{data.montoSolicitado | number : '.2-2'}}</h3>
+              <h3 class="body-2 m-0 select-none">Primera Cuota: ${{data.valorCuota | number : '.2-2'}}</h3>
+              <h3 class="body-2 m-0 select-none">Tasa: {{data.tasaNominal}}%</h3>
+              <h3 class="body-2 m-0 select-none">Plazo: {{data.plazo}}</h3>
+              
+              <hr>
+              
+              <h6>Calificación</h6>
+              <span class="badge text-white" style="margin-bottom: 5px"  [ngStyle]="{'background': colorCalificacionPrestamo(data.calificacion)}" >{{data.calificacion}}</span>
+
+              <hr>
+              <span  *ngIf="data.esNovacion" class="badge bg-success text-white" style="margin-bottom: 5px"   >NOVACIÓN</span>
+              <span  *ngIf="data.restructurado" class="badge bg-warning text-dark" style="margin-bottom: 5px"   >RESTRUCTURACIÓN</span>
+              <span  *ngIf="data.refinanciado" class="badge bg-info text-white" style="margin-bottom: 5px"   >REFINANCIAMIENTO</span>
+              <br>
+              <div *ngIf=" data.fechaModificacion != '01/01/0001' ">
+                <h6>Última Actualizaci&oacute;n</h6>
+                <span class="badge bg-dark text-white">{{data.fechaModificacion | date: 'dd/MM/yyyy'}}</span>
+              </div>
+
+              <!-- <h6>Tiempo Transcurrido</h6>
+              <span class="badge badge-primary">{{data.fechaModificacion | date: 'dd/MM/yyyy'}}</span> -->
+            
+
+              <!-- <div class="mt-2"
+                   fxLayout="row"
+                   fxLayoutGap="8px" style="padding: 2%;">
+                <div class="box bg-app-bar text-secondary rounded caption" style="padding: 4%; margin: auto;">
+                  <h6>Modificacion</h6>
+                  <span class="badge badge-primary">{{data.fechaModificacion | date: 'dd/MM/yyyy'}}</span>
+                </div>
+              </div> -->
+            </div>
+          </div>
+
+        </div>
+        <br/>
+
+      </div>
+
+    </div>
+  
+  </div>

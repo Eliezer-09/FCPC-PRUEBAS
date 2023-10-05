@@ -1,0 +1,8 @@
+#file {
+    opacity: 0;
+    position: absolute;
+}
+
+::ng-deep mat-tab-body.mat-tab-body-active{
+    overflow-y:hidden !important
+}

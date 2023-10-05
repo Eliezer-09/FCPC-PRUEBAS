@@ -1,0 +1,12 @@
+::ng-deep .mat-sort-header-arrow.ng-trigger {
+  color: var(--COLOR-PRIMARY-CONTRAST) !important;
+}
+
+th.mat-header-cell {
+    background-color: var(--COLOR-PRIMARY);
+    color: var(--COLOR-PRIMARY-CONTRAST);
+}
+
+td {
+    text-transform: capitalize;
+}

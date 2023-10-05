@@ -1,0 +1,42 @@
+.contentdatosvalor {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 2rem;
+}
+
+
+.head-modal {
+    .head-title {
+        flex: 1 auto;
+    };
+}
+
+.card {
+    margin-top: -80px;
+    overflow: auto;
+}
+
+input.right-align::-webkit-inner-spin-button,
+input.right-align::-webkit-outer-spin-button {
+    display: none;
+}
+
+//small
+@media screen and (max-width: 40em) {
+
+    .secctionform {
+        display: grid !important;
+        grid-template-columns: repeat(1, 1fr);
+        column-gap: 3%;
+    }
+}
+
+.secctionform {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 3%;
+}
+
+.labelForm{
+    font-weight:bold
+}

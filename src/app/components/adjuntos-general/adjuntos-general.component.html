@@ -1,0 +1,11 @@
+<div class=" titulo" *ngIf="adjuntosGenerales?.nombreSeccion">
+    {{ adjuntosGenerales?.nombreSeccion | uppercase }}
+
+</div>
+
+<div *ngFor="let adjuntoList of adjuntosGenerales.adjuntosList">
+    <vex-adjunto-general *ngIf="cargarAdjunto" [visualizationMode]="adjuntoList?.visualizationMode" [id]="id" [adjuntoList]="adjuntoList" >
+    </vex-adjunto-general>
+    <vex-update-local-adjuntos *ngIf="!cargarAdjunto" [visualizationMode]="adjuntoList?.visualizationMode" [id]="id" [adjuntoList]="adjuntoList"  (emitirAdjunto)="emitirAdjuntos($event)"></vex-update-local-adjuntos>
+
+</div>

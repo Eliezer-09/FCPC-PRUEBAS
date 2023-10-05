@@ -1,0 +1,175 @@
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Cargando...</p>
+</ngx-spinner>
+<div class="flex items-center" mat-dialog-title>
+  <p class="flex-auto text-lg font-medium" fxLayout="row warp" fxLayoutAlign="start center" style="gap: 10px">
+    <span @scaleIn class="w-10 h-10 rounded-full text-primary mr-3 flex items-center justify-center bg-primary-light">
+      <mat-icon [icIcon]="icHelp"></mat-icon>
+    </span>
+    {{ titulo }}
+  </p>
+  <button mat-dialog-close mat-icon-button type="button">
+    <mat-icon [icIcon]="icClose" size="24px"></mat-icon>
+  </button>
+</div>
+<mat-dialog-content>
+  <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
+    <mat-tab *ngFor="let tab of tabs; let index = index">
+      <ng-template mat-tab-label>
+        <button mat-icon-button style="position: absolute; left: 0px" (click)="removeTab(index)"
+          [disabled]="tabs.length === 1"></button>
+        {{ tab }}
+      </ng-template>
+      <br />
+      <form [formGroup]="ticketForm">
+        <div fxLayout="row wrap" fxLayoutAlign="space-between start" style="gap: 20px; margin-bottom: 1%;">
+          <mat-form-field fxFlex="auto" appearance="outline">
+            <mat-label>Tipos de tarea: </mat-label>
+            <mat-select (selectionChange)="seleccionarTarea($event.value, 'tipoTarea')" name="idTipoTarea"
+              ngDefaultControl required formControlName="idTipoTarea" #singleSelect>
+              <mat-option>
+                <ngx-mat-select-search placeholderLabel="Buscar tipo de tareas..."
+                  noEntriesFoundLabel="'No se encuentra el tipo de tarea'" [formControl]="tipoTareaFilterCtrl">
+                  <mat-icon ngxMatSelectSearchClear>x</mat-icon>
+                </ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let item of filteredTipoTarea | async" [value]="item.idTipoTarea">
+                {{ item.descripcion }}
+                <small>({{ item.area }})</small>
+              </mat-option>
+            </mat-select>
+            <mat-hint *ngIf="detalleTipoTarea != null"> {{detalleTipoTarea}} </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="auto" tourAnchor="area">
+            <mat-label>Área</mat-label>
+            <input readonly matInput formControlName="departamento" />
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="space-between start" style="gap: 20px">
+          <mat-form-field appearance="outline" fxFlex="auto" tourAnchor="Prioridad del ticket">
+            <mat-label>Prioridad</mat-label>
+            <mat-select formControlName="prioridad">
+              <mat-option [value]="'Urgente'">Urgente</mat-option>
+              <mat-option [value]="'Alta'">Alta</mat-option>
+              <mat-option [value]="'Media'">Media</mat-option>
+              <mat-option [value]="'Baja'">Baja</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="auto" tourAnchor="ticketTtags">
+            <mat-label>Categoría:</mat-label>
+            <mat-select formControlName="tags" (selectionChange)="seleccionarTarea($event.value, 'tipoTag')">
+              <mat-option *ngFor="let tag of tags" [value]="tag">
+                {{ tag.descripcion }}
+              </mat-option>
+            </mat-select>
+            <!-- <mat-chip-list
+              class="example-chip"
+              cdkDropList 
+              cdkDropListOrientation="horizontal">
+              <mat-chip
+                class="example-box"
+                cdkDrag
+                *ngFor="let tag of tagsSeleccionados">
+                {{tag.descripcion}}
+                <ic-icon style="cursor: pointer" (click)="eliminarTag(tag)" [icon]="icClose" size="18px"></ic-icon>
+              </mat-chip>
+            </mat-chip-list> -->
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="flex-start space-between flex-start" style="gap: 20px">
+          <mat-checkbox [checked]="checked" color="primary" style="margin-top: 1.5%"
+            (change)="datosParticipe($event.checked)">
+            Incluir datos de un partícipe
+          </mat-checkbox>
+
+          <mat-form-field *ngIf="checkBoxParticipe" appearance="outline" fxFlex="auto" tourAnchor="Datos participe">
+            <mat-label>Identificación del Partícipe:</mat-label>
+            <input matInput maxlength="10" (ngModelChange)="checkCedula($event)" formControlName="identificacion"
+              matInput />
+          </mat-form-field>
+        </div>
+
+        <div style="gap: 20px">
+          <h3 *ngIf="checkBoxParticipe" style="text-align: center">
+            {{ nombreParticipe }}
+          </h3>
+        </div>
+
+        <mat-form-field appearance="outline" class="block w-full" tourAnchor="asunto">
+          <mat-label>Asunto</mat-label>
+          <input matInput type="text" formControlName="asunto" />
+        </mat-form-field>
+
+        <div class="vex-mail-compose-editor flex flex-col" tourAnchor="detalle">
+          <quill-editor formControlName="descripcion" placeholder="Descripción Ticket" [styles]="{
+              flex: '1 1 auto',
+              display: 'flex',
+              'flex-direction': 'column'
+            }" class="flex-auto flex flex-col"></quill-editor>
+        </div>
+
+        <div style="margin-top: 1%" *ngIf="mostrarAdjuntos">
+          <div
+            class="vex-mail-compose-attachment mt-4 mb-2 rounded-full border px-4 py-1 flex items-center hover:bg-hover transition duration-200 ease-in-out cursor-pointer relative"
+            matRipple *ngFor="let adjunto of adjuntos; let i = index">
+            <ic-icon [icon]="icPictureAsPdf" class="flex-none text-primary" size="18px"></ic-icon>
+            <p class="flex-auto ml-4 text-sm">{{ adjunto.observaciones }}</p>
+
+            <p class="text-sm text-secondary mr-2 flex-none">
+              {{ adjunto.mimeType }}kb
+            </p>
+            <button class="flex-none w-8 h-8 leading-none" mat-icon-button type="button">
+              <mat-icon [icIcon]="icClose" (click)="removeAdjunto(i)" size="18px"></mat-icon>
+            </button>
+          </div>
+        </div>
+        <!-- <div *ngIf="archivoUrl && archivoUrl || adjuntos.length > 0">
+          <div
+            class="vex-mail-compose-attachment mt-4 mb-2 rounded-full border px-4 py-1 flex items-center hover:bg-hover transition duration-200 ease-in-out cursor-pointer relative"
+            matRipple *ngFor="let archivo of adjuntos; let i =index">
+            <ic-icon [icon]="icPictureAsPdf" class="flex-none text-primary" size="18px"></ic-icon>
+            <p class="flex-auto ml-4 text-sm">{{archivo.nombreArchivo}}</p>
+
+            <button (click)="borrarDatos(i)" class="flex-none w-8 h-8 leading-none" mat-icon-button type="button">
+              <mat-icon [icIcon]="icClose" size="18px"></mat-icon>
+            </button>
+          </div>
+        </div> -->
+      </form>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <!-- <button color="warn" mat-dialog-close mat-icon-button matTooltip="Salir" type="button" tourAnchor="cancelar"
+    style="color: red;">
+    <mat-icon [icIcon]="icDelete" size="24px"></mat-icon>
+    Cerrar
+  </button> -->
+
+  <span class="flex-1"></span>
+
+  <input type="file" class="file-input" (change)="cargarArchivo($event)" #fileUpload />
+  <button mat-button matTooltip="Attach File" type="button" (click)="fileUpload.click()" [disabled]="desabilitarboton"
+    tourAnchor="adjunto">
+    Adjuntar
+    <mat-icon [icIcon]="icAttachFile" size="24px"></mat-icon>
+  </button>
+
+  <button (click)="CrearTicket(ticketForm.value)" color="primary" mat-flat-button type="button"
+    [disabled]="desabilitarboton">
+    <span>{{ btnName }}</span>
+    <ic-icon [icIcon]="icSend" [inline]="true" class="ml-2" size="16px"></ic-icon>
+  </button>
+</mat-dialog-actions>
+
+<ng-template #contentSuccess>
+  <!-- <div class="ventanaError">
+    <span>{{textoSuccess}}</span>
+    <img src="assets/img/LOGO-07.png " alt="" width="30px">
+  </div> -->
+</ng-template>

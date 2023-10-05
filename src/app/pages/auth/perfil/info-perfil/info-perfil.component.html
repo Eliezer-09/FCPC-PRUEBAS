@@ -1,0 +1,119 @@
+<div class="mt-6 flex flex-col md:flex-row md:items-start">
+    <div class="flex-auto">
+
+        <div class="card" style="margin-top: 2%;">
+            <div class="px-gutter py-4 border-b">
+                <h6 class="title m-0" style="font-weight: bold">Información del funcionario</h6>
+            </div>
+            <div align="center">
+                <br>
+                <img @scaleIn *ngIf="!fotoPerfil" class="avatar h-24 w-24 flex-none align-start hidden sm:block border-3 border-white" src="assets/img/sinPerfil.jpg">
+                <img @scaleIn *ngIf="fotoPerfil" class="avatar h-24 w-24 flex-none align-start hidden sm:block border-3 border-white" [src]="fotoPerfil"> <br>
+                <h3 style="font-weight: bold;">{{dataFuncionario.razonSocial}}</h3>
+                <div style="padding-left: 15%; padding-right:15%">
+                    <div class="row">
+                        <div class="col-3">
+
+                        </div>
+                        <div class="col-3">
+                            <div class="relative flex items-center cursor-pointer select-none rounded-full px-2 py-1 hover:bg-primary-light trans-ease-out" matRipple [routerLink]="['/cambiar-clave']" routerLinkActive="router-link-active">
+                                <div @scaleIn class="p-2 bg-primary-light text-primary rounded-full ltr:mr-4 rtl:ml-4">
+                                    <mat-icon color="primary" fontIcon="fa-key" class="icon" fontSet="fa"></mat-icon>
+                                </div>
+                                <p @fadeInRight class="font-medium text-primary">Actualizar clave</p>
+                            </div>
+
+                        </div>
+                        <div class="col-3">
+                            <div class="relative flex items-center cursor-pointer select-none rounded-full px-2 py-2 hover:bg-cyan-light trans-ease-out" matRipple>
+                                <div class="p-2 bg-cyan-light text-cyan rounded-full ltr:mr-4 rtl:ml-4">
+                                    <mat-icon [icIcon]="icImage" class="block"></mat-icon>
+                                </div>
+                                <input class="btn" (change)="actualizarFoto($event)" type="file" id="inputFile" accept=".png, .jpg .jpeg">
+                                <p @fadeInRight class="font-medium text-cyan">Actualizar foto</p>
+                            </div>
+                        </div>
+                        <div class="col-3">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div> <br>
+            <hr>
+            <div class="px-gutter py-4" gdColumns="1fr 1fr 1fr" gdColumns.xs="1fr" gdGap="16px" style="padding-left: 15%; padding-right:15%">
+                <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+
+                    <div @scaleIn class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+                        <ic-icon [icon]="icCreditCard" size="20px"></ic-icon>
+                    </div>
+
+                    <div @fadeInRight>
+                        <p class="m-0 body-1">{{dataFuncionario.identificacion}}</p>
+                        <p class="m-0 caption text-hint">Cédula</p>
+                    </div>
+                </div>
+
+                <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+                    <div @scaleIn class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+                        <ic-icon [icon]="icAssignment" size="20px"></ic-icon>
+                    </div>
+
+                    <div @fadeInRight>
+                        <p class="m-0 body-1">{{dataFuncionario.fechaNacimiento | date: 'dd/MM/yyyy'}}</p>
+                        <p class="m-0 caption text-hint">Fecha de nacimiento</p>
+                    </div>
+
+                </div>
+
+                <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+                    <div @scaleIn class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+                        <ic-icon [icon]="icEmail" size="20px"></ic-icon>
+                    </div>
+
+                    <div @fadeInRight>
+                        <p class="m-0 body-1">{{dataFuncionario.correo1}}</p>
+                        <p class="m-0 caption text-hint">Correo Electrónico</p>
+                    </div>
+                </div>
+
+                <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+                    <div @scaleIn class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+                        <ic-icon [icon]="icCell" size="20px"></ic-icon>
+                    </div>
+
+                    <div @fadeInRight>
+                        <p class="m-0 body-1">{{dataFuncionario.telefono1}}</p>
+                        <p class="m-0 caption text-hint">Telefono</p>
+                    </div>
+                </div>
+
+                <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+                    <div @scaleIn class="w-10 h-10 rounded-full bg-gray-light text-dark ltr:mr-3 rtl:ml-3 cursor-pointer flex items-center justify-center">
+                        <ic-icon [icon]="icLocationCity" size="20px"></ic-icon>
+                    </div>
+
+                    <div @fadeInRight>
+                        <p class="m-0 body-1">{{dataFuncionario.lugarNacimiento}}</p>
+                        <p class="m-0 caption text-hint">Lugar de nacimiento</p>
+                    </div>
+
+                    <p @fadeInRight class="m-0 body-1 cursor-pointer">
+                </div>
+
+                <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+                    <div @scaleIn class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+                        <ic-icon [icon]="icAssignment" size="20px"></ic-icon>
+                    </div>
+
+                    <div @fadeInRight>
+                        <p class="m-0 body-1">{{dataFuncionario.fechaRegistro | date: 'dd/MM/yyyy'}}</p>
+                        <p class="m-0 caption text-hint">Fecha de registro</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

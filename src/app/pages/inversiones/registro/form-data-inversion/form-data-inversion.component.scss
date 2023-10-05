@@ -1,0 +1,112 @@
+::ng-deep .mat-vertical-content {
+    padding: 0;
+}
+
+#inputFile {
+    opacity: 0;
+    position: absolute;
+}
+
+.ClassB {
+    background-color: blue;
+}
+
+.sectionHeader {
+    background-color: rgb(var(--color-primary));
+    text-align: center;
+}
+
+
+.contentdatosvalor {
+    margin-top: 1rem;
+    align-items: center;
+    flex-direction: column;
+    column-gap: 3%;
+    row-gap: 20px;
+    display: grid;
+    position: relative;
+}
+
+.titulovalor {
+    align-items: center;
+    flex-direction: column;
+    column-gap: 3%;
+    display: grid!important;
+    position: relative;
+    margin: 3%;
+}
+
+.head-divider {
+    display: flex;
+    align-items: center;
+    grid-template-columns: repeat(5, 1fr);
+}
+.start-divider {
+    grid-column-end: 1;
+    grid-column-start: 1;
+    width: 15px;
+}
+.labelseccion {
+    display: grid;
+    grid-template-columns: max-content;
+    color: var(--COLOR-BLACK)
+}
+.end-divider {
+    grid-column-end: 5;
+    grid-column-start: 3;
+    width: -webkit-fill-available;
+}
+.mat-divider {
+    background: var(--COLOR-PRIMARY);
+    height: 2px;
+    margin: 10px;
+    opacity: 0.3;
+}
+
+.right-align {
+    text-align: right;
+}
+
+input.right-align::-webkit-inner-spin-button,
+input.right-align::-webkit-outer-spin-button {
+    display: none;
+}
+
+input.right-align {
+    -moz-appearance: textfield;
+}
+
+.buttonConfigurationForm {
+    justify-content: end;
+    display: flex;
+    width: -webkit-fill-available;
+    margin-top: 15px;
+    align-items: baseline;
+}
+
+.configurationForm {
+    display: flex;
+}
+
+.buttonOption {
+    border-radius: 20%;
+    max-height: 35px;
+    min-width: 35px;
+    justify-content: space-around;
+    padding: 0;
+    display: flex;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 10px;
+}
+
+.labelForm {
+    font-weight: bold;
+}
+
+@media screen and (min-width: 40em) {
+    .titulovalor {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

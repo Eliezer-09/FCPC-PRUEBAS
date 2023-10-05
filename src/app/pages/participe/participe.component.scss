@@ -1,0 +1,66 @@
+// .content{
+//     background-image: url('../../../assets/img/demo/bannerNuevo1.jpg');
+//     /* background-size: cover;
+//     background-position: center center; */
+//     overflow-y: scroll;
+//     height: 100% !important;
+//     width: 100%;
+// }
+.content {
+    // background-image: url('../../../../../assets/img/demo/bannerNuevo1.jpg');
+    background-image: url('../../../assets/img/demo/6.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-color: rgb(194, 194, 194);
+    height: 100%;
+}
+
+.container:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(22, 28, 87, 0.6);
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.card-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #cfc317;
+    text-align: center;
+}
+
+.card-nombre {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+    text-align: center;
+}
+
+.btnStyle {
+    -webkit-box-shadow: 0px 0px 30px 0px rgb(122, 122, 122);
+    -moz-box-shadow: 0px 0px 30px 0px rgb(138, 138, 138);
+    box-shadow: 0px 0px 30px 0px rgb(116, 116, 116);
+}
+
+.imagen {
+    width: 90%;
+    // height: 150%;
+    color: black!important;
+    position: absolute;
+}
+
+// .card {
+//     margin-top: 30%;
+// }

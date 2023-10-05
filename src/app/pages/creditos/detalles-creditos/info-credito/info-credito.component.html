@@ -1,0 +1,122 @@
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Cargando...</p>
+</ngx-spinner>
+<div class="container" *ngIf="prestamo">
+  <!-- Columna 1 -->
+  <div class="row" style="margin-top: 2%; overflow: hidden; ">
+    <div class="col-md-12 col-12 b-r">
+      <strong>Motivo del crédito</strong>
+      <br />
+      <p class="text-muted">{{ prestamo.motivoPrestamo }}</p>
+    </div>
+  </div>
+  <button *ngIf="!prestamo.electronica" color="primary"
+    style="margin-bottom: 3%; background-color: #171d29; color: #ffffff" mat-raised-button
+    (click)="getResumenCredito()">
+    <mat-icon style="height: 22px;" [icIcon]="icPrint"></mat-icon>
+    Resumen
+  </button>
+  <br />
+  <div *ngIf="validaciones" class="subheading-1" style="font-weight: bold">Requisitos</div>
+  <!-- Validaciones -->
+  <div style="margin-top: 1%; padding: 1%; border-radius: 15px">
+    <ul class="list-group" *ngFor="let item of validaciones">
+      <li class="list-group-item" style="margin-bottom: 1%">
+        <div class="padre">
+          <div class="hijo">
+            <img src="https://img.icons8.com/officel/40/000000/ok.png" *ngIf="item.valido == true" alt="" />
+            <img src="https://img.icons8.com/officel/40/000000/cancel.png" *ngIf="item.valido == false" alt="" />
+          </div>
+          <div class="hijo" style="margin-left: 5%">
+            <h5>{{ item.descripcion }}</h5>
+            <p style="color: gray">{{ item.observaciones }}</p>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Prestamos relacionados -->
+  <div class="subheading-1" style="font-weight: bold; margin-top: 2%">
+    Prestamos relacionados
+  </div>
+  <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px" style="margin-top: 2%">
+    <table id="mytable" class="table table-striped table-bordered table-sm row-border hover">
+      <caption></caption>
+      <thead>
+        <tr>
+          <th scope="col">Num. Operacion</th>
+          <th scope="col">Monto</th>
+          <th scope="col">Plazo</th>
+          <th scope="col">Efectiva</th>
+          <th scope="col">Saldo</th>
+          <th scope="col">Capital</th>
+          <th scope="col">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let prestamo of prestamosRelacionados">
+          <td>{{ prestamo.idPrestamo }}</td>
+          <td>${{ prestamo.montoSolicitado | number: ".2-2" }}</td>
+          <td>{{ prestamo.plazoMeses }}</td>
+          <td>{{ prestamo.tasaEfectiva }}%</td>
+          <td>${{ prestamo.saldoTotal | number: ".2-2" }}</td>
+          <td>${{ prestamo.totalCapital | number: ".2-2" }}</td>
+          <td>{{ prestamo.estado }}</td>
+        </tr>
+        <h6 *ngIf="!prestamosRelacionados.length" style="padding: 1%">No tiene prestamos relacionados</h6>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Garantes -->
+  <div class="subheading-1" style="font-weight: bold; margin-top: 2%">
+    Garantes
+  </div>
+  <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px" style="margin-top: 2%">
+    <table id="mytable" class="table table-striped table-bordered table-sm row-border hover">
+      <thead>
+        <tr>
+          <th scope="col">Identificación</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Monto</th>
+          <th scope="col">Saldo</th>
+
+          <th scope="col">Observación</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of garantes; let i = index">
+          <td>
+            <mat-icon (click)="descargarAdjuntosGarante(data.idPersona, 1)" color="primary" title="Ver Cedula Frontal"
+              style="cursor: pointer; vertical-align: middle;">description</mat-icon>
+            <mat-icon (click)="descargarAdjuntosGarante(data.idPersona, 2)" color="primary" title="Ver Cedula Posterior"
+              style="cursor: pointer; vertical-align: middle;">description</mat-icon>
+            {{ data.identificacion }}
+          </td>
+          <td>
+            <mat-icon (click)="descargarAdjuntosGarante(data.idPersona,22)" color="primary" title="Ver Rol de Pago"
+              style="cursor: pointer; vertical-align: middle;">description</mat-icon>
+            {{ data.nombre }}
+          </td>
+          <td>${{ data.montoGarantia | number: ".2-2" }}</td>
+          <td>${{ data.saldoGarante | number: ".2-2" }}</td>
+          <td>{{ data.observaciones }}</td>
+        </tr>
+        <h6 *ngIf="!garantes.length" style="padding: 1%">No tiene garantes</h6>
+      </tbody>
+    </table>
+  </div>
+  <!-- Observacion -->
+  <div class="row" style="margin-top: 2%; overflow: hidden" *ngIf="prestamo">
+    <div class="col-md-3 col-6">
+      <strong>Observación</strong>
+      <br />
+      <p class="text-muted">{{ prestamo.observaciones }}</p>
+      <p *ngIf="!prestamo.observaciones" class="text-muted">
+        No tiene observación
+      </p>
+    </div>
+  </div>
+</div>

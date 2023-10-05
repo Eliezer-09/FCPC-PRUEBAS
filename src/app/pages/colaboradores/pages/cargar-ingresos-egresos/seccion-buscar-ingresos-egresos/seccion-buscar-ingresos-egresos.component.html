@@ -1,0 +1,150 @@
+ <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Cargando Ingresos/Egresos...</p>
+</ngx-spinner>
+ 
+
+<div class="card overflow-auto -mt-16" >
+    <div class="head-options">
+        <div class="search-bar">
+
+      <button
+            (click)="changeController.emit('buscar')"
+            class="head-buttons"
+            mat-button="mat-button">
+            <mat-icon  [icIcon]="icroundFileUpload"></mat-icon>
+        </button>
+        </div>
+    </div>
+    <br>
+    <p><b>BUSCAR NÓMINA NO PROCESADA</b></p>
+    <form [formGroup]="parameters">
+  <div class="mat-selects"   >
+  <mat-form-field  class=" flex-100" fxFlex="auto">
+      <mat-label>Rango de Fecha de emisión</mat-label>
+      <mat-date-range-input [formGroup]="parameters" [rangePicker]="picker" (keyup.enter)="searchRangeDate(null,null)">
+          <input matStartDate placeholder="Inicio" formControlName="start">
+          <input matEndDate placeholder="Fin" formControlName="end">
+      </mat-date-range-input>
+      <mat-hint>MM-DD-YYYY – MM-DD-YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker disabled="false">
+          <mat-datepicker-actions>
+              <button mat-raised-button (click)="searchRangeDate(null,null)" matDatepickerCancel>Borrar</button>
+              <button mat-raised-button color="primary"
+                  (click)="searchRangeDate(parameters.value.start, parameters.value.end)" matDatepickerApply>
+                  Aplicar
+              </button>
+          </mat-datepicker-actions>
+      </mat-date-range-picker>
+  </mat-form-field>
+
+  <mat-form-field 
+        class="flex-100"
+        fxFlex="auto">
+        <mat-label>ID:</mat-label>
+        <input
+            id="idNomina"
+            matInput="matInput"
+            [formControl]="id"  />
+    </mat-form-field>
+</div>
+</form>
+<br>
+      <button
+          mat-raised-button="mat-raised-button"
+          [disabled]="true"
+          color="primary"
+          type="button"
+          id="excel"
+          class="forms-full-button button-download"
+          (click)="generar()">
+          <mat-icon style="height: 18px" [icIcon]="icroundSearch"></mat-icon>
+          <span style="margin-left: 4px">Buscar Ingresos/Egresos</span>
+      </button>
+</div>
+
+
+
+
+<div class="card overflow-auto mt-16"  *ngIf="true" [class.container]="layoutCtrl.value === 'boxed'"
+>
+<div class="head-options">
+    <div class="search-bar">
+        <button
+            (click)="confirmCheck()"
+            class="head-buttons"
+            mat-button="mat-button"
+            matTooltip="Guardar Ingresos/Egresos">
+            <mat-icon [fontIcon]="faSave" fontSet="fa"></mat-icon>
+        </button>
+</div>
+</div>
+
+<div [class.px-gutter]="layoutCtrl.value === 'fullwidth'">
+<br>
+    <p><b>LISTADO DE NÓMINA ID: {{idSearch}}</b></p>
+<br>
+
+<mat-accordion class="headers-align" *ngIf="task.subtasks.length!=0">
+    <section class="section">
+        <span class="list-section">
+            Seleccionar todo &nbsp;
+            <mat-checkbox class="example-margin"
+                        [checked]="allComplete"
+                        [color]="'primary'"
+                        [indeterminate]="someComplete()"
+                        (change)="setAll($event.checked)">
+          </mat-checkbox>
+        </span>
+      
+    
+ 
+    <div *ngFor="let item of task.subtasks; let i=index">
+
+      <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>  {{item.nombre}}</mat-panel-title>
+          <mat-panel-description style="display:flex; justify-content: end;">
+              &nbsp;
+              &nbsp; 
+                   <mat-checkbox [(ngModel)]="item.completed"
+                                [color]="'primary'"
+                            (ngModelChange)="updateAllComplete()">
+              </mat-checkbox>
+    
+          </mat-panel-description>
+       
+        </mat-expansion-panel-header>
+
+        <div class="content-data">
+                 
+            <div class=" mb-7" *ngFor="let itemTemp of templateDiasIngreso">
+                <div  class="card flex-center my-3 p-3 rounded border-warning border border-dashed">
+                    <span class="fs-5 fw-semibold  pb-1 px-2">{{itemTemp.pre}} {{item[itemTemp.value]}}</span>                    
+                    <span class="d-flex justify-content-center">
+                        <span >{{itemTemp.label}}</span>
+                    </span>
+                </div>
+
+        </div>
+        </div>
+    
+
+    
+        <mat-action-row >
+          <button mat-raised-button mat-button  *ngIf="step!=0" (click)="prevStep()">Anterior</button>
+          <button color="primary" mat-raised-button *ngIf="step!=task.subtasks.length-1" (click)="nextStep()">Siguiente</button>
+        </mat-action-row>
+        
+      </mat-expansion-panel>
+    
+    </div>
+     
+    </section>
+    </mat-accordion>
+</div>
+</div>

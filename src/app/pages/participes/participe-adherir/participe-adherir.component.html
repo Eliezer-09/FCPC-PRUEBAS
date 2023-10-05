@@ -1,0 +1,391 @@
+<div @stagger class="p-gutter" vexContainer>
+
+    <h2 class="title mb-4" fxLayout="row" fxLayoutAlign="start center">
+        <span @scaleIn class="w-10 h-10 rounded-full text-primary mr-3 flex items-center justify-center bg-primary-light">
+            <ic-icon [icon]="icDescription" height="20px" width="20px"></ic-icon>
+        </span>
+        <span @fadeInRight class="block">Formulario de adhesión</span>
+    </h2>
+
+    <!-- <div *ngIf="isLoading" 
+    style="display: flex; justify-content: center; align-items: center; background: white; margin: auto;">
+    <mat-progress-spinner 
+      diameter="60"
+      color="primary" 
+      mode="indeterminate">
+      </mat-progress-spinner>
+    </div> -->
+
+    <div @fadeInUp class="card overflow-hidden">
+
+        <mat-vertical-stepper #stepper="matVerticalStepper" [linear]="true">
+            <ng-template matStepperIcon="edit">
+                <mat-icon [icIcon]="icDoneAll"></mat-icon>
+            </ng-template>
+
+
+            <ng-template matStepperIcon="done">
+                <mat-icon [icIcon]="icDoneAll"></mat-icon>
+            </ng-template>
+
+            <!--Datos Personales-->
+            <mat-step [stepControl]="verticalDatosPersonales" [completed]="datosPersonales.valid">
+                <form [formGroup]="datosPersonales">
+                    <ng-template matStepLabel>Datos personales</ng-template>
+                    <div class="subheading-1" style="font-weight: bold; color: gray;">Datos Personales</div>
+                    <div class="subheading-2" style="font-weight: bold; font-size: small;">Por favor llena los campos</div>
+                    <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Seleccionar tipo de identificación</mat-label>
+                                <mat-select [(value)]="participe.idTipoIdentificacion">
+                                    <mat-option *ngFor="let iden of identificaciones" [value]="iden.idTipoIdentificacion">{{iden.descripcion}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Nombres</mat-label>
+                                <input required formControlName="nombre" matInput type="text" [(ngModel)]="participe.nombres">
+                            </mat-form-field>
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Apellidos</mat-label>
+                                <input required formControlName="apellido" matInput type="text" [(ngModel)]="participe.apellidos">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                            <mat-label>Identificacion</mat-label>
+                            <input (ngModelChange)="change($event)" required formControlName="identificacion" matInput [(ngModel)]="participe.identificacion">
+                        </mat-form-field>
+
+                        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                            <mat-label>Fecha de nacimiento</mat-label>
+                            <input required matInput format="dd-mm-yyyy" type="date" (ngModelChange)="participe.fechaNacimiento = $event" formControlName="fechanacimiento" [ngModel]="participe.fechaNacimiento">
+                        </mat-form-field>
+                        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                            <mat-label>Fecha de expedicion de cedula</mat-label>
+                            <input required matInput type="date" formControlName="expedicioncedula" [(ngModel)]="participe.fechaExpedicionCedula">
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                            <mat-label>Genero</mat-label>
+                            <mat-select [(value)]="participe.idGenero">
+                                <mat-option *ngFor="let gen of generos" [value]="gen.idGenero">{{gen.descripcion}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                            <mat-label>Estado civil</mat-label>
+                            <mat-select [(value)]="participe.idEstadoCivil">
+                                <mat-option *ngFor="let estado of estadosCivil" [value]="estado.idEstadoCivil">{{estado.descripcion}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                            <mat-label>Nacionalidad</mat-label>
+                            <mat-select [formControl]="bankCtrl" #singleSelect placeholder="Buscar...">
+                                <mat-option>
+                                    <ngx-mat-select-search [formControl]="bankFilterCtrl">
+                                        <mat-icon ngxMatSelectSearchClear></mat-icon>
+                                    </ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let nacio of nacionalidades" [value]="nacio.idPais">{{nacio.nacionalidad}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px" style="margin-top: 2%;">
+                        <button color="primary" mat-raised-button matStepperNext>SIGUIENTE</button>
+                    </div>
+                </form>
+            </mat-step>
+
+            <!--Datos del Contacto-->
+            <mat-step [stepControl]="verticalDatosContacto" [completed]="datosContacto.valid">
+                <form [formGroup]="datosContacto">
+                    <ng-template matStepLabel>Datos del contacto</ng-template>
+                    <div class="subheading-1" style="font-weight: bold; color: gray;">Datos del contacto</div>
+                    <div class="subheading-2" style="font-weight: bold; font-size: small;">Por favor llena los campos</div>
+                    <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Escoge una provincia</mat-label>
+                                <mat-select (selectionChange)="seleccionarProvincia($event.value)" [(value)]="participe.direcciones[0].idProvincia">
+                                    <mat-option required *ngFor="let nivel of provincias" [value]="nivel.idProvincia">{{nivel.descripcion}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Escoge una cuidad</mat-label>
+                                <mat-select [(value)]="participe.direcciones[0].idCanton">
+                                    <mat-option *ngFor="let nivel of ciudades" [value]="nivel.idCiudad">{{nivel.descripcion}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Celular</mat-label>
+                                <input required formControlName="celular" matInput [(ngModel)]="participe.celular">
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Direccion</mat-label>
+                                <input required formControlName="direccion" matInput type="text" [(ngModel)]="participe.direcciones[0].callePrincipal">
+                            </mat-form-field>
+
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Referencia</mat-label>
+                                <input required formControlName="referencia" matInput type="text" [(ngModel)]="participe.direcciones[0].referencia">
+                            </mat-form-field>
+
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Correo Electronico 1 </mat-label>
+                                <input required formControlName="correo1" matInput type="email" [(ngModel)]="participe.correo1">
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Correo Electronico 2 (opcional)</mat-label>
+                                <input formControlName="correo2" matInput type="email" [(ngModel)]="participe.correo2">
+                            </mat-form-field>
+
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Telefono 1</mat-label>
+                                <input required formControlName="telefono1" matInput type="number" [(ngModel)]="participe.telefono1">
+                            </mat-form-field>
+
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Telefono 2 (opcional)</mat-label>
+                                <input formControlName="telefono2" matInput type="number" [(ngModel)]="participe.telefono2">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px" style="margin-top: 2%;">
+                        <button color="primary" mat-button matStepperPrevious type="button">ANTERIOR</button>
+                        <button color="primary" mat-raised-button matStepperNext>SIGUIENTE</button>
+                    </div>
+                </form>
+            </mat-step>
+
+            <!--Datos del participe-->
+            <mat-step [stepControl]="verticalDatosdelParticipe">
+                <form [formGroup]="datosdelParticipe">
+                    <ng-template matStepLabel>Datos del partícipe</ng-template>
+                    <div class="subheading-1" style="font-weight: bold; color: gray;">Datos del partícipe</div>
+                    <div class="subheading-2" style="font-weight: bold; font-size: small;">Por favor llena los campos</div>
+                    <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Nivel de estudio</mat-label>
+                                <mat-select [(value)]="participe.idNivelEstudios">
+                                    <mat-option *ngFor="let nivel of nivelEstudio" [value]="nivel.idNivelEstudios">{{nivel.descripcion}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Nivel de ingreso</mat-label>
+                                <mat-select [(value)]="participe.idNivelIngresos">
+                                    <mat-option *ngFor="let nivel of nivelIngreso" [value]="nivel.idNivelIngresos">{{nivel.descripcion}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Seleccione grado</mat-label>
+                                <mat-select [(value)]="participe.idGrado">
+                                    <mat-option *ngFor="let nivel of nivelGrado" [value]="nivel.idGrado">{{nivel.descripcion}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Aporte adicional</mat-label>
+                                <input required formControlName="aporteAdicional" matInput type="number" [(ngModel)]="participe.aporteAdicional">
+                            </mat-form-field>
+
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Código uniformado</mat-label>
+                                <input required formControlName="codigoUniformado" matInput type="number" [(ngModel)]="participe.codigoUniformado">
+                            </mat-form-field>
+
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Fecha de ingreso al cuerpo de vigilante</mat-label>
+                                <input matInput type="date" formControlName="fechaCuerpoVigilante" [(ngModel)]="participe.fechaIngreso">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px" style="margin-top: 2%;">
+                        <button color="primary" mat-button matStepperPrevious type="button">ANTERIOR</button>
+                        <button color="primary" mat-raised-button matStepperNext>SIGUIENTE</button>
+                    </div>
+                </form>
+            </mat-step>
+
+            <!--Datos Bancarios-->
+            <mat-step [stepControl]="verticalBancarios">
+                <form [formGroup]="bancarios">
+                    <ng-template matStepLabel>Datos bancarios</ng-template>
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="subheading-1" style="font-weight: bold; color: gray;">Datos bancarios <br>
+                            <strong style="color: black;">Por favor llena los campos</strong></div>
+                        <!-- <div class="subheading-2" style="font-weight: bold; font-size: small;">Por favor llena los campos</div>  -->
+                        <span>
+                            <button (click)="agregarCuenta()" color="primary" mat-button mat-raised-button>AGREGAR</button>
+                        </span>
+                    </div>
+                    <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Seleccione una institucion</mat-label>
+                                <mat-select [(value)]="infoBancarios.idEntidadFinanciera">
+                                    <mat-option *ngFor="let inst of institucionesFinan" [value]="inst">{{inst.descripcion}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Seleccione un tipo de cuenta</mat-label>
+                                <mat-select [(value)]="infoBancarios.idTipoCuenta">
+                                    <mat-option *ngFor="let tipos of tiposCuentas" [value]="tipos">{{tipos.descripcion}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                                <mat-label>Número de cuenta</mat-label>
+                                <input required formControlName="numeroCuenta" matInput [(ngModel)]="infoBancarios.numeroCuenta">
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                            <div class="card" style="width: 100%;">
+                                <table @stagger [dataSource]="dataFondoSource" class="w-full" mat-table matSort>
+
+                                    <ng-container matColumnDef="institucion">
+                                        <mat-header-cell *matHeaderCellDef mat-header-cell>institucion</mat-header-cell>
+                                        <mat-cell *matCellDef="let item" style="font-weight: 600;">{{item.idEntidadFinanciera}}</mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="tipocuenta">
+                                        <mat-header-cell *matHeaderCellDef mat-header-cell>tipocuenta</mat-header-cell>
+                                        <mat-cell *matCellDef="let item" style="font-weight: 600;">{{item.idTipoCuenta}}</mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="numerocuenta">
+                                        <mat-header-cell *matHeaderCellDef mat-header-cell>numerocuenta</mat-header-cell>
+                                        <mat-cell *matCellDef="let item" style="font-weight: 600;">{{item.numeroCuenta}}</mat-cell>
+                                    </ng-container>
+
+
+                                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                                </table>
+
+                                <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0"></mat-paginator>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px" style="margin-top: 2%;">
+                        <button color="primary" mat-button matStepperPrevious type="button">ANTERIOR</button>
+                        <button color="primary" mat-raised-button matStepperNext>SIGUIENTE</button>
+                        <!-- <button (click)="confirmar()" color="primary" mat-button mat-raised-button>CONFIRMAR</button> -->
+                    </div>
+                </form>
+            </mat-step>
+
+            <mat-step [stepControl]="verticalCedula">
+                <form [formGroup]="cedula">
+                    <ng-template matStepLabel>Cédula</ng-template>
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="subheading-1" style="font-weight: bold; color: gray;">Cedula<br>
+                            <strong style="color: black;">Por favor llena los campos</strong></div>
+                        <!-- <div class="subheading-2" style="font-weight: bold; font-size: small;">Por favor llena los campos</div>  -->
+                        <span>
+                            <button (click)="agregarCuenta()" color="primary" mat-button mat-raised-button>AGREGAR</button>
+                        </span>
+                    </div>
+                    <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+
+                        </div>
+                    </div>
+
+                    <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px" style="margin-top: 2%;">
+                        <button color="primary" mat-button matStepperPrevious type="button">ANTERIOR</button>
+                        <button color="primary" mat-raised-button matStepperNext>SIGUIENTE</button>
+                        <!-- <button (click)="confirmar()" color="primary" mat-button mat-raised-button>CONFIRMAR</button> -->
+                    </div>
+
+                </form>
+
+
+            </mat-step>
+
+            <mat-step [stepControl]="verticalFirma">
+                <form [formGroup]="firma">
+                    <ng-template matStepLabel>Firma</ng-template>
+                    <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                            <h2 style="font-weight: bold;">Por favor digita tu firma</h2>
+                        </div>
+                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                            <div style="border-radius: 10px; background-color: lightgray;">
+                                <signature-pad [options]="signaturePadOptions" (onEndEvent)="drawComplete()"></signature-pad>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px" style="margin-top: 2%;">
+                        <button color="primary" mat-button matStepperPrevious type="button">ANTERIOR</button>
+                        <button color="primary" mat-raised-button matStepperNext>SIGUIENTE</button>
+                        <!-- <button (click)="confirmar()" color="primary" mat-button mat-raised-button>CONFIRMAR</button> -->
+                    </div>
+
+                </form>
+
+
+            </mat-step>
+
+            <mat-step [stepControl]="verticalVideo">
+                <form [formGroup]="video">
+                    <ng-template matStepLabel>Vídeo</ng-template>
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="subheading-1" style="font-weight: bold; color: gray;">Vdeo<br>
+                            <strong style="color: black;">Por favor llena los campos</strong></div>
+                        <span>
+                                <button color="primary" mat-button mat-raised-button (click)="capture()" >Confirmar</button>
+                            </span>
+                    </div>
+                    <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+                        <!-- <webcam [height]="500" [width]="500" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"></webcam> -->
+                        <!-- Button Takes Photo -->
+                        <button class="actionBtn" (click)="triggerSnapshot();">Take A Snapshot</button>
+                        <!-- Snapshot Div where image will be shown -->
+                        <div class="snapshot" *ngIf="webcamImage">
+                            <h2>Take your image or get another</h2>
+                            <img [src]="webcamImage.imageAsDataUrl" />
+                        </div>
+                        <!-- <video controls #video id="video" width="640" height="480" playsinline autoplay></video> -->
+                        <!-- <video class="video" controls #video autoplay playsinline muted [hidden]="isRecording"></video>
+                        <button (click)="isRecording ? stopRecord() : recordVideo()">
+                           <h6 *ngIf="isRecording">stop</h6>
+                           <h6 *ngIf="!isRecording">videocam</h6>
+
+                        </button> -->
+                    </div>
+                </form>
+
+
+            </mat-step>
+
+        </mat-vertical-stepper>
+
+
+    </div>
+
+
+</div>

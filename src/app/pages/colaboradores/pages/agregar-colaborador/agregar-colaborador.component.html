@@ -1,0 +1,482 @@
+<div id="scrollId">
+
+
+    <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+    </ngx-spinner>
+
+    <mat-divider></mat-divider>
+    <mat-vertical-stepper #stepper="matVerticalStepper" [linear]="linear" [selectedIndex]="stepper">
+
+        <mat-step [stepControl]="datosPersonales">
+            <div>
+
+                <form [formGroup]="datosPersonales">
+                    <ng-template matStepLabel>Datos personales</ng-template>
+
+                    <vex-datos-personales-colaborador #datosPersonalesComponent [tipoColaborador]="tipoColaborador"
+                        #aaaa [adjuntosColaborador]="adjuntosColaborador" [idColaborador]="idEntidad"
+                        [visualizationMode]="visualizationMode" (colaborador)="recibirColaborador($event)" (dataColaborador)="updateDataColaborador($event)">
+                    </vex-datos-personales-colaborador>
+                </form>
+                <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px"
+                    style="margin-top: 2%;">
+
+                    <button color="primary" mat-raised-button mat-button (click)="guardarDatosPersonales()">
+                        {{linear ||
+                        visualizationMode ? 'Continuar' : 'Guardar datos personales'}} </button>
+                </div>
+            </div>
+            <mat-divider style="margin-top: 2%; margin-bottom: 2%;"></mat-divider>
+
+
+        </mat-step>
+
+        <mat-step
+            [stepControl]="direccion && transporte && cargasFamiliares && datosGuardarContacto && datosGuardarReferenciaBancaria">
+            <ng-template matStepLabel>Datos adicionales</ng-template>
+            <mat-divider style="margin-top: 2%; margin-bottom: 2%;"></mat-divider>
+
+            <div>
+
+                <div style="margin-top: 2%; margin-bottom: 2%; align-items: center;
+                display: flex;
+                justify-content: space-between;">
+
+                    <p style="font-weight: bold; ">2.1. Dirección <span style="color: rgb(98, 97, 100);">*</span></p>
+
+                    <button (click)="agregarEnTablaReferencia(
+                        datosDireccionComponent
+                        )" matTooltip="Agregar dirección" class="head-buttons" mat-button="mat-button">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+
+
+                <form [formGroup]="direccion">
+
+                    <ng-template matStepLabel>
+                        Dirección
+                    </ng-template>
+
+                    <vex-direccion #datosDireccionComponent [idColaborador]="idEntidad"
+                        (callCargarAdjuntos)="getAdjuntos(idColaborador, tipoColaborador)"
+                        [visualizationMode]="visualizationMode" [adjuntosColaborador]="adjuntosColaborador"
+                        controlView="DIRECCION">
+                    </vex-direccion>
+
+                </form>
+            </div>
+            <mat-divider style="margin-top: 2%; margin-bottom: 2%;"></mat-divider>
+
+            <div>
+
+                <div style="margin-top: 2%; margin-bottom: 2%; align-items: center;
+                display: flex;
+                justify-content: space-between;">
+
+                    <p style="font-weight: bold; ">2.2. Vehículo <span style="color: rgb(98, 97, 100);"></span></p>
+
+                    <button (click)="agregarEnTablaReferencia(datosTransporteComponent)" matTooltip="Agregar transporte"
+                        class="head-buttons" mat-button="mat-button">
+                        <mat-icon>add</mat-icon>
+                    </button>
+
+                </div>
+
+                <form [formGroup]="transporte">
+
+                    <ng-template matStepLabel>
+                        Vehículo
+                    </ng-template>
+
+                    <vex-datos-transporte-colaborador [idColaborador]="idColaborador" [idEntidad]="idEntidad" #datosTransporteComponent
+                        [tipoColaborador]="tipoColaborador" [visualizationMode]="visualizationMode"
+                        [adjuntosColaborador]="adjuntosColaborador" controlView="TRANSPORTE">
+                    </vex-datos-transporte-colaborador>
+
+
+
+                </form>
+            </div>
+            <mat-divider></mat-divider>
+            <div>
+
+
+                <div style="margin-top: 2%; margin-bottom: 2%; align-items: center;
+                display: flex;
+                justify-content: space-between;">
+
+                    <p style="font-weight: bold; ">2.3. Cargas familiares <span
+                            style="color: rgb(98, 97, 100);"></span></p>
+
+
+                    <button (click)="agregarEnTablaReferencia(cargasFamiliaresComponent)"
+                        matTooltip="Agregar carga familiar" class="head-buttons" mat-button="mat-button">
+                        <mat-icon>add</mat-icon>
+                    </button>
+
+                </div>
+
+
+                <form [formGroup]="cargasFamiliares">
+
+                    <ng-template matStepLabel>
+                        Cargas familiares
+                    </ng-template>
+                    <vex-datos-cargas-familiares-colaborador #cargasFamiliaresComponent [idColaborador]="idColaborador"
+                        [adjuntosColaborador]="adjuntosColaborador" [visualizationMode]="visualizationMode"
+                        [tipoColaborador]="tipoColaborador" controlView="CARGAS-FAMILIARES">
+                    </vex-datos-cargas-familiares-colaborador>
+
+
+
+                    <vex-archivos-colaborador [visualizationMode]="visualizationMode" [idColaborador]="idColaborador"
+                        (callCargarAdjuntos)="getAdjuntos(idColaborador, tipoColaborador)"
+                        [adjuntosColaborador]="adjuntosColaborador" controlView="CARGAS-FAMILIARES">
+                    </vex-archivos-colaborador>
+
+
+
+                </form>
+            </div>
+
+            <mat-divider></mat-divider>
+            <div>
+
+
+                <div style="margin-top: 2%; margin-bottom: 2%; align-items: center;
+                display: flex;
+                justify-content: space-between;">
+
+                    <p style="font-weight: bold; ">2.4. Contactos <span style="color: rgb(98, 97, 100);">*</span></p>
+
+                    <button (click)="agregarEnTablaReferencia(datosContactoComponent)" matTooltip="Agregar contacto"
+                        class="head-buttons" mat-button="mat-button">
+                        <mat-icon>add</mat-icon>
+                    </button>
+
+                </div>
+
+
+
+
+                <form [formGroup]="datosGuardarContacto">
+
+                    <ng-template matStepLabel>
+                        Contactos
+                    </ng-template>
+
+                    <vex-datos-contactos-colaborador [visualizationMode]="visualizationMode" #datosContactoComponent
+                        [idColaborador]="idEntidad" [adjuntosColaborador]="adjuntosColaborador"
+                        [tipoColaborador]="tipoColaborador">
+                    </vex-datos-contactos-colaborador>
+
+
+                </form>
+            </div>
+            <mat-divider></mat-divider>
+            <div>
+
+                <div style="margin-top: 2%; margin-bottom: 2%; align-items: center;
+                display: flex;
+                justify-content: space-between;">
+
+                    <p style="font-weight: bold; ">2.5. Referencia bancaria <span
+                            style="color: rgb(98, 97, 100);">*</span></p>
+
+                    <button (click)="agregarEnTablaReferencia(datosReferenciaBancariaComponent)"
+                        matTooltip="Agregar referencia bancaria" class="head-buttons" mat-button="mat-button">
+                        <mat-icon>add</mat-icon>
+                    </button>
+
+                </div>
+
+
+
+
+                <form [formGroup]="datosGuardarReferenciaBancaria">
+                    <ng-template matStepLabel>Referencia bancaria</ng-template>
+
+                    <vex-datos-referencia-bancaria-colaborador #datosReferenciaBancariaComponent
+                        [visualizationMode]="visualizationMode" [tipoColaborador]="tipoColaborador"
+                        [adjuntosColaborador]="adjuntosColaborador"  [idColaborador]="idColaborador" [idEntidad]="idEntidad"
+                        [colaborador]="colaborador" controlView="REFERENCIA-BANCARIA">
+                    </vex-datos-referencia-bancaria-colaborador>
+
+
+
+                </form>
+            </div>
+
+
+            <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px" style="margin-top: 2%;">
+                <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                    matStepperPrevious>Anterior</button>
+                <button color="primary" mat-raised-button (click)="guardarMultiples()">
+                    {{linear ||
+                    visualizationMode ? 'Continuar' : 'Guardar'}} </button>
+            </div>
+
+        </mat-step>
+
+
+
+
+
+        <mat-step [stepControl]="datosGuardarFormacionAcademica" *ngIf="tipoColaborador != 2">
+            <form [formGroup]="datosGuardarFormacionAcademica">
+
+
+                <div class="flex justify-end  mb-2" *ngIf="!visualizationMode">
+                    <button [matMenuTriggerFor]="menu" matTooltip="Agregar educación formal o capacitación" #menuTrigger
+                        class="head-buttons" mat-button="mat-button">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="agregarEnTabla(datosFormacionAcademicaComponent)">Agregar
+                            educación formal</button>
+
+                        <button mat-menu-item
+                            (click)="agregarEnTabla(datosFormacionAcademicaComponent, 'certificado')">Agregar
+                            capacitación</button>
+                    </mat-menu>
+
+
+                </div>
+
+
+                <ng-template matStepLabel>Educación Formal / Capacitación Complementaria</ng-template>
+
+                <vex-formacion-academica-colaborador *ngIf="colaborador" #datosFormacionAcademicaComponent
+                    [visualizationMode]="visualizationMode" [tipoColaborador]="tipoColaborador"
+                    [adjuntosColaborador]="adjuntosColaborador" [idColaborador]="idColaborador" [idEntidad]="idEntidad"
+                    [colaborador]="colaborador" controlView="FORMACION ACADÉMICA / CAPACITACIONES">
+                </vex-formacion-academica-colaborador>
+
+
+                <!-- 
+                <vex-archivos-colaborador *ngIf="visualizationMode" [visualizationMode]="visualizationMode"
+                    [idColaborador]="idColaborador" (callCargarAdjuntos)="getAdjuntos(idColaborador, tipoColaborador)"
+                    [adjuntosColaborador]="adjuntosColaborador" controlView="FORMACION ACADÉMICA / CAPACITACIONES">
+                </vex-archivos-colaborador> -->
+
+
+                <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px"
+                    style="margin-top: 2%;">
+                    <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                        matStepperPrevious>Anterior</button>
+                    <button color="primary" mat-raised-button (click)="guardarActualizarInformacionAcademica()">
+                        {{linear ||
+                        visualizationMode ? 'Continuar' : 'Guardar'}} </button>
+                </div>
+            </form>
+
+        </mat-step>
+
+
+        <mat-step [stepControl]="referenciaPersonal">
+
+
+            <div class="flex justify-end  mb-2" *ngIf="!visualizationMode">
+                <button (click)="agregarEnTablaReferencia(datosReferenciaPersonalComponent)"
+                    matTooltip="Agregar referencia personal" class="head-buttons" mat-button="mat-button">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+
+
+            <form [formGroup]="referenciaPersonal">
+                <ng-template matStepLabel>Referencia personal</ng-template>
+
+                <vex-datos-referencia-personal-colaborador #datosReferenciaPersonalComponent
+                    [visualizationMode]="visualizationMode" [tipoColaborador]="tipoColaborador"
+                    [adjuntosColaborador]="adjuntosColaborador" [idColaborador]="idColaborador" [idEntidad]="idEntidad"
+                    controlView="REFERENCIA PERSONAL">
+                </vex-datos-referencia-personal-colaborador>
+
+
+
+                <!--     <vex-archivos-colaborador     [visualizationMode]="visualizationMode" [idColaborador]="idColaborador"
+                    (callCargarAdjuntos)="getAdjuntos(idColaborador, tipoColaborador)"
+                    [adjuntosColaborador]="adjuntosColaborador" controlView="REFERENCIA PERSONAL">
+                </vex-archivos-colaborador>
+ -->
+
+
+                <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px"
+                    style="margin-top: 2%;">
+                    <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                        matStepperPrevious>Anterior</button>
+                    <button color="primary" mat-raised-button (click)="showAlert(referenciaPersonal)">
+                        Continuar </button>
+                </div>
+            </form>
+        </mat-step>
+
+
+        <mat-step [stepControl]="datosHistorialLaboral">
+            <form [formGroup]="datosHistorialLaboral">
+                <p style="font-weight: bold; margin-top: 2%; margin-bottom: 2%;">
+                    Información laboral
+                </p>
+                <ng-template matStepLabel>Información laboral</ng-template>
+
+                <vex-datos-informacion-laboral-colaborador *ngIf="colaborador && colaborador.colaborador" [tipoColaborador]="tipoColaborador"
+                    [visualizationMode]="visualizationMode" [idColaborador]="idColaborador" [idEntidad]="idEntidad" [colaborador]="colaborador"
+                    controlView="DOCUMENTOS DE INGRESO" [adjuntosColaborador]="adjuntosColaborador">
+                </vex-datos-informacion-laboral-colaborador>
+
+
+
+
+
+            </form>
+            <p style="font-weight: bold; margin-top: 2%; margin-bottom: 2%;">
+                Datos de contrato
+            </p>
+            <form [formGroup]="datosContrato">
+
+                <ng-template matStepLabel>
+                    Datos de contrato
+                </ng-template>
+
+                <app-datos-contrato-colaborador  *ngIf="colaborador" [tipoColaborador]="tipoColaborador" [idColaborador]="idColaborador" [idEntidad]="idEntidad"
+                    [visualizationMode]="visualizationMode" [colaborador]="colaborador" controlView="CONTRATO"
+                    [adjuntosColaborador]="adjuntosColaborador">
+                </app-datos-contrato-colaborador>
+
+
+
+            </form>
+
+            <div class=" actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px" style="margin-top: 2%;">
+                <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                    matStepperPrevious>Anterior</button>
+                <button color="primary" mat-raised-button (click)="guardarAmbas()">
+                    {{linear ||
+                    visualizationMode ?
+                    'Continuar' : 'Guardar'}} </button>
+            </div>
+
+
+        </mat-step>
+
+        <!-- 
+        <mat-step [stepControl]="datosContrato">
+
+            <form [formGroup]="datosContrato">
+
+                <ng-template matStepLabel>
+                    Datos de contrato
+                </ng-template>
+
+                <app-datos-contrato-colaborador [tipoColaborador]="tipoColaborador" [idColaborador]="idColaborador"
+                    [visualizationMode]="visualizationMode" [colaborador]="colaborador" controlView="CONTRATO"
+                    [adjuntosColaborador]="adjuntosColaborador">
+                </app-datos-contrato-colaborador>
+
+
+
+                <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px"
+                    style="margin-top: 2%;">
+                    <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                        matStepperPrevious>Anterior</button>
+                    <button color="primary" mat-raised-button (click)="guardarDatosContrato()"> {{linear ||
+                        visualizationMode
+                        ?
+                        'Continuar' : 'Guardar'}} </button>
+                </div>
+            </form>
+        </mat-step> -->
+
+        <mat-step [stepControl]="documentosIngreso">
+            <form [formGroup]="documentosIngreso">
+                <ng-template matStepLabel>Documentos de ingreso</ng-template>
+
+
+                <app-documentos-ingreso controlView="DOCUMENTOS DE INGRESO" [adjuntosColaborador]="adjuntosColaborador"
+                    [tipoColaborador]="tipoColaborador" [visualizationMode]="visualizationMode"
+                    [idColaborador]="idEntidad" >
+                </app-documentos-ingreso>
+
+
+                <vex-archivos-colaborador [visualizationMode]="visualizationMode" [idColaborador]="idEntidad"
+                    (callCargarAdjuntos)="getAdjuntos(idColaborador, tipoColaborador)"
+                    [adjuntosColaborador]="adjuntosColaborador" controlView="DOCUMENTOS DE INGRESO">
+                </vex-archivos-colaborador>
+
+
+                <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px"
+                    style="margin-top: 2%;">
+                    <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                        matStepperPrevious>Anterior</button>
+                    <button color="primary" mat-raised-button (click)="showAlert(documentosIngreso)">
+                        Continuar </button>
+                </div>
+            </form>
+
+
+
+        </mat-step>
+
+        <mat-step [stepControl]="documentosLegales">
+            <form [formGroup]="documentosLegales">
+                <ng-template matStepLabel>Documentos legales</ng-template>
+
+
+                <vex-documentos-legales-colaborador controlView="DOCUMENTOS LEGALES"
+                    [adjuntosColaborador]="adjuntosColaborador" [tipoColaborador]="tipoColaborador"
+                    [visualizationMode]="visualizationMode" [idColaborador]="idEntidad">
+                </vex-documentos-legales-colaborador>
+
+
+                <vex-archivos-colaborador [visualizationMode]="visualizationMode" [idColaborador]="idEntidad"
+                    (callCargarAdjuntos)="getAdjuntos(idColaborador, tipoColaborador)"
+                    [adjuntosColaborador]="adjuntosColaborador" controlView="DOCUMENTOS LEGALES">
+                </vex-archivos-colaborador>
+
+
+                <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px"
+                    style="margin-top: 2%;">
+                    <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                        matStepperPrevious>Anterior</button>
+                    <button color="primary" mat-raised-button (click)="showAlert(documentosLegales)">
+                        Finalizar </button>
+                </div>
+            </form>
+
+
+
+        </mat-step>
+
+        <!--  <mat-step [stepControl]="historialLaboralInterno">
+            <form [formGroup]="historialLaboralInterno">
+                <ng-template matStepLabel>Proceso de reclutamiento</ng-template>
+
+                <vex-historial-interno-colaborador [adjuntosColaborador]="adjuntosColaborador"
+                    controlView="PROCESO DE RECLUTAMIENTO" [tipoColaborador]="tipoColaborador"
+                    [idColaborador]="idColaborador" [colaborador]="colaborador">
+                </vex-historial-interno-colaborador>
+
+
+                <vex-archivos-colaborador     [visualizationMode]="visualizationMode" [idColaborador]="idColaborador"
+                    (callCargarAdjuntos)="getAdjuntos(idColaborador, tipoColaborador)"
+                    [adjuntosColaborador]="adjuntosColaborador" controlView="PROCESO DE RECLUTAMIENTO">
+                </vex-archivos-colaborador>
+
+
+                <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px"
+                    style="margin-top: 2%;">
+                    <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                        matStepperPrevious>Anterior</button>
+                    <button color="primary" mat-raised-button (click)="guardarProcesoSeleccion()">
+                        {{linear ?
+                        'Continuar' : 'Guardar'}} </button>
+                </div>
+            </form>
+        </mat-step> -->
+    </mat-vertical-stepper>
+
+
+
+</div>

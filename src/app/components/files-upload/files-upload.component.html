@@ -1,0 +1,3 @@
+<form [formGroup]="formFiles" [ngClass]="classStyleFilesForm" >
+    <file-upload (change)="checkExtension()"  [(ngModel)]="uploadedFilesList"  formControlName="files" [disabled]="disabled" [multiple]="multiple" [animation]="animation" [ngClass]="classStyleFilesComponent"></file-upload>
+</form>

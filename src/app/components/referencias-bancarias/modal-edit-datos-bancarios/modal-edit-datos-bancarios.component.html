@@ -1,0 +1,61 @@
+<div mat-dialog-content>
+
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Datos Bancarios</h4>
+  </div>
+
+  <form [formGroup]="bancarioForm">
+
+
+    <mat-form-field class="example-full-width">
+      <mat-label class="labelForm">Instituciones</mat-label>
+      <mat-select id="instituciones" required="required" ngDefaultControl="ngDefaultControl"
+        formControlName="idEntidadFinanciera" #singleSelect>
+        <mat-option>
+          <ngx-mat-select-search placeholderLabel="Buscar Instituciones..."
+            noEntriesFoundLabel="'No se encuentra la Institución'"
+            [formControl]="institucionesFinancierasDataFilterCtrl">
+            <mat-icon ngxMatSelectSearchClear="ngxMatSelectSearchClear">x</mat-icon>
+          </ngx-mat-select-search>
+        </mat-option>
+        <mat-option style="font-size: small;" *ngFor="let inst of filteredInstituciones | async"
+          [value]="inst.idEntidadFinanciera">
+          <p style="font-size: small;">
+            {{ inst.descripcion }}
+          </p>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Tipo de cuenta bancaria</mat-label>
+      <mat-select required formControlName="idTipoCuenta">
+        <mat-option [disabled]="data.visualizationMode" *ngFor="let banco of tiposCuentas" [value]="banco.idTipoCuenta">
+          {{banco.descripcion}}</mat-option>
+      </mat-select>
+
+    </mat-form-field>
+
+
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Número de cuenta</mat-label>
+      <input required formControlName="numeroCuenta" matInput />
+    </mat-form-field>
+
+
+
+  </form>
+
+</div>
+
+
+
+<div mat-dialog-actions fxLayoutAlign="end center" fxLayoutGap="8px">
+  <button *ngIf="!data.visualizationMode" style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+    (click)="onNoClick()">Cancelar</button>
+  <button color="primary" mat-raised-button [disabled]="!bancarioForm.valid"
+    (click)="enviarFormulario(bancarioForm.value)" cdkFocusInitial>
+    Guardar
+  </button>
+</div>

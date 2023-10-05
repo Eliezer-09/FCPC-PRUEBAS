@@ -1,0 +1,243 @@
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Cargando...</p>
+</ngx-spinner>
+
+<vex-page-layout>
+  <vex-page-layout-header class="page-head">
+
+    <div @fadeInRight class="head-icon">
+      <mat-icon [icIcon]="icDescription"></mat-icon>
+      <h3 class="head-icon-title" style="z-index: 1;
+        position: relative;"> Actualizar Datos</h3>
+    </div>
+
+    <div class="head-app-bar-search" style="display:flex">
+
+      <div class="head-options" style="margin-top:3%; width: max-content">
+        <div class="search-bar">
+          <input [formControl]="searchCtrl" [(ngModel)]="buscar"
+            class="px-4 py-3 border-0 outline-none w-full bg-transparent input-text"
+            placeholder="Identificación o código de uniformado" type="search" (keyup.enter)="traerAlParticipe(buscar)">
+          <button (click)="traerAlParticipe(buscar)" class="head-button" mat-button="mat-button" matTooltip="Buscar">
+            <mat-icon [icIcon]="icroundSearch"></mat-icon>
+            Consultar
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+
+  </vex-page-layout-header>
+
+
+  <div @fadeInUp class="card overflow-hidden" style="margin:1.5rem;">
+
+    <mat-accordion class="headers-align">
+      <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title> {{Tab1}} </mat-panel-title>
+          <mat-panel-description>
+            &nbsp; <mat-icon>account_circle</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <!--   Datos Participe -->
+        <vex-datos-participe *ngIf="participe.identificacion" [actualizarDatos]="participe">
+        </vex-datos-participe>
+
+        <mat-action-row>
+          <button mat-raised-button color="primary" (click)="nextStep()">Siguiente</button>
+
+        </mat-action-row>
+
+        <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px" style="margin-top: 2%;">
+
+        </div>
+
+
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{Tab2}} </mat-panel-title>
+          <mat-panel-description>
+            &nbsp; <mat-icon>description</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <!--  Adjuntos -->
+        <vex-adjuntos-general *ngIf="participe.idParticipe" [id]="participe.idParticipe"
+          [adjuntosGenerales]="adjuntosGenerales"></vex-adjuntos-general>
+
+        <mat-action-row>
+          <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+            (click)="prevStep()">Anterior</button>
+          <button mat-raised-button color="primary" (click)="nextStep()">Siguiente</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title> {{Tab3}} </mat-panel-title>
+          <mat-panel-description>
+            &nbsp; <mat-icon>paid</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <!-- perfil economico -->
+        <vex-perfil-economico *ngIf="participe.idParticipe"
+          [idParticipe]="participe.idParticipe"></vex-perfil-economico>
+
+        <mat-action-row>
+          <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+            (click)="prevStep()">Anterior</button>
+          <button mat-raised-button color="primary" (click)="nextStep()">Siguiente</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+
+      <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title> {{Tab4}} </mat-panel-title>
+          <mat-panel-description>
+            &nbsp; <mat-icon>account_balance_wallet</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <!-- datos bancarios -->
+
+        <app-referencias-bancarias *ngIf="participe.idParticipe"
+          [idParticipe]="participe.idParticipe"></app-referencias-bancarias>
+
+        <mat-action-row>
+          <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+            (click)="prevStep()">Anterior</button>
+          <button mat-raised-button color="primary" (click)="nextStep()">Siguiente</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+
+      <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title> {{Tab5}} </mat-panel-title>
+          <mat-panel-description>
+            &nbsp; <mat-icon>savings</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <!-- aporte adicional -->
+        <div *ngIf="participe.idParticipe">
+          <form [formGroup]="valorAdicionalFormGroup">
+
+
+            <div class="titulovalor" style="margin-top: 0%;">
+
+              <mat-form-field  class="vex-flex-form-field flex-100" fxFlex="auto" >
+                <mat-label>Valor adicional</mat-label>
+                <input required
+                (change)="setTwoNumberDecimal(valorAdicionalFormGroup,'valorAdicional')"
+                id="valorAdicional"
+                matInput="matInput"
+                formControlName="valorAdicional"
+                class="right-align"
+                [inputMask]="DecimalInputMask"/>
+                <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                <mat-error  *ngIf="valorAdicionalFormGroup.get('valorAdicional').errors">{{getErrorMessage(valorAdicionalFormGroup.get('valorAdicional'))}}</mat-error>
+            </mat-form-field>
+
+
+              <mat-form-field class="vex-flex-form-field flex-100" fxFlex="auto">
+                <mat-label>Nota</mat-label>
+                <textarea formControlName="nota" matInput></textarea>
+              </mat-form-field>
+            </div>
+
+            <h6 style="font-weight: bold;">Descargar formato de valor adicional</h6>
+
+            <div style="display: flex; justify-content: center;">
+              <button color="primary" [disabled]="!valorAdicionalFormGroup.valid"
+                class="forms-full-button button-download" mat-raised-button
+                (click)="descargarAporte()">Descargar</button>
+            </div>
+            <br />
+            <vex-adjuntos-general *ngIf="participe.idParticipe" [id]="participe.idParticipe"
+              [adjuntosGenerales]="adjuntosAporteAdicional"></vex-adjuntos-general>
+
+          </form>
+        </div>
+
+        <mat-action-row>
+          <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+            (click)="prevStep()">Anterior</button>
+          <button mat-raised-button color="primary" (click)="nextStep()">Siguiente</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+
+      <mat-expansion-panel [expanded]="step === 5" (opened)="setStep(5)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title> {{Tab6}} </mat-panel-title>
+          <mat-panel-description>
+            &nbsp; <mat-icon>request_quote</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <!-- rol de pago participe -->
+
+        <vex-adjuntos-general *ngIf="participe.idParticipe" [id]="participe.idParticipe"
+          [adjuntosGenerales]="adjuntosRolParticipe"></vex-adjuntos-general>
+
+        <mat-action-row>
+          <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+            (click)="prevStep()">Anterior</button>
+          <button mat-raised-button color="primary" (click)="nextStep()">Siguiente</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+
+      <mat-expansion-panel [expanded]="step === 6" (opened)="setStep(6)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title> {{Tab7}} </mat-panel-title>
+          <mat-panel-description>
+            &nbsp; <mat-icon>request_quote</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <!-- rol de pago credito -->
+        <form [formGroup]="rolDePagoFormGroup">
+
+          <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+            <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+              <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                <mat-label class="labelForm">Créditos del participe</mat-label>
+                <mat-select id="prestamos" required="required" ngDefaultControl="ngDefaultControl"
+                  (selectionChange)="cargarAdjuntosRolPagoCredito($event.value)" formControlName="idPrestamo"
+                  [(value)]="prestamos.idPrestamo" #singleSelect>
+                  <mat-option style="font-size: small;" *ngFor="let prest of prestamos" [value]="prest.idPrestamo">
+                    <p style="font-size: small;">
+                       {{ prest.idPrestamo }} <b>|</b> {{ prest.estado }} <b>|</b> {{ prest.fecha | date }} <b>|</b> ${{ prest.montoSolicitado }}
+                    </p>
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div *ngIf="prestamos.length==0">
+            <h5 class="head-icon-title" style="z-index: 1;
+            position: relative;"  style="color: #EF2E2E;"> No tienes créditos aprobados</h5>
+          </div>
+
+          <vex-adjuntos-general *ngIf="rolDePagoFormGroup.controls['idPrestamo'].value" [id]="participe.idParticipe"
+            [adjuntosGenerales]="adjuntosRolCredito"></vex-adjuntos-general>
+        </form>
+
+        <mat-action-row>
+          <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+            (click)="prevStep()">Anterior</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+
+  </div>

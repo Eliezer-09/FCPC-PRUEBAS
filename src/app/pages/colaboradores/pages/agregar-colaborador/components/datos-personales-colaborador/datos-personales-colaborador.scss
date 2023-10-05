@@ -1,0 +1,75 @@
+.mat-stepper-vertical {
+  margin-top: 8px;
+}
+
+.mat-form-field {
+  margin-top: 16px;
+}
+.example-section {
+  display: flex;
+  //align-content: center;
+  //align-items: center;
+
+}
+
+.example-margin {
+  margin: 0 10px;
+}
+
+.input-file {
+  background-color: #3F51B5;
+  margin-bottom: 30px;
+  color: #ffff;
+  margin: 20px 0;
+}
+
+.archivoRemove {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 300px;
+}
+
+.head-table-formacion {
+  padding: 0.5rem 2rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--COLOR-NEUTRAL-LIGHT-GRAY);
+}
+#inputFile {
+  opacity: 0;
+  position: absolute;
+}
+
+.imagen{
+  position: relative;
+  display: inline-block;
+}
+
+.agregar-imagen{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -28px;
+  width: 1px;
+  height: 40px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 0 13px 0 rgb(0 0 0 / 10%);
+}
+
+.eliminar-imagen {
+  align-items: center;
+  justify-content: center;
+  margin-left: -28px;
+  width: 1px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 0 13px 0 rgb(0 0 0 / 10%);
+  display: flex;
+  margin-bottom: -5px;
+}

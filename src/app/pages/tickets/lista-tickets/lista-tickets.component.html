@@ -1,0 +1,28 @@
+<vex-page-layout>
+  <vex-page-layout-header class="page-head">
+  <!-- cabecera -->
+  <div class="head-icon">
+      <mat-icon [fontIcon]="faTicketAlt" fontSet="fa" class="linkiconbutton" ></mat-icon>
+      <h3 class="head-icon-title">Tickets</h3>
+  </div>   
+</vex-page-layout-header>
+
+    <div class="-mt-14 pt-0 overflow-hidden flex" vexContainer>
+      <mat-drawer-container class="bg-transparent flex-auto flex">
+        <mat-drawer [(opened)]="menuOpen" mode="over">
+          <vex-ticket-table-menu class="sm:hidden" (filterChange)="setData($event)" [datos]="files">
+          </vex-ticket-table-menu>
+        </mat-drawer>
+        <mat-drawer-content class="p-gutter pt-0 flex-auto flex items-start">
+          <vex-ticket-table-menu class="hidden sm:block mr-6" (filterChange)="setData($event)" [datos]="files">
+          </vex-ticket-table-menu>
+  
+          <div class="h-full overflow-hidden flex-auto">
+            <vex-tickets-pendientes *ngIf="categoria != ''" [data]="categoria"></vex-tickets-pendientes>
+          </div>
+        </mat-drawer-content>
+  
+      </mat-drawer-container>
+    </div>
+
+</vex-page-layout>

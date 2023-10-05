@@ -1,0 +1,49 @@
+<div mat-dialog-content>
+
+  <div class="modal-header">
+
+    <h4 *ngIf="!data.visualizationMode" class="modal-title" id="modal-title"> {{tipoModificacion}}</h4>
+    <h4 *ngIf="data.visualizationMode">Ver área</h4>
+  </div>
+
+
+  <form [formGroup]="formAddAreaSubArea">
+
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Nombre de área</mat-label>
+      <input [readonly]="data.visualizationMode" (keydown)="utilsService.validacionSoloLetras($event)" matInput
+        formControlName="descripcion" required>
+    </mat-form-field>
+
+
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Cargo Supervisor</mat-label>
+      <mat-select required formControlName="idCargo">
+        <mat-option [disabled]="data.visualizationMode">
+          <ngx-mat-select-search placeholderLabel="Buscar cargos..."
+            noEntriesFoundLabel="No se encuentra el tipo de cargo" [formControl]="bankFilterCtrl">
+          </ngx-mat-select-search>
+        </mat-option>
+        <mat-option [disabled]="data.visualizationMode" *ngFor="let area of listadoTemporal" [value]="area.idCargo">
+          {{area.descripcion}}</mat-option>
+
+      </mat-select>
+    </mat-form-field>
+
+  </form>
+
+
+
+</div>
+
+
+
+<div mat-dialog-actions fxLayoutAlign="end center" fxLayoutGap="8px">
+  <button *ngIf="!data.visualizationMode" style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+    (click)="onNoClick()">Cancelar</button>
+  <button color="primary" mat-raised-button [disabled]="!formAddAreaSubArea.valid"
+    (click)="saveAreaSubArea(formAddAreaSubArea.value)" cdkFocusInitial> {{data.visualizationMode ? 'Cerrar' :
+    'Guardar'}}</button>
+</div>

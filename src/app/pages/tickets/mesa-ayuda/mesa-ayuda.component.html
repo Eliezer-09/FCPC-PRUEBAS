@@ -1,0 +1,126 @@
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Cargando...</p>
+</ngx-spinner>
+<vex-page-layout>
+
+    <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.container]="layoutCtrl.value === 'boxed'" [class.px-gutter]="layoutCtrl.value === 'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+            <div>
+                <h1 class="title mt-0 mb-1">Tickets de Servicio</h1>
+            </div>
+        </div>
+    </vex-page-layout-header>
+
+    <vex-page-layout-content [class.container]="layoutCtrl.value === 'boxed'" [class.px-gutter]="layoutCtrl.value === 'fullwidth'" class="-mt-6">
+
+        <div class="card overflow-auto -mt-16">
+            <mat-tab-group mat-align-tabs="start">
+                <mat-tab label="Tickets de Servicio" >
+                    <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+                        <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+                            <span *ngIf="selection.isEmpty()">Tickets de Servicio </span>
+                            <span *ngIf="selection.hasValue()">{{ selection.selected.length }}
+                      Customer<span *ngIf="selection.selected.length > 1">s</span> selected</span>
+                        </h2>
+        
+                        <div *ngIf="selection.hasValue()" class="mr-4 pr-4 border-r" fxFlex="none">
+                            <button color="primary" mat-icon-button matTooltip="Delete selected" type="button">
+                      <mat-icon [icIcon]="icDelete"></mat-icon>
+                    </button>
+        
+                            <button color="primary" mat-icon-button matTooltip="Another action" type="button">
+                      <mat-icon [icIcon]="icFolder"></mat-icon>
+                    </button>
+                        </div>
+        
+                        <div class="bg-card rounded-full border px-4" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row" fxLayoutAlign="start center">
+                            <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+                            <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent" placeholder="Buscar..." type="search">
+                        </div>
+        
+                        <span fxFlex></span>
+        
+                        <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+                    <mat-icon [icIcon]="icSearch"></mat-icon>
+                  </button>
+                    </div>
+        
+                    <table @stagger [dataSource]="dataTicketsSource" class="w-full" mat-table matSort>
+        
+                        <!--- Note that these columns can be defined in any order.
+                        The actual rendered columns are set as a property on the row definition" -->
+                        <ng-container matColumnDef="turno">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header># TURNO</mat-header-cell>
+                            <mat-cell *matCellDef="let turno" style="font-weight: 600;">{{turno.codigo}}</mat-cell>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="nombre">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>NOMBRE</mat-header-cell>
+                            <mat-cell *matCellDef="let nombre" style="color: rgb(0,0,0,0.54);">{{nombre.nombre}}</mat-cell>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="fechaRegistro">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>FECHA</mat-header-cell>
+                            <mat-cell *matCellDef="let fecha" style="color: rgb(0,0,0,0.54);">{{fecha.fecha | date: 'dd/MM/yyyy'}}</mat-cell>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="horaRegistro">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>HORA EMISIÓN</mat-header-cell>
+                            <mat-cell *matCellDef="let hora" style="color: rgb(0,0,0,0.54);">{{hora.fecha | date: 'h:mm a'}}</mat-cell>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="Estado">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell>ESTADO</mat-header-cell>
+                            <mat-cell class="duration-cell" *matCellDef="let ticket" style="color: rgb(8, 8, 8);">
+                                <h3 *ngIf="ticket.estado == 'Pendiente'"><span class="badge bg-danger">{{ ticket.estado }}</span></h3>
+                                <h3 *ngIf="ticket.estado == 'EnProceso'"><span class="badge bg-warning">{{ ticket.estado }}</span></h3>
+                                <h3 *ngIf="ticket.estado == 'Atendido'"><span class="badge bg-success">{{ ticket.estado }}</span></h3>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Prioridad">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell>PRIORIDAD</mat-header-cell>
+                            <mat-cell class="duration-cell" *matCellDef="let ticket" style="color: rgb(8, 8, 8);">
+                                <h3 *ngIf="ticket.prioridad == 'Urgente'"><span class="badge bg-danger">{{ ticket.prioridad }}</span></h3>
+                                <h3 *ngIf="ticket.prioridad == 'Alta'"><span class="badge bg-warning">{{ ticket.prioridad }}</span></h3>
+                                <h3 *ngIf="ticket.prioridad == 'Media'"><span class="badge" style="background-color: rgb(235, 252, 6); color: black;">{{ ticket.prioridad }}</span></h3>
+                                <h3 *ngIf="ticket.prioridad == 'Baja'"><span class="badge bg-success">{{ ticket.prioridad }}</span></h3>
+                            </mat-cell>
+                        </ng-container>
+        
+                        <!-- Action Column -->
+                        <ng-container matColumnDef="Acciones">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell class="w-3">OPCIONES</mat-header-cell>
+                            <mat-cell *matCellDef="let id; let i = index">
+                                    
+                                    <a class="navf" class="btn btn-primary btn-sm" type="button" title="Ver Historial" (click)="infoTicket(id)">
+                                        <ic-icon [icon]="icEye" height="20px" width="20px" style="color: white"></ic-icon>
+                                    </a>
+                                    
+                                    <a class="navf" class="btn btn-danger btn-sm" type="button" title="Reabrir Ticket" (click)="infoReabrir(id)">
+                                        <ic-icon [icon]="icRenew" height="20px" width="20px" style="color: white"></ic-icon>
+                                    </a>
+        
+                            </mat-cell>
+                        </ng-container>
+        
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        
+                        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        
+                    </table>
+        
+                    <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; background: white; margin: auto;">
+                        <mat-progress-spinner diameter="60" color="primary" mode="indeterminate">
+                        </mat-progress-spinner>
+                    </div>
+        
+                    <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="10" class="sticky left-0"></mat-paginator>
+                </mat-tab>
+            </mat-tab-group>
+            
+        </div>
+
+    </vex-page-layout-content>
+
+</vex-page-layout>

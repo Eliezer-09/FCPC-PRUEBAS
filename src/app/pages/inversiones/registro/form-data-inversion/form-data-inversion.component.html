@@ -1,0 +1,762 @@
+<vex-page-layout-content
+    class="-mt-6"
+    [class.container]="layoutCtrl.value === 'boxed'"
+    [class.px-gutter]="layoutCtrl.value === 'fullwidth'">
+    
+    <ng-template class="ConfigurationForm" #configForm>
+            <mat-form-field style="margin-right:10px;"  >
+                    <mat-label class="labelForm">Moneda</mat-label>
+                    <mat-select
+                        [(value)]="monedas[0].idMoneda"
+                        [disabled]="true">
+                            <mat-option *ngFor="let moneda of monedas" [value]="moneda.idMoneda">
+                                    {{ moneda.descripcion }}
+                            </mat-option>
+                    </mat-select>
+                    
+            </mat-form-field> 
+    </ng-template>
+   
+    <form style="background-color: white;" #formvalor [formGroup]="formGenerales">
+        <div class="contentdatosvalor">
+            <div>
+                <div class="head-divider">
+                    <h3 class="head-icon-title labelseccion" >Datos de Valor</h3>
+                </div>
+
+                <div style="display:grid; margin: 3% 3% 0% 3%">
+                    <mat-form-field  class="vex-flex-form-field" fxFlex="auto" style="column-gap: 100%">
+                        <mat-label class="labelForm">Tipo de Renta</mat-label>
+                        <mat-select id="tipoRenta"
+                                    required="required" 
+                                    formControlName="tipoRenta"
+                                    (selectionChange)="changeTipoRenta($event)">
+                                <mat-option *ngFor="let tipoRenta of tiposRentas" [value]="tipoRenta.id">
+                                        {{ tipoRenta.nombre }}
+                                </mat-option>
+                        </mat-select>
+                        <mat-error  *ngIf="formGenerales.get('tipoRenta').errors">{{getErrorMessage(formGenerales.get('tipoRenta'))}}</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="titulovalor valor" style="margin-top: 0%; margin-bottom: 0%;">
+                    <mat-form-field  class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label class="labelForm">Tipo de Título</mat-label>
+                        <mat-select id="idTipoInversion"
+                                    required="required"
+                                    formControlName="idTipoInversion"
+                                    (selectionChange)="changeTipoInversion($event)">
+                            <mat-option
+                                *ngFor="let tituloValor of filteredTituloValor | async"
+                                [value]="tituloValor.idTipoInversion">
+                                {{ tituloValor.descripcion }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error  *ngIf="formGenerales.get('idTipoInversion').errors">{{getErrorMessage(formGenerales.get('idTipoInversion'))}}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field  class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label class="labelForm">Fecha de Registro</mat-label>
+                        <input
+                            id="fechaRegistro"
+                            [disabled]="true"
+                            [(value)]="currentDate"
+                            [matDatepicker]="datepickerReffecharegistro"
+                            type='datetime'
+                            matInput >
+                            <mat-datepicker-toggle
+                                    [disabled]="true"
+                                    [for]="datepickerReffecharegistro"
+                                    class="block"
+                                    matSuffix></mat-datepicker-toggle>
+                            <mat-datepicker #datepickerReffecharegistro></mat-datepicker>
+                    </mat-form-field>
+
+
+                    <mat-form-field 
+                        class="vex-flex-form-field animate__animated animate__fade"
+                        fxFlex="auto">
+                        <mat-label class="labelForm">No. Documento - Código</mat-label>
+                        <input
+                            id="numeroCertificado"
+                            required="required"
+                            matInput="matInput"
+                            formControlName="numeroCertificado"/>
+                          <mat-error  *ngIf="formGenerales.get('numeroCertificado').errors">{{getErrorMessage(formGenerales.get('numeroCertificado'))}}</mat-error>
+                    </mat-form-field>
+
+
+                   <!-- Descripcion de no. documento -->
+                <mat-form-field *ngIf="enableForms.descripcion" class="flex-100"  fxFlex="auto">
+                    <mat-label>Descripción No. documento</mat-label>
+                    <textarea matInput  rows="1" formControlName="descripcion"></textarea>
+                </mat-form-field>
+
+
+                    <mat-form-field  *ngIf="enableForms.codigo"
+                        class="vex-flex-form-field animate__animated animate__fade"
+                        fxFlex="auto">
+                        <mat-label class="labelForm">Código Vector</mat-label>
+                        <input
+                            id="codigo"
+                            matInput="matInput"
+                            formControlName="codigo"/>
+                            <mat-error  *ngIf="formGenerales.get('codigo').errors">{{getErrorMessage(formGenerales.get('codigo'))}}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field  class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label class="labelForm">Sector de Inversión</mat-label>
+                        <mat-select id="idSectorFinanciero"
+                                    required="required"
+                                    formControlName="idSectorFinanciero">
+                            <mat-option
+                                *ngFor="let sector of selectSectorInversion"
+                                [value]="sector.idSectorFinanciero">
+                                {{ sector.descripcion }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error  *ngIf="formGenerales.get('idSectorFinanciero').errors">{{getErrorMessage(formGenerales.get('idSectorFinanciero'))}}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field  *ngIf="enableForms.idBolsaValores" class="vex-flex-form-field" fxFlex="auto" style="column-gap: 100%">
+                        <mat-label class="labelForm">Bolsa de Valores</mat-label>
+                        <mat-select id="idBolsaValores"
+                                    required="required" 
+                                    formControlName="idBolsaValores">
+                            <mat-option *ngFor="let bolsa of selectBolsaValores" 
+                                        [value]="bolsa.idEntidad">{{bolsa.descripcion}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error  *ngIf="formGenerales.get('idBolsaValores').errors">{{getErrorMessage(formGenerales.get('idBolsaValores'))}}</mat-error>
+                </mat-form-field>
+                </div>
+            </div>
+
+            <div *ngIf="formGenerales.value.idTipoInversion">
+                <div class="head-divider">
+                    <h3 class="head-icon-title labelseccion" >Datos de Emisor</h3>
+                </div>
+  
+                <div style="display:grip; margin: 6% 3% 0% 3%">
+                  
+                  <mat-form-field  class="vex-flex-form-field" fxFlex="auto" style="margin-right: 15px;margin-bottom: 0px!important;">
+                      <mat-label class="labelForm">Emisor</mat-label>
+                      <mat-select
+                          id="idEmisor"
+                          required="required"
+                          ngDefaultControl="ngDefaultControl"
+                          formControlName="idEmisor"
+                          #singleSelect>
+                          <mat-option >
+                              <ngx-mat-select-search
+                                  placeholderLabel="Buscar emisor..."
+                                  noEntriesFoundLabel="'No se encuentra el emisor'"
+                                  [formControl]="emisorFilterCtrl">
+                                  <mat-icon ngxMatSelectSearchClear="ngxMatSelectSearchClear">x</mat-icon>
+                              </ngx-mat-select-search>
+                          </mat-option>
+                          <mat-option
+                              style="font-size: small;"
+                              *ngFor="let item of filteredEmisores | async"
+                              [value]="item.entidadFinanciera.idEntidad"
+                              (click)="seleccionarEmisor(item.entidadFinanciera)">
+                              <p style="font-size: small;">
+                                  {{ item.razonSocial }}
+                              </p>
+                          </mat-option>
+             
+                      </mat-select>
+                      <mat-error  *ngIf="formGenerales.get('idEmisor').errors">{{getErrorMessage(formGenerales.get('idEmisor'))}}</mat-error>
+                  </mat-form-field>
+  
+                  <a
+                      matTooltip="Refrescar Emisor"
+                      (click)="loadEmisores()"
+                      class="buttonOption"
+                      mat-raised-button
+                      color="primary"
+                      [disabled]="enableTiposTitulo.bonos">
+                      <mat-icon [icIcon]="icroundCached"></mat-icon>
+                </a>
+                <br/>
+                <a 
+                      matTooltip="Crear Emisor"
+                      [routerLink]="['/inversiones/agregar-emisor']"
+                      target="_blank"
+                      class="buttonOption"
+                      mat-raised-button="mat-raised-button"
+                      color="primary"
+                      [disabled]="enableTiposTitulo.bonos">
+                      <mat-icon [icIcon]="icroundAdd"></mat-icon>
+            </a>
+              </div>
+            
+                <div class="titulovalor" style="margin-top: 0%">
+                  <mat-form-field  *ngIf="enableForms.idCalificadoraRiesgo" class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label class="labelForm">Calificadora de Riesgos</mat-label>
+                        <mat-select
+                            id="idCalificadoraRiesgo"
+                            required="required"
+                            formControlName="idCalificadoraRiesgo"
+                            #singleSelect>
+                            <mat-option disabled
+                                *ngFor="let item of filteredCalificadoras | async"
+                                [value]="item.idEntidad">
+                                {{ item.descripcion }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error  *ngIf="formGenerales.get('idCalificadoraRiesgo').hasError('required')">El emisor no ha sido calificado</mat-error>
+                  </mat-form-field>
+  
+  
+      
+                  <mat-form-field  *ngIf="enableForms.calificacionEmisor" class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label class="labelForm">Calificación del Emisor</mat-label>
+                        <mat-select
+                            id="calificacionEmisor"
+                            required="required"
+                            formControlName="calificacionEmisor"
+                            #singleSelect>
+                            <mat-option disabled
+                                *ngFor="let calificacion of calificaciones"
+                                [value]="calificacion.descripcion">
+                                {{ calificacion.descripcion }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error  *ngIf="formGenerales.get('calificacionEmisor').hasError('required')">El emisor no ha sido calificado</mat-error>
+                  </mat-form-field>
+  
+                  <mat-form-field *ngIf="enableForms.fechaCalificacionEmisor"  class="vex-flex-form-field" fxFlex="auto">
+                      <mat-label class="labelForm">Fecha Calificación Emisor</mat-label>
+                      <input
+                        disabled
+                          id="fechaCalificacionEmisor"
+                          required="required"
+                          [matDatepicker]="datepickerReffechaCalificacionEmisor"
+                          formControlName=fechaCalificacionEmisor
+                          type='datetime'
+          
+                 
+                          matInput >
+                          <mat-datepicker-toggle
+                                    disabled
+                                  [for]="datepickerReffechaCalificacionEmisor"
+                                  class="block"
+                                  matSuffix></mat-datepicker-toggle>
+                          <mat-datepicker #datepickerReffechaCalificacionEmisor></mat-datepicker>
+                          <mat-error  *ngIf="formGenerales.get('fechaCalificacionEmisor').hasError('required')">El emisor no ha sido calificado</mat-error>
+                  </mat-form-field>
+  
+                </div>
+              </div>
+
+              <div *ngIf="formGenerales.value.idTipoInversion && enableTiposTitulo.acciones" fxLayout="column">
+                <div class="head-divider">
+                    <h3 class="head-icon-title labelseccion" >Datos de Acciones</h3>
+                </div>
+    
+                <div class="titulovalor">
+                    
+                    <mat-form-field
+                    
+                    class="vex-flex-form-field"
+                    fxFlex="1 auto">
+                    <mat-label class="labelForm">Desde Acción</mat-label>
+                    <input
+                        class="right-align"
+                        type="number"
+                        [min]="1"
+                        formControlName="desdeAccion"
+                        class="right-align"
+                        (ngModelChange)="calculateNumeroAcciones()"
+                        matInput
+                        />
+                        <mat-error  *ngIf="formGenerales.get('desdeAccion').errors">{{getErrorMessage(formGenerales.get('desdeAccion'))}}</mat-error>
+                </mat-form-field>
+    
+                <mat-form-field
+                    
+                    class="vex-flex-form-field"
+                    fxFlex="1 auto">
+                    <mat-label class="labelForm">Hasta Acción</mat-label>
+                    <input
+                        class="right-align"
+                        type="number"
+                        [min]="1"
+                        formControlName="hastaAccion"
+                        class="right-align"
+                        (ngModelChange)="calculateNumeroAcciones()"
+                        matInput
+                        />
+                    <mat-error  *ngIf="formGenerales.get('hastaAccion').errors">{{getErrorMessage(formGenerales.get('hastaAccion'))}}</mat-error>
+                </mat-form-field>
+    
+                  <mat-form-field
+                   
+                    class="vex-flex-form-field"
+                    fxFlex="1 auto">
+                    <mat-label class="labelForm">Número de Acciones</mat-label>
+                    <input
+                        class="right-align"
+                        type="number"
+                        required="required"
+                        [min]="0"
+                        (change)="setNoNumberDecimal('numeroAcciones')"
+                        [ngModel]="this.formGenerales.value.numeroAcciones"
+                        formControlName="numeroAcciones"
+                        (ngModelChange)="calculateValorNominal()"
+                        class="right-align"
+                        matInput
+                        />
+                        <mat-error  *ngIf="formGenerales.get('numeroAcciones').errors">{{getErrorMessage(formGenerales.get('numeroAcciones'))}}</mat-error>
+                  </mat-form-field>
+    
+                  <mat-form-field  class="vex-flex-form-field" fxFlex="auto">
+                      <mat-label class="labelForm">Precio por Acción</mat-label>
+                      <input
+                          id="precioPorAccion"
+                          placeholder="0.00"
+                          [min]="0"
+                          required="required"
+                          formControlName="precioPorAccion"
+                          (change)="setTwoNumberDecimal('precioPorAccion')"
+                          [inputMask]="DecimalInputMask"
+                          [ngModel]="this.formGenerales.value.precioPorAccion"
+                          (ngModelChange)="calculateValorNominal()"
+                          class="right-align"
+                          matInput 
+                          appTwoDigitDecimaNumber/>
+                      <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                      <mat-error  *ngIf="formGenerales.get('precioPorAccion').errors">{{getErrorMessage(formGenerales.get('precioPorAccion'))}}</mat-error>
+                  </mat-form-field>
+    
+            
+              </div>
+          </div>
+
+
+        
+          <div *ngIf="formGenerales.value.idTipoInversion">
+            <div class="head-divider">
+                <h3 class="head-icon-title labelseccion" >Datos de Monetización</h3>
+            </div>
+
+            <div class="titulovalor">
+
+                  <mat-form-field  class="vex-flex-form-field" fxFlex="auto">
+                      <mat-label class="labelForm">Valor Nominal</mat-label>
+                      <input
+                    
+                          id="valorNominal"
+                          required="required"
+                          placeholder="0.00"
+                          [min]="0"
+                          formControlName="valorNominal"
+                          (change)="setTwoNumberDecimal('valorNominal')"
+                          (ngModelChange)="calculateCostoCompra()"
+                          [inputMask]="DecimalInputMask"
+                          [ngModel]="this.formGenerales.value.valorNominal"
+                          class="right-align"
+                          matInput 
+                          [matTooltip]="enableTiposTitulo.acciones?'Número de Acciones X Precio por Acción':''"
+                          appTwoDigitDecimaNumber/>
+                      <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                      <mat-error  *ngIf="formGenerales.get('valorNominal').errors">{{getErrorMessage(formGenerales.get('valorNominal'))}}</mat-error>
+                  </mat-form-field>
+              
+                  <mat-form-field  class="vex-flex-form-field" fxFlex="auto">
+                      <mat-label class="labelForm">Valor en Libros</mat-label>
+                      <input
+                          id="valorEnLibro"
+                          required="required"
+                          placeholder="0.00"
+                          [min]="0"
+                          formControlName="valorEnLibro"
+                          (change)="setTwoNumberDecimal('valorEnLibro')"
+                          [inputMask]="DecimalInputMask"
+                          [ngModel]="this.formGenerales.value.valorEnLibro"
+                          class="right-align"
+                          matInput 
+                          appTwoDigitDecimaNumber/>
+                      <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                      <mat-error  *ngIf="formGenerales.get('valorEnLibro').errors">{{getErrorMessage(formGenerales.get('valorEnLibro'))}}</mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field  class="vex-flex-form-field" fxFlex="auto">
+                      <mat-label class="labelForm">Valor en Compra</mat-label>
+                      <input
+                          id="valorCompra"
+                          required="required"
+                          placeholder="0.00"
+                          [min]="0"
+                          formControlName="valorCompra"
+                          (change)="setTwoNumberDecimal('valorCompra')"
+                          [inputMask]="DecimalInputMask"
+                          [ngModel]="this.formGenerales.value.valorCompra"
+                          class="right-align"
+                          matInput 
+                          appTwoDigitDecimaNumber/>
+                      <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                      <mat-error  *ngIf="formGenerales.get('valorCompra').errors">{{getErrorMessage(formGenerales.get('valorCompra'))}}</mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field *ngIf="enableForms.fechaCompra"  class="vex-flex-form-field" fxFlex="auto">
+                      <mat-label class="labelForm">Fecha de compra</mat-label>
+                      <input
+                          id="fechaCompra"
+                          required="required"
+                          [matDatepicker]="datepickerReffechaCompra"
+                          formControlName=fechaCompra
+                          type='datetime'
+                          max="{{today | date:'yyyy-MM-dd'}}"
+                          matInput >
+                          <mat-datepicker-toggle
+                                  [for]="datepickerReffechaCompra"
+                                  class="block"
+                                  matSuffix></mat-datepicker-toggle>
+                          <mat-datepicker #datepickerReffechaCompra></mat-datepicker>
+                          <mat-error  *ngIf="formGenerales.get('fechaCompra').errors">{{getErrorMessage(formGenerales.get('fechaCompra'),' a la fecha de actual')}}</mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field *ngIf="enableForms.valorMercado"  class="vex-flex-form-field" fxFlex="auto">
+                      <mat-label class="labelForm">Valor de Mercado</mat-label>
+                      <input
+                          id="valorMercado"
+                          required="required"
+                          placeholder="0.00"
+                          [min]="0"
+                          formControlName="valorMercado"
+                          (change)="setTwoNumberDecimal('valorMercado')"
+                          [inputMask]="DecimalInputMask"
+                          [ngModel]="this.formGenerales.value.valorMercado"
+                          class="right-align"
+                          matInput 
+                          appTwoDigitDecimaNumber/>
+                      <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                      <mat-error  *ngIf="formGenerales.get('valorMercado').errors">{{getErrorMessage(formGenerales.get('valorMercado'))}}</mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field *ngIf="enableForms.tasa"  class="vex-flex-form-field" fxFlex="auto">
+                      <mat-label class="labelForm">Tasa de interés nominal</mat-label>
+                      <input
+                          id="tasa"
+                          required="required"
+                          placeholder="0.00"
+                          [min]="0"
+                          [max]="100"
+                          formControlName="tasa"
+                          (change)="setTwoNumberDecimal('tasa')"
+                          [inputMask]="PorcentInputMask"
+                          [ngModel]="this.formGenerales.value.tasa"
+                          class="right-align"
+                          matInput 
+                          appTwoDigitDecimaNumber/>
+                      <span matPrefix>%&nbsp;</span>
+                      <mat-error  *ngIf="formGenerales.get('tasa').errors">{{getErrorMessage(formGenerales.get('tasa'))}}</mat-error>
+                  </mat-form-field>
+
+          </div>
+        </div>
+
+            <div *ngIf="formGenerales.value.idTipoInversion">
+                <div class="head-divider">
+                    <h3 class="head-icon-title labelseccion" >Datos de Compra</h3>
+                </div>
+    
+                <div  class="titulovalor" style="display:grip; margin: 3% 3% 0% 3%">
+                    <mat-form-field  *ngIf="enableForms.idCasaValor" class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label class="labelForm">Casa de Valores</mat-label>
+                        <mat-select
+                            id="idCasaValor"
+                            required="required"
+                            ngDefaultControl="ngDefaultControl"
+                            formControlName="idCasaValor"
+                            #singleSelect>
+                            <mat-option >
+                                <ngx-mat-select-search
+                                    placeholderLabel="Buscar casa de valores..."
+                                    noEntriesFoundLabel="'No se encuentra la casa'"
+                                    [formControl]="casaFilterCtrl">
+                                    <mat-icon ngxMatSelectSearchClear="ngxMatSelectSearchClear">x</mat-icon>
+                                </ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option
+                                *ngFor="let item of filteredCasas | async"
+                                [value]="item.entidadFinanciera.idEntidad"
+                                (click)="seleccionarCasa(item)">
+                                {{ item.entidadFinanciera.descripcion }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error  *ngIf="formGenerales.get('idCasaValor').errors">{{getErrorMessage(formGenerales.get('idCasaValor'))}}</mat-error>
+                    </mat-form-field>
+    
+    
+                    <mat-form-field  *ngIf="enableForms.rucCasa" class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label class="labelForm">RUC</mat-label>
+                        <input matInput readonly="readonly" id="rucCasa" formControlName="rucCasa" [value]="formGenerales.value.rucCasa"/>
+                    </mat-form-field>
+
+            </div>
+  
+        
+                <div  class="titulovalor" style="margin-top: 0%; margin-bottom: 0%;" >
+                    <mat-checkbox  *ngIf="enableForms.desmaterializado" style="column-gap: 20%" color="primary" formControlName="desmaterializado" (change)="enableDesmaterializado($event)">DESMATERIALIZADO</mat-checkbox>
+    
+                        <mat-form-field  *ngIf="enableForms.idCustodioTitulo"   class="vex-flex-form-field" fxFlex="auto" style="margin-bottom: 0px!important;">
+                            <mat-label class="labelForm">Custodio de título</mat-label>
+                            <mat-select id="idCustodioTitulo"
+                                        required="required"
+                                        [disabled]="!formGenerales.value.desmaterializado"
+                                        formControlName="idCustodioTitulo">
+                                <mat-option
+                                    *ngFor="let custodio of custodiosTitulo"
+                                    [value]="custodio.idEntidad">
+                                    {{ custodio.descripcion }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error  *ngIf="formGenerales.get('idCustodioTitulo').errors">{{getErrorMessage(formGenerales.get('idCustodioTitulo'))}}</mat-error>
+                        </mat-form-field>
+                </div>
+    
+                <div class="titulovalor" style="margin-top: 0%">
+                        <mat-form-field *ngIf="enableForms.impuestos" [ngClass]="{ prueba: activarInputs == true }" class="vex-flex-form-field" fxFlex="auto">
+                            <mat-label class="labelForm">Impuesto</mat-label>
+                            <input
+                                id="impuestos"
+                                required="required"
+                                placeholder="0.00"
+                                [min]="0"
+                                [max]="100"
+                                [inputMask]="PorcentInputMask"
+                                formControlName="impuestos"
+                                (change)="setTwoNumberDecimalAllowZero('impuestos')"
+                                [ngModel]="this.formGenerales.value.impuestos"
+                                (ngModelChange)="calculateCostoCompra()"
+                                class="right-align"
+                                matInput 
+                                appTwoDigitDecimaNumber/>
+                            <span matPrefix>%&nbsp;</span>
+                            <mat-error  *ngIf="formGenerales.get('impuestos').errors">{{getErrorMessage(formGenerales.get('impuestos'))}}</mat-error>
+                        </mat-form-field>
+    
+     
+                        <mat-form-field  *ngIf="enableForms.costoCasaValores"  [ngClass]="{ prueba: activarInputs == true }" class="vex-flex-form-field" fxFlex="auto">
+                            <mat-label class="labelForm">Costo de casa de valores</mat-label>
+                            <input
+                                id="costoCasaValores"
+                                required="required"
+                                placeholder="0.00"
+                                [min]="0"
+                                formControlName="costoCasaValores"
+                                (change)="setTwoNumberDecimalAllowZero('costoCasaValores')"
+                                [inputMask]="DecimalInputMask"
+                                (ngModelChange)="calculateCostoCompra()"
+                                [ngModel]="this.formGenerales.value.costoCasaValores"
+                                class="right-align"
+                                matInput 
+                                appTwoDigitDecimaNumber/>
+                            <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                            <mat-error  *ngIf="formGenerales.get('costoCasaValores').errors">{{getErrorMessage(formGenerales.get('costoCasaValores'))}}</mat-error>
+                        </mat-form-field>
+    
+    
+                        <mat-form-field *ngIf="enableForms.costoBolsaValores"  [ngClass]="{ prueba: activarInputs == true }" class="vex-flex-form-field" fxFlex="auto">
+                            <mat-label class="labelForm">Costo de bolsa de valores</mat-label>
+                            <input
+                                id="costoBolsaValores"
+                                required="required"
+                                placeholder="0.00"
+                                [min]="0"
+                                formControlName="costoBolsaValores"
+                                (change)="setTwoNumberDecimalAllowZero('costoBolsaValores')"
+                                [inputMask]="DecimalInputMask"
+                                (ngModelChange)="calculateCostoCompra()"
+                                [ngModel]="this.formGenerales.value.costoBolsaValores"
+                                class="right-align"
+                                matInput 
+                                appTwoDigitDecimaNumber/>
+                            <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                            <mat-error  *ngIf="formGenerales.get('costoBolsaValores').errors">{{getErrorMessage(formGenerales.get('costoBolsaValores'))}}</mat-error>
+                        </mat-form-field>
+    
+                        <mat-form-field *ngIf="enableForms.costoCompra" class="vex-flex-form-field" fxFlex="auto">
+                            <mat-label class="labelForm">Costo de Compra</mat-label>
+                            <input
+                                id="costoCompra"
+                                required="required"
+                                placeholder="0.00"
+                                readonly="readonly"
+                                formControlName="costoCompra"
+                                (change)="setTwoNumberDecimalAllowZero('costoCompra')"
+                                [inputMask]="DecimalInputMask"
+                                [ngModel]="this.formGenerales.value.costoCompra"
+                                [disabled]="true"
+                                class="right-align"
+                                matInput 
+                                appTwoDigitDecimaNumber/>
+                            <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                        </mat-form-field>
+    
+                </div>
+            </div>
+
+    
+            <div    *ngIf="formGenerales.value.idTipoInversion">
+                <div class="head-divider">
+                    <h3 class="head-icon-title labelseccion" >Datos de Plazo</h3>
+                </div>
+    
+                <div class="titulovalor">
+    
+                    <mat-form-field  class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label class="labelForm">Fecha de emisión</mat-label>
+                        <input
+                            id="fechaEmision"
+                            required="required"
+                            [matDatepicker]="datepickerReffechaEmision"
+                            formControlName=fechaEmision
+                            type='datetime'
+                            max="{{today | date:'yyyy-MM-dd'}}"
+                            (ngModelChange)="changeEmisionDate()"
+                            matInput >
+                            <mat-datepicker-toggle
+                                    [for]="datepickerReffechaEmision"
+                                    class="block"
+                                    matSuffix></mat-datepicker-toggle>
+                            <mat-datepicker #datepickerReffechaEmision></mat-datepicker>
+                            <mat-error  *ngIf="formGenerales.get('fechaEmision').errors">{{getErrorMessage(formGenerales.get('fechaEmision'),' a la fecha de actual')}}</mat-error>
+                    </mat-form-field>
+    
+                    <mat-form-field *ngIf="enableForms.fechaVencimiento"  class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label class="labelForm">Fecha de vencimiento</mat-label>
+                        <input
+                            id="fechaVencimiento"
+                            required="required"
+                            [matDatepicker]="datepickerReffechaVencimiento"
+                            formControlName=fechaVencimiento
+                            type='datetime'
+                            min="{{limitVencimientoDate | date:'yyyy-MM-dd'}}"
+                            (ngModelChange)="changeVencimientoDate()"
+                            matInput >
+                            <mat-datepicker-toggle
+                                    [for]="datepickerReffechaVencimiento"
+                                    class="block"
+                                    matSuffix></mat-datepicker-toggle>
+                            <mat-datepicker #datepickerReffechaVencimiento></mat-datepicker>
+                            <mat-error  *ngIf="formGenerales.get('fechaVencimiento').errors">{{getErrorMessage(formGenerales.get('fechaVencimiento'),'o igual a la fecha de emision')}}</mat-error>
+                    </mat-form-field>
+    
+    
+                  <mat-form-field *ngIf="enableForms.totalPlazo"
+                      
+                      class="vex-flex-form-field"
+                      fxFlex="1 auto">
+                      <mat-label class="labelForm">Plazo en días</mat-label>
+                      <input
+                          type="number"
+                          readonly="readonly"
+                          [(value)]="this.formGenerales.value.totalPlazo"
+                          matInput
+                          formControlName="totalPlazo"
+                          class="right-align"
+                          matInput/>
+                  </mat-form-field>
+    
+                  <mat-form-field *ngIf="enableForms.plazoGracia"
+                     
+                      class="vex-flex-form-field"
+                      fxFlex="1 auto">
+                      <mat-label class="labelForm">Período de gracia</mat-label>
+                      <input
+                          class="right-align"
+                          type="number"
+                          required="required"
+                          [min]="0"
+                          formControlName="plazoGracia"
+                          (change)="ValidationDiasPlazo()"
+                            [ngModel]="this.formGenerales.value.plazoGracia"
+                          class="right-align"
+                          matInput
+                          />
+                          <span matPrefix>Días</span>
+                        <mat-error  *ngIf="formGenerales.get('plazoGracia').errors">{{getErrorMessage(formGenerales.get('plazoGracia'))}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+    
+
+        <div *ngIf="formGenerales.value.idTipoInversion && enableSection.sectionAmortizacion">
+            <div class="head-divider">
+                <h3 class="head-icon-title labelseccion" >Amortización de Capital e Intereses</h3>
+            </div>
+
+            <div class="titulovalor">
+
+                <mat-form-field *ngIf="enableForms.tipoPlazo"  class="vex-flex-form-field" fxFlex="auto">
+                    <mat-label class="labelForm">Frecuencia de Cupón</mat-label>
+                    <mat-select id="tipoPlazo"
+                                required="required" 
+                                formControlName="tipoPlazo"
+                                (ngModelChange)="changePeriodo()">
+                        <mat-option *ngFor="let item of filteredTipoPeriodo | async"
+                                [value]="item.descripcion">{{item.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error  *ngIf="formGenerales.get('tipoPlazo').errors">{{getErrorMessage(formGenerales.get('tipoPlazo'))}}</mat-error>
+            
+                </mat-form-field>
+
+              
+
+                <mat-form-field *ngIf="enableForms.periodoPagoInteres"
+                  
+                  class="vex-flex-form-field"
+                  fxFlex="1 auto">
+                  <mat-label class="labelForm">Período de pago de interés</mat-label>
+                  <input
+                      type="number"
+                      readonly="readonly"
+                      [(value)]="this.formGenerales.value.periodoPagoInteres"
+                      matInput
+                      formControlName="periodoPagoInteres"
+                      class="right-align"
+                      matInput/>
+              </mat-form-field>
+
+              <mat-form-field *ngIf="enableForms.tipoCapital"  class="vex-flex-form-field" fxFlex="auto">
+                <mat-label class="labelForm">Amortización de Capital</mat-label>
+                <mat-select id="tipoCapital"
+                            required="required" 
+                            formControlName="tipoCapital"
+                            (ngModelChange)="changePeriodo()">
+                    <mat-option *ngFor="let item of filteredTipoCapital | async" 
+                            [value]="item.descripcion">{{item.descripcion}}</mat-option>
+                </mat-select>
+                <mat-error  *ngIf="formGenerales.get('tipoCapital').errors">{{getErrorMessage(formGenerales.get('tipoCapital'))}}</mat-error>
+            </mat-form-field>
+
+              <mat-form-field *ngIf="enableForms.periodoPagoCapital"
+                  
+                  class="vex-flex-form-field"
+                  fxFlex="1 auto">
+                  <mat-label class="labelForm">Período de pago de capital</mat-label>
+                  <input
+                      type="number"
+                      readonly="readonly"
+                      [(value)]="this.formGenerales.value.periodoPagoCapital"
+                      matInput
+                      formControlName="periodoPagoCapital"
+                      class="right-align"
+                      matInput/>
+              </mat-form-field>
+
+            </div>
+        </div>
+
+        </div>
+    </form>
+                       
+    <br/>
+
+
+    </vex-page-layout-content>

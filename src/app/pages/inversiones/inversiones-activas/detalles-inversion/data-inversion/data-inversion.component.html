@@ -1,0 +1,620 @@
+<form style="background-color: #f5f5f8;" #formvalor [formGroup]="formGenerales">
+    <div class="contentdatosvalor">
+        <div class="FormData">
+            <div class="head-divider">
+              
+                <h3 class="head-icon-title labelseccion" style="width: 180px!important;">Datos de Valor</h3>
+                <mat-divider class="text-border end-divider"></mat-divider>
+            </div>          
+
+         <div class="titulovalor" style="margin-top: 0%">
+            <mat-form-field *ngIf="formGenerales.value.tipoRenta"  >
+                <mat-label>Tipo de Renta</mat-label>
+                <input
+                id="tipoRentaTitle"
+                matInput="matInput"
+                formControlName="tipoRentaTitle"
+                readonly="readonly"/>
+            </mat-form-field>
+
+                <mat-form-field *ngIf="formGenerales.value.tipoInversion" >
+                    <mat-label>Tipo de Título</mat-label>
+                    <input
+                    id="tipoInversion"
+                    matInput="matInput"
+                    formControlName="tipoInversion"
+                    [(ngModel)]="formGenerales.value.tipoInversion"
+                    readonly="readonly"/>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="formGenerales.value.fechaEmision" >
+                    <mat-label>Fecha de Registro</mat-label>
+                    <input
+                        id="fechaRegistro"
+                        readonly="readonly"
+                        formControlName="fechaRegistro"
+                        [(ngModel)]="formGenerales.value.fechaEmision"
+                        [matDatepicker]="datepickerReffecharegistro"
+                        type='datetime'
+                        matInput >
+                        <mat-datepicker-toggle
+                                [disabled]="true"
+                                [for]="datepickerReffecharegistro"
+                                class="block"
+                                matSuffix></mat-datepicker-toggle>
+                        <mat-datepicker #datepickerReffecharegistro></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="formGenerales.value.numeroCertificado"
+                    class="vex-flex-form-field animate__animated animate__fade"
+                    fxFlex="auto">
+                    <mat-label>No. Documento - Código</mat-label>
+                    <input
+                        id="numeroCertificado"
+                        matInput="matInput"
+                        formControlName="numeroCertificado"
+                        [(ngModel)]="formGenerales.value.numeroCertificado"
+                        readonly="readonly"/>
+                </mat-form-field>
+
+                    <!-- Descripcion de no. documento -->
+                <mat-form-field *ngIf="formGenerales.value.descripcion" class="vex-flex-form-field animate__animated animate__fade"  fxFlex="auto">
+                    <mat-label>Descripción No. documento</mat-label>
+                    <textarea matInput  rows="1" formControlName="descripcion" readonly="readonly" [(ngModel)]="formGenerales.value.descripcion"></textarea>
+                </mat-form-field>  
+
+                <mat-form-field *ngIf="formGenerales.value.serieTransaccion"
+                    class="vex-flex-form-field animate__animated animate__fade"
+                    fxFlex="auto">
+                    <mat-label>Serie Transacción</mat-label>
+                    <input
+                        id="serieTransaccion"
+                        matInput="matInput"
+                        formControlName="serieTransaccion"
+                        [(ngModel)]="formGenerales.value.serieTransaccion"
+                        readonly="readonly"/>
+                </mat-form-field>
+ 
+                <mat-form-field *ngIf="formGenerales.value.codigo"
+                    class="vex-flex-form-field animate__animated animate__fade"
+                    fxFlex="auto">
+                    <mat-label>Código Vector</mat-label>
+                    <input
+                        id="codigo"
+                        matInput="matInput"
+                        formControlName="codigo"
+                        [(ngModel)]="formGenerales.value.codigo"
+                        readonly="readonly"/>
+                </mat-form-field>
+
+              <mat-form-field *ngIf="formGenerales.value.idSectorFinanciero"  class="vex-flex-form-field" fxFlex="auto">
+                    <mat-label class="labelForm">Sector de Inversión</mat-label>
+                    <mat-select id="idSectorFinanciero"
+                                formControlName="idSectorFinanciero">
+                        <mat-option
+                            disabled
+                            *ngFor="let sector of selectSectorInversion"
+                            [value]="sector.idSectorFinanciero">
+                            {{ sector.descripcion }}
+                        </mat-option>
+                    </mat-select>
+
+                </mat-form-field>
+
+                <mat-form-field  *ngIf="formGenerales.value.idBolsaValores" class="vex-flex-form-field" fxFlex="auto" >
+                    <mat-label class="labelForm">Bolsa de Valores</mat-label>
+                    <mat-select id="idBolsaValores" 
+                                formControlName="idBolsaValores">
+                        <mat-option disabled *ngFor="let bolsa of selectBolsaValores" 
+                                    [value]="bolsa.idEntidad">{{bolsa.descripcion}}
+                        </mat-option>
+                    </mat-select>
+            </mat-form-field>
+
+         
+            </div>
+        </div>
+
+        <div class="">
+          <div class="head-divider">
+              
+              <h3 class="head-icon-title labelseccion" style="width: 200px!important;">Datos de Emisor</h3>
+              <mat-divider class="text-border end-divider"></mat-divider>
+          </div>
+
+
+          <div class="titulovalor" style="margin-top: 0%">
+            <mat-form-field *ngIf="formGenerales.value.idEmisor"  >
+                <mat-label>Emisor</mat-label>
+                <input
+                    id="emisor"
+                    matInput="matInput"
+                    formControlName="emisor"
+                    [(ngModel)]="formGenerales.value.emisor"
+                    readonly="readonly"/>   
+            </mat-form-field>
+            <mat-form-field *ngIf="formGenerales.value.idCalificadoraRiesgo" >
+                  <mat-label>Calificadora de Riesgos</mat-label>
+                  <input
+                    id="razonsocialCalificadoraRiesgo"
+                    matInput="matInput"
+                    formControlName="razonsocialCalificadoraRiesgo"
+                    [(ngModel)]="formGenerales.value.razonsocialCalificadoraRiesgo"
+                    readonly="readonly"/>  
+            </mat-form-field>
+
+
+            <mat-form-field *ngIf="formGenerales.value.calificacionEmisor" >
+                  <mat-label>Calificación del Emisor</mat-label>
+                  <input
+                  id="calificacionEmisor"
+                  matInput="matInput"
+                  formControlName="calificacionEmisor"
+                  [(ngModel)]="formGenerales.value.calificacionEmisor"
+                  readonly="readonly"/>
+            </mat-form-field>
+
+            
+            <mat-form-field *ngIf="formGenerales.value.fechaCalificacionEmisor" >
+                <mat-label>Fecha Calificación Emisor</mat-label>
+                <input
+                id="fechaCalificacionEmisor"
+                matInput="matInput"
+                formControlName="fechaCalificacionEmisor"
+                [(ngModel)]="formGenerales.value.fechaCalificacionEmisor"
+                readonly="readonly">
+                    <mat-datepicker-toggle
+                            [disabled]="true"
+                            [for]="datepickerReffechaCalificacionEmisor"
+                            class="block"
+                            matSuffix></mat-datepicker-toggle>
+                    <mat-datepicker #datepickerReffechaCalificacionEmisor></mat-datepicker>
+            </mat-form-field>
+
+          </div>
+        </div>
+
+        <div *ngIf="formGenerales.value.desdeAccion" fxLayout="column" class="">
+            <div class="head-divider">
+             
+                <h3 class="head-icon-title labelseccion " style="width: 250px!important;">Datos de Acciones</h3>
+                <mat-divider class="text-border end-divider"></mat-divider>
+            </div>
+
+            <div class="titulovalor">
+                
+                <mat-form-field *ngIf="formGenerales.value.desdeAccion"
+            
+                class="vex-flex-form-field"
+                fxFlex="1 auto">
+                <mat-label>Desde Acción</mat-label>
+                <input
+                  id="desdeAccion"
+                  matInput="matInput"
+                  formControlName="desdeAccion"
+                  [(ngModel)]="formGenerales.value.desdeAccion"
+                  type="number"
+                  class="right-align"
+                  readonly="readonly"/>
+                
+            </mat-form-field>
+
+            <mat-form-field *ngIf="formGenerales.value.hastaAccion"
+            
+                class="vex-flex-form-field"
+                fxFlex="1 auto">
+                <mat-label>Hasta Acción</mat-label>
+                <input
+                id="hastaAccion"
+                matInput="matInput"
+                formControlName="hastaAccion"
+                [(ngModel)]="formGenerales.value.hastaAccion"
+                type="number"
+                class="right-align"
+                readonly="readonly"/>
+            
+            </mat-form-field>
+
+              <mat-form-field *ngIf="formGenerales.value.numeroAcciones"
+            
+                class="vex-flex-form-field"
+                fxFlex="1 auto">
+                <mat-label>Número de Acciones</mat-label>
+                <input
+                id="numeroAcciones"
+                matInput="matInput"
+                formControlName="numeroAcciones"
+                [(ngModel)]="formGenerales.value.numeroAcciones"
+                type="number"
+                class="right-align"
+                readonly="readonly"/>
+              </mat-form-field>
+
+              <mat-form-field *ngIf="formGenerales.value.precioPorAccion" >
+                  <mat-label>Precio por Acción</mat-label>
+                  <input
+                id="precioPorAccion"
+                matInput="matInput"
+                formControlName="precioPorAccion"
+                [(ngModel)]="formGenerales.value.precioPorAccion"
+                class="right-align"
+                readonly="readonly"
+                [inputMask]="DecimalInputMask"/>
+                  <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+              </mat-form-field>
+
+          </div>
+      </div>
+
+        <div >
+          <div class="head-divider">
+             
+              <h3 class="head-icon-title labelseccion " style="width: 340px!important;">Datos de Monetización</h3>
+              <mat-divider class="text-border end-divider"></mat-divider>
+          </div>
+
+          <div class="titulovalor">
+
+                <mat-form-field *ngIf="formGenerales.value.valorNominal" >
+                    <mat-label>Valor Nominal</mat-label>
+                    <input
+                    id="valorNominal"
+                    matInput="matInput"
+                    formControlName="valorNominal"
+                    [(ngModel)]="formGenerales.value.valorNominal"
+                    class="right-align"
+                    readonly="readonly"
+                    [inputMask]="DecimalInputMask"/>
+                    <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                    
+                </mat-form-field>
+            
+                <mat-form-field *ngIf="formGenerales.value.valorEnLibro" >
+                    <mat-label>Valor en Libros</mat-label>
+                    <input
+                    id="valorEnLibro"
+                    matInput="matInput"
+                    formControlName="valorEnLibro"
+                    [(ngModel)]="formGenerales.value.valorEnLibro"
+                    class="right-align"
+                    readonly="readonly"
+                    [inputMask]="DecimalInputMask"/>
+                    <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                   
+                </mat-form-field>
+
+                <mat-form-field *ngIf="formGenerales.value.valorCompra" >
+                    <mat-label>Valor en Compra</mat-label>
+                    <input
+                    id="valorCompra"
+                    matInput="matInput"
+                    formControlName="valorCompra"
+                    [(ngModel)]="formGenerales.value.valorCompra"
+                    class="right-align"
+                    readonly="readonly"
+                    [inputMask]="DecimalInputMask"/>
+                    <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                 
+                </mat-form-field>
+
+                <mat-form-field *ngIf="formGenerales.value.fechaCompra" >
+                    <mat-label>Fecha de compra</mat-label>
+                    <input
+                    id="fechaCompra"
+                    matInput="matInput"
+                    formControlName="fechaCompra"
+                    [(ngModel)]="formGenerales.value.fechaCompra"
+                    type='datetime'
+                    readonly="readonly"
+                    [matDatepicker]="datepickerReffechaCompra">
+                        <mat-datepicker-toggle
+                                [disabled]="true"
+                                [for]="datepickerReffechaCompra"
+                                class="block"
+                                matSuffix></mat-datepicker-toggle>
+                        <mat-datepicker #datepickerReffechaCompra></mat-datepicker>
+                      
+                </mat-form-field>
+
+
+                <mat-form-field *ngIf="formGenerales.value.valorMercado" >
+                    <mat-label>Valor de Mercado</mat-label>
+                    <input
+                    id="valorMercado"
+                    matInput="matInput"
+                    formControlName="valorMercado"
+                    [(ngModel)]="formGenerales.value.valorMercado"
+                    class="right-align"
+                    readonly="readonly"
+                    [inputMask]="DecimalInputMask"
+                    appTwoDigitDecimaNumber/>
+                    <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                    
+                </mat-form-field>
+
+                <mat-form-field *ngIf="formGenerales.value.tasa" >
+                    <mat-label>Tasa de interés nominal</mat-label>
+                    <input
+                    id="tasa"
+                    matInput="matInput"
+                    formControlName="tasa"
+                    [(ngModel)]="formGenerales.value.tasa"
+                    class="right-align"
+                    readonly="readonly"
+                    [inputMask]="DecimalInputMask"
+                    appTwoDigitDecimaNumber/>
+                    <span matPrefix>%&nbsp;</span>
+                   
+                </mat-form-field>
+
+        </div>
+      </div>
+      
+
+     
+    <div >
+        <div class="head-divider" *ngIf="formGenerales.value.desmaterializado || formGenerales.value.idCasaValor">
+           
+            <h3 class="head-icon-title labelseccion " style="width: 380px!important;">Datos de Compra</h3>
+            <mat-divider class="text-border end-divider"></mat-divider>
+        </div>
+
+
+        <div class="titulovalor" style="margin-top: 0%">
+            <mat-checkbox  *ngIf="formGenerales.value.desmaterializado" style="column-gap: 20%" color="primary" formControlName="desmaterializado">DESMATERIALIZADO</mat-checkbox>
+
+
+                <mat-form-field *ngIf="formGenerales.value.idCustodioTitulo" class="vex-flex-form-field" fxFlex="auto">
+                    <mat-label class="labelForm">Custodio de Título</mat-label>
+                    <mat-select id="idCustodioTitulo"
+                                formControlName="idCustodioTitulo">
+                        <mat-option
+                            disabled
+                            *ngFor="let custodio of selectCustodioTitulo"
+                            [value]="custodio.idEntidad">
+                            {{ custodio.descripcion }}
+                        </mat-option>
+                    </mat-select>
+
+                </mat-form-field>
+                <mat-form-field *ngIf="formGenerales.value.impuestos" >
+                    <mat-label>Impuesto</mat-label>
+                    <input
+                    id="impuestos"
+                    matInput="matInput"
+                    formControlName="impuestos"
+                    [(ngModel)]="formGenerales.value.impuestos"
+                    readonly="readonly"
+                    class="right-align"
+                    [inputMask]="DecimalInputMask"
+                    appTwoDigitDecimaNumber/>
+                    <span matPrefix>%&nbsp;</span>
+                  
+                </mat-form-field>
+
+
+                <mat-form-field *ngIf="formGenerales.value.costoCasaValores" >
+                    <mat-label>Costo de casa de valores</mat-label>
+                    <input
+                    id="costoCasaValores"
+                    matInput="matInput"
+                    formControlName="costoCasaValores"
+                    [(ngModel)]="formGenerales.value.costoCasaValores"
+                    readonly="readonly"
+                    class="right-align"
+                    [inputMask]="DecimalInputMask"
+                    appTwoDigitDecimaNumber/>
+                    <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                  
+                </mat-form-field>
+
+
+                <mat-form-field *ngIf="formGenerales.value.costoBolsaValores" >
+                    <mat-label>Costo de bolsa de valores</mat-label>
+                    <input
+                    id="costoBolsaValores"
+                    matInput="matInput"
+                    formControlName="costoBolsaValores"
+                    [(ngModel)]="formGenerales.value.costoBolsaValores"
+                    readonly="readonly"
+                    class="right-align"
+                    [inputMask]="DecimalInputMask"
+                    appTwoDigitDecimaNumber/>
+                    <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                  
+                </mat-form-field>
+
+                <mat-form-field  *ngIf="formGenerales.value.costoCompra" >
+                    <mat-label>Costo de Compra</mat-label>
+                    <input
+                    id="costoCompra"
+                    matInput="matInput"
+                    formControlName="costoCompra"
+                    [(ngModel)]="formGenerales.value.costoCompra"
+                    readonly="readonly"
+                    class="right-align"
+                    [inputMask]="DecimalInputMask"
+                    appTwoDigitDecimaNumber/>
+                    <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                </mat-form-field>
+    
+                
+                <mat-form-field *ngIf="formGenerales.value.idCasaValor" class="vex-flex-form-field" fxFlex="auto">
+                    <mat-label class="labelForm">Casa de Valores</mat-label>
+                    <mat-select id="idCasaValor"
+                                formControlName="idCasaValor">
+                        <mat-option
+                            disabled
+                            *ngFor="let casa of selecCasaValor"
+                            [value]="casa.entidadFinanciera.idEntidad">
+                            {{ casa.entidadFinanciera.descripcion }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="formGenerales.value.rucCasa" >
+                    <mat-label>RUC</mat-label>
+                    <input matInput readonly="readonly" id="rucCasa" formControlName="rucCasa" [value]="formGenerales.value.rucCasa"/>
+                </mat-form-field>
+
+        </div>
+        </div>
+
+        <div >
+            <div class="head-divider">
+              
+                <h3 class="head-icon-title labelseccion " style="width: 180px!important;">Datos de Plazo</h3>
+                <mat-divider class="text-border end-divider"></mat-divider>
+            </div>
+
+            <div class="titulovalor">
+
+                <mat-form-field  *ngIf="formGenerales.value.fechaEmision" >
+                    <mat-label>Fecha de emisión</mat-label>
+        
+                    <input
+                    id="fechaEmision"
+                    matInput="matInput"
+                    type='datetime'
+                    formControlName="fechaEmision"
+                    [(ngModel)]="formGenerales.value.fechaEmision"
+                    [matDatepicker]="datepickerReffechaEmision"
+                    readonly="readonly">
+                        <mat-datepicker-toggle
+                                [disabled]="true"
+                                [for]="datepickerReffechaEmision"
+                                class="block"
+                                matSuffix></mat-datepicker-toggle>
+                        <mat-datepicker #datepickerReffechaEmision></mat-datepicker>
+                       
+                </mat-form-field>
+
+                <mat-form-field *ngIf="formGenerales.value.fechaVencimiento" >
+                    <mat-label>Fecha de vencimiento</mat-label>
+                    <input
+                    id="fechaVencimiento"
+                    matInput="matInput"
+                    type='datetime'
+                    formControlName="fechaVencimiento"
+                    [(ngModel)]="formGenerales.value.fechaVencimiento"
+                    [matDatepicker]="datepickerReffechaVencimiento"
+                    readonly="readonly">
+                        <mat-datepicker-toggle
+                               [disabled]="true"
+                                [for]="datepickerReffechaVencimiento"
+                                class="block"
+                                matSuffix></mat-datepicker-toggle>
+                        <mat-datepicker #datepickerReffechaVencimiento></mat-datepicker>
+                       
+                </mat-form-field>
+
+
+              <mat-form-field *ngIf="formGenerales.value.totalPlazo"
+                
+                  class="vex-flex-form-field"
+                  fxFlex="1 auto">
+                  <mat-label>Plazo en días</mat-label>
+                  <input
+                    id="totalPlazo"
+                    matInput="matInput"
+                    type="number"
+                    formControlName="totalPlazo"
+                    [(ngModel)]="formGenerales.value.totalPlazo"
+                    readonly="readonly"
+                    class="right-align"
+                    appTwoDigitDecimaNumber/>
+              </mat-form-field>
+
+              <mat-form-field *ngIf="formGenerales.value.plazoGracia"
+                
+                  class="vex-flex-form-field"
+                  fxFlex="1 auto">
+                  <mat-label>Período de gracia</mat-label>
+                  <input
+                    id="plazoGracia"
+                    matInput="matInput"
+                    type="number"
+                    formControlName="plazoGracia"
+                    [(ngModel)]="formGenerales.value.plazoGracia"
+                    readonly="readonly"
+                    class="right-align"
+                    appTwoDigitDecimaNumber/>
+                    <span matPrefix>Días</span>
+                    
+              </mat-form-field>
+            </div>
+          </div>
+
+              
+    <div  *ngIf="formGenerales.value.tipoPlazo">
+        <div class="head-divider">
+            <mat-divider class="text-border start-divider"></mat-divider>
+            <h3 class="head-icon-title labelseccion " style="width: 330px!important;">Amortización de Capital e Intereses</h3>
+            <mat-divider class="text-border end-divider"></mat-divider>
+        </div>
+
+        <div class="titulovalor">
+
+
+            <mat-form-field *ngIf="formGenerales.value.tipoPlazo" class="vex-flex-form-field" fxFlex="auto">
+                <mat-label class="labelForm">Frecuencia de Cupón</mat-label>
+                <mat-select id="tipoPlazo"
+                            formControlName="tipoPlazo">
+                    <mat-option
+                        disabled
+                        *ngFor="let plazo of periodos"
+                        [value]="plazo.descripcion">
+                        {{ plazo.descripcion }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+          
+
+
+            <mat-form-field  *ngIf="formGenerales.value.idTipoInversion=='1'"
+            
+              class="vex-flex-form-field"
+              fxFlex="1 auto">
+              <mat-label>Período de pago de interés</mat-label>
+              <input
+                matInput="matInput"
+                formControlName="totalPlazo"
+                [(ngModel)]="formGenerales.value.totalPlazo"
+                class="right-align"
+                readonly="readonly"/> 
+          </mat-form-field>
+
+
+        <mat-form-field *ngIf="formGenerales.value.tipoCapital" class="vex-flex-form-field" fxFlex="auto">
+            <mat-label class="labelForm">Amortización de Capital</mat-label>
+            <mat-select id="tipoCapital"
+                        formControlName="tipoCapital">
+                <mat-option
+                    disabled
+                    *ngFor="let plazo of periodos"
+                    [value]="plazo.descripcion">
+                    {{ plazo.descripcion }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+      
+
+
+          <mat-form-field *ngIf="formGenerales.value.idTipoInversion=='1'"
+            
+              class="vex-flex-form-field"
+              fxFlex="1 auto">
+              <mat-label>Período de pago de capital</mat-label>
+              <input
+              matInput
+              formControlName="totalPlazo"
+              class="right-align"
+              readonly="readonly"/>
+          </mat-form-field>
+
+        </div>
+    </div>
+
+
+    </div>
+</form>

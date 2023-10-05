@@ -1,0 +1,222 @@
+
+        <form [formGroup]="simulacionFormGroup">
+            <div fxLayout="row warp" fxLayoutGap="10px">
+
+                    <mat-form-field class="flex-100" fxFlex="auto">
+                    <mat-label>Tipo de amortización</mat-label>
+                    <mat-select required   formControlName="tipoAmortizacion">
+                        <mat-option *ngFor="let tipoAmortizacion of tipoAmortizaciones" [value]="tipoAmortizacion.value">
+                            {{ tipoAmortizacion.label }}
+                            </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+
+                </div>
+
+                <div class="card" *ngIf="hasPrestamos">
+                    <div class="container-prestamo">
+                            <h3 style="font-weight: bold;
+                            width: 100%;
+                            text-align: initial;">Préstamos del Partícipe</h3>
+                    </div>
+
+                    <vex-prestamos class="container-prestamos" [hasOnePrestamo]="hasOnePrestamo" (totalsEmit)="reemplaceTotal($event)"></vex-prestamos>
+                </div>
+
+                <div  fxLayout="row warp" fxLayoutGap="10px">
+                    <div class="flex-100" >
+                        <mat-form-field *ngIf="hasPrestamos && !hasSaldoNeto" class="flex-45"  fxFlex="auto" >
+                            <mat-label>Saldo Capital</mat-label>
+                            <input
+                            id="saldoCapital"
+                            matInput="matInput"
+                            required 
+                            formControlName="saldoCapital"
+                            class="right-align"
+                            readonly="readonly"
+                            [inputMask]="DecimalInputMask"/>
+                            <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                            
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="hasPrestamos && hasSaldoNeto" class="flex-45"  fxFlex="auto" >
+                            <mat-label>Total a Novar</mat-label>
+                            <input
+                            id="totalNovar"
+                            matInput="matInput"
+                            required 
+                            formControlName="totalNovar"
+                            class="right-align"
+                            readonly="readonly"
+                            [inputMask]="DecimalInputMask"/>
+                            <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="hasPrestamos && hasSaldoNeto" class="flex-45"  fxFlex="auto" >
+                            <mat-label>Saldo Neto a recibir</mat-label>
+                            <input
+                            id="saldoNeto"
+                            matInput="matInput"
+                            required 
+                            formControlName="saldoNeto"
+                            class="right-align"
+                            readonly="readonly"
+                            [ngClass]="saldoNetoValid? ['right-align']:['right-align','negativeNumber']"
+                            [inputMask]="DecimalMinusInputMask"/>
+                            <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                            <mat-error  *ngIf="simulacionFormGroup.get('saldoNeto').errors">{{getErrorMessage(simulacionFormGroup.get('saldoNeto'))}}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-form-field *ngIf="hasInteres" class="flex-100"  fxFlex="auto" >
+                        <mat-label>Descuento al interés </mat-label>
+                        <input
+                        id="interesVariable"
+                        matInput="matInput"
+                        required 
+                        [min]="0"
+                        [max]="100"
+                        formControlName="interesVariable"
+                        [(ngModel)]="simulacionFormGroup.value.interesVariable"
+                        class="right-align"
+                        (input)="setTwoNumberDecimalAllowedZero('interesVariable')"
+                        [inputMask]="PorcentInputMask"/>
+                        <span matPrefix>%&nbsp;</span>
+                        <span class="sublabel" >El porcentaje de descuento al interés depende del acuerdo en la negociación con FCPC-CTE y las políticas vigentes.*</span> 
+                        <mat-error  *ngIf="simulacionFormGroup.get('interesVariable').errors">{{getErrorMessage(simulacionFormGroup.get('interesVariable'))}}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="flex-45"  fxFlex="auto" >
+                    <mat-label>Monto Solicitado</mat-label>
+                    <input
+                    id="montoSolicitado"
+                    matInput="matInput"
+                    formControlName="montoSolicitado"
+                    required 
+                    [attr.readonly]="readonlyMonto ? true : null" 
+                    [(ngModel)]="simulacionFormGroup.value.montoSolicitado"
+                    (change)="calcularSaldoNeto('montoSolicitado')"
+                    [min]="0"
+                    [inputMask]="DecimalInputMask"/>
+                    <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                    <mat-error  *ngIf="simulacionFormGroup.get('montoSolicitado').errors">{{getErrorMessage(simulacionFormGroup.get('montoSolicitado'))}}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field  class="flex-45"  fxFlex="auto"  *ngIf="simulacionFormGroup.value.idProducto != 7; else esExpress" >
+                    <mat-label>Plazo</mat-label>
+                    <input
+                    id="plazo"
+                    matInput="matInput"
+                    formControlName="plazo"
+                    required 
+                    [(ngModel)]="simulacionFormGroup.value.plazo"
+                    class="right-align"
+                    max="300"
+                    (change)="setTwoNumberDecimal('plazo')"
+                    [inputMask]="InputMask"/>
+                    <mat-error  *ngIf="simulacionFormGroup.get('plazo').errors">{{getErrorMessage(simulacionFormGroup.get('plazo'))}}</mat-error>
+                </mat-form-field>
+
+                <ng-template #esExpress>
+                    <mat-form-field class="flex-45"  fxFlex="auto" >
+                      <mat-label>Plazo</mat-label>
+                      <mat-select formControlName="plazo"  [(value)]="simulacionFormGroup.value.plazo">
+                        <mat-option value="3">3</mat-option>
+                        <mat-option value="6">6</mat-option>
+                        <mat-option value="9">9</mat-option>
+                        <mat-option value="12">12</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                </ng-template>
+
+              <!--   <mat-form-field *ngIf="hasInteres" class="flex-45"  fxFlex="auto" >
+                    <mat-label>Interés Total</mat-label>
+                    <input
+                    id="intereses"
+                    matInput="matInput"
+                    formControlName="intereses"
+                    [(ngModel)]="simulacionFormGroup.value.intereses"
+                    class="right-align"
+                    readonly="readonly"
+                    [inputMask]="DecimalInputMask"/>
+                    <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                    
+                </mat-form-field> -->
+
+               <!--  <mat-form-field *ngIf="hasInteres" class="flex-45"  fxFlex="auto" >
+                    <mat-label>Descuento al interés</mat-label>
+                    <input
+                    id="descuento"
+                    matInput="matInput"
+                    formControlName="descuento"
+                    [(ngModel)]="simulacionFormGroup.value.descuento"
+                    class="right-align"
+                    [inputMask]="PorcentInputMask"
+                    readonly="readonly"/>
+                    <span matPrefix>%&nbsp;</span>
+                </mat-form-field> -->
+
+                
+                <mat-form-field *ngIf="hasFechaInicio" class="flex-100" fxFlex="auto">
+                    <mat-label class="labelForm">Fecha de Inicio</mat-label>
+                    <input
+                        id="fechaInicio"
+                        required="required"
+                        [matDatepicker]="datepickerReffechaInicio"
+                        formControlName=fechaInicio
+                        type='datetime'
+                        min="{{today | date:'yyyy-MM-dd'}}"
+                        matInput >
+                        <mat-datepicker-toggle
+                                [for]="datepickerReffechaInicio"
+                                class="block"
+                                matSuffix></mat-datepicker-toggle>
+                        <mat-datepicker #datepickerReffechaInicio></mat-datepicker>
+                </mat-form-field>
+
+
+            </div>
+        </form>
+
+    <button *ngIf="!dataSimulacion"
+        mat-raised-button="mat-raised-button"
+        [disabled]="!simulacionFormGroup.value.plazo || !simulacionFormGroup.value.montoSolicitado || !canSimular"
+        color="primary"
+        type="button"
+        id="excel"
+        class="forms-full-button button-download"
+        (click)="PreSimulacion()" [disabled]="">
+        <mat-icon style="height: 18px" [icIcon]="icroundAutoGraph"></mat-icon>
+        <span style="margin-left: 4px">Simular Crédito</span>
+    </button> 
+
+    <div *ngIf="dataSimulacion" style="display: flex;gap: 10px;">
+        <button
+        mat-raised-button="mat-raised-button"
+        [disabled]="!simulacionFormGroup.value.plazo || !simulacionFormGroup.value.montoSolicitado || !canSimular"
+        color="primary"
+        type="button"
+        id="excel"
+        class="forms-full-button button-download"
+        (click)="PreSimulacion()" >
+        <mat-icon style="height: 18px" [icIcon]="icroundAutoGraph"></mat-icon>
+        <span style="margin-left: 4px">Volver a Simular Crédito</span>
+    </button>
+    
+        <button 
+        mat-raised-button="mat-raised-button"
+        [disabled]="!simulacionFormGroup.value.plazo || !simulacionFormGroup.value.montoSolicitado || !canSimular"
+        color="primary"
+        type="button"
+        id="excel"
+        class="forms-full-button button-download"
+        (click)="chooseValidaciones()">
+        <mat-icon style="height: 18px" [icIcon]="icroundRunningWithErrors"></mat-icon>
+        <span style="margin-left: 4px">Requisitos</span>
+    </button>
+    </div>
+
+    <div>
+        <vex-estadistica *ngIf="dataSimulacion" [showPagoMensual]="showPagoMensual" [showTotalMora]="showTotalMora" [showValorDiferido]="showValorDiferido" (tablaAmortizacionEmit)="tablaAmortizacion()"></vex-estadistica>
+    </div>

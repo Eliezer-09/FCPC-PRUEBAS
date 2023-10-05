@@ -1,0 +1,49 @@
+<div (mouseenter)="showButton = true"
+    (mouseleave)="showButton = false"  
+    class="card p-6 relative hover:shadow-16 trans-shadow" style="cursor: pointer;height: 280px; text-align: center;" fxLayout="column" fxLayoutAlign="start center">
+  <div [ngClass]="iconClass" class="rounded-full w-12 h-12 flex items-center justify-center">
+    <mat-icon [icIcon]="icon"></mat-icon>
+  </div>
+
+  <!-- Valores -->
+  <div *ngIf="label != 'Vencido'">
+    <h2 *ngIf="label != 'VAR' && value < '0.00'" style="color: red;" class="display-2 font-bold mt-4 mb-2">${{ value }}</h2>
+    <h2 *ngIf="label != 'VAR' && value >= '0.00'" class="display-2 font-bold mt-4 mb-2">${{ value }}</h2>
+    <h2 *ngIf="label == 'VAR' && value < '0.00'" style="color: green;" class="display-2 font-bold mt-4 mb-2">${{ value }}</h2>
+    <h2 *ngIf="label == 'VAR' && value >= '0.00'" class="display-2 font-bold mt-4 mb-2">${{ value }}</h2>
+    <div *ngIf="!value" style="display: flex; justify-content: center; align-items: center; background: white; margin: auto;">
+      <mat-progress-spinner diameter="60" color="primary" mode="indeterminate">
+      </mat-progress-spinner>
+    </div>
+    <h3 class="subheading-2 font-medium text-secondary m-0">{{ label }}</h3>
+  </div>
+
+  <!-- 8596 Valores Vencidos -->
+  <div *ngIf="label == 'Vencido'">
+    <h3 *ngIf="value['saldosVencidos'].aportes > 0" class="display-2 font-bold mt-4 mb-2">${{ value["saldosVencidos"].aportes | number : '.2-2'}}</h3>
+    <h3 *ngIf="value['saldosVencidos'].aportes == 0" class="display-2 font-bold mt-4 mb-2">$0.00</h3>
+
+    <h3 class="subheading-2 font-medium text-secondary m-0">Aportes Vencidos</h3>
+    <h3 class="display-2 font-bold mt-4 mb-2">${{ value["saldosVencidos"].creditos | number : '.2-2' }}</h3>
+    <h3 class="subheading-2 font-medium text-secondary m-0">Creditos Vencidos</h3>
+  </div>
+
+
+  <h4 [class.text-green]="change > 0"
+    [class.text-red]="change <= 0" *ngIf="detalles" class="subheading-1 font-medium mt-4 mb-0">
+    <!-- <mat-icon [icIcon]="icHelp" height="20px" width="20px" [inline]="true"></mat-icon> -->
+
+    <ic-icon *ngIf="change > 0"
+             [icon]="faCaretUp"
+             [inline]="true"
+             height="20px"
+             width="20px"></ic-icon>
+    <ic-icon *ngIf="change <= 0"
+             [icon]="faCaretDown"
+             [inline]="true"
+             height="20px"
+             width="20px"></ic-icon>
+             
+    <span>{{detalles.length}}</span>
+  </h4>
+</div>

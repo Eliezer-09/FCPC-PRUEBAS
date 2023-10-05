@@ -1,0 +1,75 @@
+<ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-scale-multiple"
+>
+    <p style="font-size: 20px; color: white">Generando...</p>
+</ngx-spinner>
+
+
+        <div  @stagger class="card">
+            <div class="head-app-bar">
+                <h2 class="head-title">
+                   Casa de Valores
+                </h2>        
+                <div class="head-options">
+                    <div class="search-bar">
+                        <input     
+                            [(ngModel)]="filterValue"
+                            class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+                            placeholder="Buscar..."
+                            type="search"
+                            (keyup.enter)="searchTerm(filterValue)">
+                            <button
+                                (click)="searchTerm(filterValue)"
+                                class="head-buttons"
+                                mat-button="mat-button"
+                                matTooltip="Buscar">
+                                <mat-icon  [icIcon]="icroundSearch"  ></mat-icon>
+                            </button>
+                        </div>
+
+                        
+                        <button
+                            [routerLink]="['/inversiones/agregar-casa-valor']" 
+                            matTooltip="Agregar Casa de Valor"
+                            class="head-buttons"
+                            mat-button="mat-button">
+                            <mat-icon  [icIcon]="icroundAdd"  ></mat-icon>
+                        </button>
+                    </div>
+                </div>
+
+  
+                <div *ngIf="dataFondoSource.data.length !== 0 && !isLoading">
+                    <section class="progress">
+                        <div class="progress-bar progress-bar-striped bg-info"  style="width: 100%" aria-valuenow="100" ></div>
+                    </section>
+                    <vex-view-table
+                            [menubutton]="true"
+                            [actions]="menuOption"
+                            [routers]="routers"
+                            [columns]="tableColumns"
+                            [data]="dataFondoSource.data"
+                            (generateRouter)="generateRouter($event)">
+                    </vex-view-table>
+
+                    <div class="paginator-container">
+                    <mat-paginator
+                            [length]="casa.length"
+                            [pageSizeOptions]="[5,10,25,100]"
+                            [pageSize]="pageSize"
+                            (page)="pageEvent = $event; onPaginateChange($event)"
+                            class="sticky left-0"></mat-paginator>
+                    </div>
+                </div>
+
+                <div *ngIf="dataFondoSource.data.length === 0 && !isLoading">
+                    <vex-info-message [message]='infoMessage' [icon]='icroundBook' [typeicon]="'icIcon'"></vex-info-message>
+                </div>
+
+                <div *ngIf="isLoading" class="loading">
+                    <mat-progress-spinner diameter="60" mode="indeterminate"></mat-progress-spinner>
+                </div>
+            </div>

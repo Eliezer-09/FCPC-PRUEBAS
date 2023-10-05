@@ -1,0 +1,74 @@
+<div class="body-2 p-6 bg-primary text-primary-contrast">
+  <p  style="color: #ffffff;">Hoy</p>
+  <div class="display-1" style="color: #ffffff;">{{ date | date: 'dd/MM/yyyy' }}</div>
+</div>
+
+<mat-divider></mat-divider>
+
+<mat-nav-list>
+  <h3 matSubheader style="font-weight: bold;">Requerimientos</h3> 
+  <mat-tab-group style="width:100%">
+    <mat-tab style="width:100%">
+      <ng-template mat-tab-label>
+        <mat-icon class="mr-1" [icIcon]="icInbox"></mat-icon>
+         Recibidos
+         <span class="badge badge-pill badge-primary" style="border-radius: 50%; margin-bottom: 10%">{{ticketsSolicitados.length}}</span>
+      </ng-template>
+      <div class="cardWrap animate__animated animate__bounceIn" style="display: flex;"
+      *ngFor="let item of ticketsSolicitados" mat-list-item (click)="showTicketInfo(item)">
+        <div class="card cardLeft">
+          <span class="badge badge-pill" [ngStyle]="{'background':getStatusColor(item.estado)}">{{ item.asunto }}</span>
+          <div style="padding: 5%">
+            <p matLine style="font-size: small; color: gray;">{{ item.nombre }}</p>
+            <p *ngIf="item.nombreAgente && !item.aprobador" matLine style="font-size: small; color: gray;">Asignado a: <br>{{ item.nombreAgente }}</p>
+            <p *ngIf="!item.nombreAgente && !item.aprobador" matLine style="font-size: small; color: gray;">Sin asignacion</p>
+            <p matLine class="text-secondary" style="font-size: small;">{{ item.fecha | date: 'h:mm a' }}</p>
+            <p class="badge bad-pill badge-danger" *ngIf="item.aprobador" matLine style="font-size: small;">Requiere su Aprobación</p>
+            <p class="badge bad-pill badge-primary" *ngIf="item.esMencion" matLine style="font-size: small;">Mención</p>
+          </div>
+        </div>
+        <div class="card cardRight">
+          <span class="badge badge-pill" [ngStyle]="{'background':getStatusColor(item.estado)}">{{item.estado}}</span>
+          <div style="padding-top: 5%;">
+            <p matLine class="text-secondary" style="font-size: small;">Tiempo Transcurrido:</p>
+            <p  matLine class="text-secondary" style="font-size: small;">{{item.espera.dias}} días {{ item.espera.horas }}:{{item.espera.minutos}} min</p>
+          </div>
+        </div>
+      </div>
+      <br>
+      <p *ngIf="ticketsSolicitados.length == 0" style="width:fit-content; margin:auto; color: gray;">
+        No hay tickets recibidos
+      </p>
+    </mat-tab>
+    <mat-tab style="width:100%">
+      <ng-template mat-tab-label>
+        <mat-icon class="mr-1" [icIcon]="icSend"></mat-icon>
+        Enviados
+        <span class="badge badge-pill badge-primary" style="border-radius: 50%; margin-bottom: 10%">{{ticketsGenerados.length}}</span>
+      </ng-template>
+      <div class="cardWrap animate__animated animate__bounceIn" style="display: flex;"
+      *ngFor="let item of ticketsGenerados" mat-list-item (click)="showTicketInfo(item)">
+        <div class="card cardLeft">
+          <span class="badge badge-pill" [ngStyle]="{'background':getStatusColor(item.estado)}">{{ item.asunto }}</span>
+          <div style="padding: 5%">
+            <p matLine style="font-size: small; color: gray;">{{ item.nombre }}</p>
+            <p *ngIf="item.nombreAgente" matLine style="font-size: small; color: gray;">Asignado a: <br>{{ item.nombreAgente }}</p>
+            <p *ngIf="!item.nombreAgente" matLine style="font-size: small; color: gray;">Sin asignacion</p>
+            <p matLine class="text-secondary" style="font-size: small;">{{ item.fecha | date: 'h:mm a' }}</p>
+          </div>
+        </div>
+        <div class="card cardRight">
+          <span class="badge badge-pill" [ngStyle]="{'background':getStatusColor(item.estado)}">{{item.estado}}</span>
+          <div style="padding-top: 5%;">
+            <p matLine class="text-secondary" style="font-size: small;">Tiempo Transcurrido:</p>
+            <p  matLine class="text-secondary" style="font-size: small;">{{item.espera.dias}} días {{ item.espera.horas }}:{{item.espera.minutos}} min</p>
+          </div>
+        </div>
+      </div>
+      <br>
+      <p *ngIf="ticketsGenerados.length == 0" style="width:fit-content; margin:auto; color: gray;">
+        No hay tickets enviados
+      </p>
+    </mat-tab>
+  </mat-tab-group>
+</mat-nav-list>

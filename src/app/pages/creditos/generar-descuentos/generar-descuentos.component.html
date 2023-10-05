@@ -1,0 +1,251 @@
+<vex-page-layout>
+    <!-- <h2 class="title mb-4" fxLayout="row" fxLayoutAlign="start center">Generar Archivo de Cobro CTE</h2> -->
+    <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+        <p style="font-size: 20px; color: white">Cargando...</p>
+    </ngx-spinner>
+    <mat-vertical-stepper #stepper="matVerticalStepper" [linear]="true">
+        <ng-template matStepperIcon="edit">
+            <mat-icon [icIcon]="icDoneAll"></mat-icon>
+        </ng-template>
+
+
+        <ng-template matStepperIcon="done">
+            <mat-icon [icIcon]="icDoneAll"></mat-icon>
+        </ng-template>
+        <mat-step [stepControl]="horizontalCargarArchivo">
+            <ng-template matStepLabel>
+                <p style="width: 100%; height: 100%;">Cargar Archivo de Cobro CTE</p>
+            </ng-template>
+            <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+                <div [class.container]="layoutCtrl.value === 'boxed'" [class.px-gutter]="layoutCtrl.value === 'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+                    <div>
+                        <br>
+                        <strong class="title mt-0 mb-1">Cargar Archivo de Cobro CTE</strong>
+                    </div>
+                </div>
+                <div [class.container]="layoutCtrl.value === 'boxed'" [class.px-gutter]="layoutCtrl.value === 'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+                    <div class="form-group">
+                        <input class="btn" (change)="cargarExcel($event)" type="file" id="inputFile" accept=".xls, .xlsx">
+                        <button class="btn btn-success" type="button">
+                            <mat-icon style="height: 18px;" [icIcon]="icExcel"></mat-icon>
+                            <span style="margin-left: 4px;">CARGAR EXCEL DE AUTORIZADOS</span>
+                        </button>
+                        <span style="font-size: 18px; margin-left: 10px;">{{nombreArchivo}}</span>
+                    </div>
+                </div>
+
+            </vex-page-layout-header>
+
+            <vex-page-layout-content [class.container]="layoutCtrl.value === 'boxed'" [class.px-gutter]="layoutCtrl.value === 'fullwidth'" class="-mt-6">
+
+                <div class="card overflow-auto -mt-16">
+                    <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+                        <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+                            <span *ngIf="selection.isEmpty()">Autorizados</span>
+                            <span *ngIf="selection.hasValue()">{{ selection.selected.length }}
+                                Customer<span *ngIf="selection.selected.length > 1">s</span> selected</span>
+                        </h2>
+                        <div *ngIf="selection.hasValue()" class="mr-4 pr-4 border-r" fxFlex="none">
+                            <button color="primary" mat-icon-button matTooltip="Delete selected" type="button">
+                                <mat-icon [icIcon]="icDelete"></mat-icon>
+                                </button>
+
+                            <button color="primary" mat-icon-button matTooltip="Another action" type="button">
+                                <mat-icon [icIcon]="icFolder"></mat-icon>
+                                </button>
+                        </div>
+
+                        <div class="bg-card rounded-full border px-4" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row" fxLayoutAlign="start center">
+                            <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+                            <input [formControl]="searchCtrlAprobados" class="px-4 py-3 border-0 outline-none w-full bg-transparent" placeholder="Buscar..." type="search">
+                        </div>
+
+                        <span fxFlex></span>
+
+                        <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+                                    <mat-icon [icIcon]="icSearch"></mat-icon>
+                                </button>
+                    </div>
+
+                    <table @stagger matTableExporter #exporter="matTableExporter" [dataSource]="dataFondoSource" class="w-full" mat-table matSort #TableOneSort="matSort">
+
+                        <ng-container matColumnDef="numeroRegistro">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>NRO. REGISTRO</mat-header-cell>
+                            <mat-cell *matCellDef="let nombre">{{nombre.numeroRegistro}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="identificacion">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>IDENTIFICACIÓN</mat-header-cell>
+                            <mat-cell class="description-cell" *matCellDef="let cedula" style="color: rgb(0,0,0,0.54);">{{cedula.identificacion}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="nombre">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>NOMBRE</mat-header-cell>
+                            <mat-cell *matCellDef="let nombre" style="color: rgb(0,0,0,0.54);">{{nombre.nombres}} {{nombre.apellidos}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="codigoUniformado">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>CÓDIGO UNIFORMADO</mat-header-cell>
+                            <mat-cell class="description-cell" *matCellDef="let codigo" style="color: rgb(0,0,0,0.54);">{{codigo.codigoUniformado}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="observaciones">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>OBSERVACIONES</mat-header-cell>
+                            <mat-cell *matCellDef="let status" style="color: rgb(0,0,0,0.54);">
+                                <div *ngIf="status.observaciones != 'Participe Autorizado'">
+                                    <mat-icon style="height: 17.5px;" style="color: darkorange;" [icIcon]="icWarning"></mat-icon><span> {{status.observaciones}}</span></div>
+                                <div *ngIf="status.observaciones == 'Participe Autorizado'" style="color: green; margin-top: 12px;">
+                                    <mat-icon style="height: 17.5px;" [icIcon]="icCheck"></mat-icon><span> OK</span></div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <!-- Action Column -->
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+                    </table>
+
+                    <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; background: white; margin: auto;">
+                        <mat-progress-spinner diameter="60" color="primary" mode="indeterminate">
+                        </mat-progress-spinner>
+                    </div>
+
+                    <mat-paginator #TableOnePaginator="matPaginator" [pageSize]="10"
+                    [pageSizeOptions]="[5, 10, 25, 100]" class="sticky left-0"></mat-paginator>
+
+                </div>
+                <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px" style="margin-top: 2%;">
+                    <button mat-raised-button color="primary" matStepperNext (click)="guardar()">SIGUIENTE</button>
+                </div>
+            </vex-page-layout-content>
+        </mat-step>
+
+        <mat-step [stepControl]="horizontalGenerarArchivo">
+            <ng-template matStepLabel>
+                <p style="width: 100%; height: 100%;">Generar Archivo de Descuentos</p>
+            </ng-template>
+            <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+                <div [class.container]="layoutCtrl.value === 'boxed'" [class.px-gutter]="layoutCtrl.value === 'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+                    <div>
+                        <br>
+                        <strong class="title mt-0 mb-1">Generar Archivo de Cobro CTE</strong>
+                    </div>
+                </div>
+
+            </vex-page-layout-header>
+
+            <vex-page-layout-content [class.container]="layoutCtrl.value === 'boxed'" [class.px-gutter]="layoutCtrl.value === 'fullwidth'" class="-mt-6">
+
+                <div class="card overflow-auto -mt-16">
+                    <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+                        <div *ngIf="selection.hasValue()" class="mr-4 pr-4 border-r" fxFlex="none">
+                            <button color="primary" mat-icon-button matTooltip="Delete selected" type="button">
+                                <mat-icon [icIcon]="icDelete"></mat-icon>
+                                </button>
+
+                            <button color="primary" mat-icon-button matTooltip="Another action" type="button">
+                                <mat-icon [icIcon]="icFolder"></mat-icon>
+                                </button>
+                        </div>
+
+                        <div class="bg-card rounded-full border px-4" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row" fxLayoutAlign="start center">
+                            <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+                            <input [formControl]="searchCtrlAprobados" class="px-4 py-3 border-0 outline-none w-full bg-transparent" placeholder="Buscar..." type="search">
+                        </div>
+
+                        <span fxFlex></span>
+
+                        <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+                                    <mat-icon [icIcon]="icSearch"></mat-icon>
+                                </button>
+
+                    </div>
+
+                    <table @stagger matTableExporter #exporter="matTableExporter" [dataSource]="prestamosSource" class="w-full" mat-table matSort #TableTwoSort="matSort">
+
+                        <ng-container matColumnDef="numeroRegistro">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell>NRO. REGISTRO</mat-header-cell>
+                            <mat-cell *matCellDef="let nombre">{{nombre.numeroRegistro}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="identificacion">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell>IDENTIFICACION</mat-header-cell>
+                            <mat-cell class="description-cell" *matCellDef="let cedula" style="color: rgb(0,0,0,0.54);">{{cedula.identificacion}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="nombre">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell>NOMBRE</mat-header-cell>
+                            <mat-cell *matCellDef="let nombre" style="color: rgb(0,0,0,0.54);">{{nombre.nombres}} {{nombre.apellidos}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="detalle">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell>DETALLE</mat-header-cell>
+                            <mat-cell class="description-cell" *matCellDef="let detalles" style="color: rgb(0,0,0,0.54);">
+                                <mat-accordion>
+                                    <mat-expansion-panel>
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>
+                                                Ver detalle
+                                            </mat-panel-title>
+                                        </mat-expansion-panel-header>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">No. Credito</th>
+                                                    <th scope="col"># Cuota</th>
+                                                    <th scope="col">Capital</th>
+                                                    <th scope="col">Interés</th>
+                                                    <th scope="col">Desgravamen</th>
+                                                    <th scope="col">Mora</th>
+                                                    <th scope="col">Valor</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of detalles.detalles">
+                                                    <td>{{ item.idPrestamo }}</td>
+                                                    <td>{{ item.numCuota }}</td>
+                                                    <td>{{ item.saldoCapital | number : '.2-2' }}</td>
+                                                    <td>{{ item.saldoInteres | number : '.2-2' }}</td>
+                                                    <td>{{ item.saldoOtros | number : '.2-2' }}</td>
+                                                    <td>{{ item.saldoMora | number : '.2-2' }}</td>
+                                                    <td>{{ item.valor | number : '.2-2' }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </mat-expansion-panel>
+                                </mat-accordion>
+                            </mat-cell>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="valor">
+                            <mat-header-cell *matHeaderCellDef mat-header-cell>VALOR</mat-header-cell>
+                            <mat-cell class="description-cell" *matCellDef="let codigo" style="color: rgb(0,0,0,0.54);">{{codigo.valor | number : '.2-2'}}</mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="prestamoColumns"></mat-header-row>
+
+                        <mat-row *matRowDef="let row; columns: prestamoColumns"></mat-row>
+
+                    </table>
+
+                    <mat-paginator #TableTwoPaginator="matPaginator" [pageSize]="10"
+                    [pageSizeOptions]="[5, 10, 25, 100]" class="sticky left-0"></mat-paginator>
+
+                    <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; background: white; margin: auto;">
+                        <mat-progress-spinner diameter="60" color="primary" mode="indeterminate">
+                        </mat-progress-spinner>
+                    </div>
+
+                </div>
+                <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px" style="margin-top: 2%;">
+                    <button color="primary" mat-button matStepperPrevious type="button">ANTERIOR</button>
+                    <button mat-raised-button color="primary" (click)="generarTxt()" matStepperNext>GENERAR</button>
+                </div>
+            </vex-page-layout-content>
+        </mat-step>
+
+    </mat-vertical-stepper>
+</vex-page-layout>

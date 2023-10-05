@@ -1,0 +1,71 @@
+<div mat-dialog-content>
+
+  <div class="modal-header">
+    <h4 *ngIf="!data.visualizationMode" class="modal-title" id="modal-title"> {{tipoModificacion}}</h4>
+    <h4 *ngIf="data.visualizationMode">{{ data.idCargoSuperior ? 'Ver subcargo' : 'Ver Cargo' }}</h4>
+
+  </div>
+
+
+  <form [formGroup]="formAddCargo">
+
+
+
+
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Nombre de cargo</mat-label>
+      <input [readonly]="data.visualizationMode" (keydown)="utilsService.validacionSoloLetras($event)" matInput
+        formControlName="descripcion" required>
+      <mat-error *ngIf="formAddCargo.get('descripcion').hasError('required')">
+        El campo es requerido
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-divider></mat-divider>
+
+
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Nivel de cargo</mat-label>
+      <mat-select required formControlName="idTipoCargo">
+        <mat-option [disabled]="data.visualizationMode" *ngFor="let tipoCargo of tiposCargo"
+          [value]="tipoCargo.idTipoCargo">
+          {{tipoCargo.descripcion}}</mat-option>
+      </mat-select>
+
+    </mat-form-field>
+
+
+    <!--    <section class="example-section" style="margin-bottom: 40px;">
+      <label class="example-margin">Tipo de cargo *</label>
+      <mat-radio-group [disabled]="data.visualizationMode" formControlName="tipoCargo" required>
+
+        <mat-radio-button class="example-margin" [value]="true">Asistente</mat-radio-button>
+        <mat-radio-button class="example-margin" [value]="false">Asesor</mat-radio-button>
+
+      </mat-radio-group>
+
+    </section> -->
+
+
+
+
+
+  </form>
+
+
+
+</div>
+
+
+
+<div mat-dialog-actions fxLayoutAlign="end center" fxLayoutGap="8px">
+  <button *ngIf="!data.visualizationMode" style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+    (click)="onNoClick()">Cancelar</button>
+  <button color="primary" mat-raised-button [disabled]="!formAddCargo.valid"
+    (click)="data.visualizationMode ? onNoClick() : enviarFormulario()" cdkFocusInitial> {{data.visualizationMode ?
+    'Cerrar' :
+    'Guardar'}}</button>
+</div>

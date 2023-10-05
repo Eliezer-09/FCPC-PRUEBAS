@@ -1,0 +1,23 @@
+<div @stagger class="max-w-xxxs w-full" style="width: 220px">
+  <div class="h-14 flex sm:px-0" fxLayout="row" fxLayoutAlign="start center"></div>
+  
+  <div class="sm:px-0 content-option">
+   
+      <ng-container *ngFor="let item of items">
+        <a (click)="setFilter(item.id)"
+           @fadeInRight
+           routerLinkActive="active"
+           [ngClass]="{ 'bg-primary/10 text-primary': isActive(item.id) }"
+           class="rounded h-10 px-4 cursor-pointer linkbutton mt-1 font-medium flex items-center transition duration-200 ease-out"
+           matRipple>
+          <mat-icon  [icIcon]="item.icon" class="ltr:mr-3 rtl:ml-3"></mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+  
+        <h3 *ngIf="item.type === 'subheading'"
+            @fadeInRight
+            class="caption text-secondary font-medium mb-0 mt-6">{{ item.label }}</h3>
+ 
+    </ng-container>
+  </div>
+</div>

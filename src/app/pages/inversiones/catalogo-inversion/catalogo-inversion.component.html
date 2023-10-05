@@ -1,0 +1,41 @@
+<vex-page-layout>
+    <vex-page-layout-header class="page-head">
+        <!-- cabecera -->
+        <div @fadeInRight class="head-icon">
+            <mat-icon   [icIcon]="icroundBook"  ></mat-icon>
+            <h3 class="head-icon-title">Catálogos</h3>
+        </div>   
+    </vex-page-layout-header>
+
+    <vex-page-layout-content @stagger [class.container]="layoutCtrl.value === 'fullwidth'" [class.px-gutter]="layoutCtrl.value === 'fullwidth'" class="-mt-6">
+      
+      <div class="-mt-14 pt-0 overflow-hidden flex" >
+        <mat-drawer-container  class="bg-transparent flex-auto flex">
+
+          <mat-drawer-content class=" pt-0 flex-auto flex items-start">
+            <vex-table-menu [activeCategory]="activeCategory" [items]="items" (filterChange)="filterChange($event)"></vex-table-menu>
+
+    
+            <div class="h-full overflow-hidden flex-auto">
+              <div *ngIf="activeItem[0]">
+                <vex-emisores-valores></vex-emisores-valores>
+              </div>
+              <div *ngIf="activeItem[1]">
+                <vex-calificadora-riesgos></vex-calificadora-riesgos>
+              </div>
+              <div *ngIf="activeItem[2]">
+                <vex-custidio-titulo></vex-custidio-titulo>
+              </div>
+              <div *ngIf="activeItem[3]">
+                <vex-casa-valores></vex-casa-valores>
+              </div>
+             
+              
+            </div>
+          </mat-drawer-content>
+    
+        </mat-drawer-container>
+      </div>
+
+    </vex-page-layout-content>
+</vex-page-layout>

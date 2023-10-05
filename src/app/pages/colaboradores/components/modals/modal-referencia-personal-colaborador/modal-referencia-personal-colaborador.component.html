@@ -1,0 +1,109 @@
+<div mat-dialog-content>
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-title">Referencia personal</h4>
+    </div>
+    <mat-vertical-stepper orientation="vertical" linear="true" #stepper>
+        <mat-step [stepControl]="formReferenciaPersonal">
+            <form [formGroup]="formReferenciaPersonal">
+                <ng-template matStepLabel>Datos</ng-template>
+
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Nombres</mat-label>
+                    <input [readonly]="data.visualizationMode" (keydown)="utils.validacionSoloLetras($event)" matInput
+                        formControlName="nombres" required>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Celular</mat-label>
+                    <input [readonly]="data.visualizationMode" matInput maxlength="13" required
+                        formControlName="telefono">
+                    <mat-error *ngIf=" formReferenciaPersonal.get('telefono').hasError('required')">
+                        El campo es requerido
+                    </mat-error>
+                    <mat-error *ngIf="formReferenciaPersonal.get('telefono').hasError('minlength') ">
+                        El campo debe tener al menos 10 caracteres
+                    </mat-error>
+
+                    <mat-error *ngIf="formReferenciaPersonal.get('telefono').hasError('pattern')">
+                        El campo solo debe contener numeros
+                    </mat-error>
+
+                </mat-form-field>
+
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Correo</mat-label>
+                    <input [readonly]="data.visualizationMode" matInput required formControlName="correo">
+                    <mat-error *ngIf="formReferenciaPersonal.get('correo').hasError('required')">
+                        El correo es requerido
+                    </mat-error>
+                    <mat-error *ngIf="formReferenciaPersonal.get('correo').hasError('email')">
+                        El correo no es valido
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Relación</mat-label>
+                    <input required [readonly]="data.visualizationMode" matInput formControlName="observaciones"
+                        [matAutocomplete]="auto" (keydown)="utils.validacionSoloLetras($event)">
+                    <mat-error *ngIf="formReferenciaPersonal.get('observaciones').hasError('required')">
+                        La relación es requerida
+                    </mat-error>
+                    <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                            <small> {{option}} </small>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+
+                <div mat-dialog-actions fxLayoutAlign="end center" fxLayoutGap="8px">
+
+                    <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                        (click)="onNoClick()">Cancelar</button>
+
+
+
+                    <button color="primary" mat-raised-button [disabled]="!formReferenciaPersonal.valid" cdkFocusInitial
+                        (click)="guardarReferenciaPersonal()">
+                        {{data.visualizationMode ? 'Siguiente' : 'Guardar'}}
+                    </button>
+
+                </div>
+
+            </form>
+        </mat-step>
+        <mat-step>
+            <br>
+            <ng-template matStepLabel>Adjunto</ng-template>
+            <div class="loading" *ngIf="loading">
+                <mat-progress-spinner diameter="60" mode="indeterminate"></mat-progress-spinner>
+            </div>
+
+            <div *ngIf="adjuntosColaborador?.length > 0  && !loading">
+                <vex-archivos-colaborador [visualizationMode]="data.visualizationMode" [idColaborador]="idEntidad"
+                    (callCargarAdjuntos)="getAdjunto(idColaborador, tipoColaborador)"
+                    [idReferenciaPersonal]="idReferenciaPersonal" [adjuntosColaborador]="adjuntosColaborador"
+                    controlView="todos">
+                </vex-archivos-colaborador>
+            </div>
+
+            <div>
+
+
+                <div mat-dialog-actions fxLayoutAlign="end center" fxLayoutGap="8px">
+
+                    <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                        matStepperPrevious>Anterior</button>
+                    <button color="primary" mat-raised-button [disabled]="!formReferenciaPersonal.valid"
+                        [mat-dialog-close]="formReferenciaPersonal.value" cdkFocusInitial>
+                        {{data.visualizationMode ? 'Cerrar' : 'Guardar'}}
+                    </button>
+
+                </div>
+            </div>
+        </mat-step>
+    </mat-vertical-stepper>
+
+</div>

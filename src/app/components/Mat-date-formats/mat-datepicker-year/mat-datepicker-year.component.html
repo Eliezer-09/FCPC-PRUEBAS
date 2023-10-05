@@ -1,0 +1,19 @@
+<div class="form">
+    <mat-form-field>
+        <mat-label>Año</mat-label>
+        <input  matInput 
+        [matDatepicker]="dp_year" 
+        [formControl]="date_year"  
+        [required]="true" 
+        [(ngModel)]="input_date"
+        [max]="maxDate"
+        (blur)="setvalue(input_date)">
+        <mat-hint>YYYY</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="dp_year"></mat-datepicker-toggle>
+        <mat-datepicker #dp_year
+                        startView="multi-year"
+                        (yearSelected)="setYear($event, dp_year)">
+        </mat-datepicker>
+        <mat-error *ngIf="date_year.invalid">No existen registros para ese año</mat-error>
+    </mat-form-field>
+</div>

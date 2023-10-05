@@ -1,0 +1,25 @@
+<div *ngIf="!controlScreen">
+
+    <mat-icon @fadeInRight style="font-size: 80px;
+        background-repeat: no-repeat;
+        display: inline-block;
+        fill: currentColor;
+        height: 80px;
+        width: 80px;" [icIcon]=" icono"></mat-icon>
+
+    <h3 class="head-icon-title">
+        {{tituloHeader}}
+
+    </h3>
+</div>
+
+
+<div class="head-icon" *ngIf="controlScreen">
+    <h2 class="headline text-primary-contrast m-0 flex items-center">
+        <mat-icon [routerLink]="[rutaHeader]" [icIcon]="icono" class="icon" [matTooltip]="tituloHeader"></mat-icon>
+        <mat-icon [icIcon]="icroundChevronRight" class="icon"></mat-icon>
+        <span @fadeInRight class=" block">{{controlScreen}} {{titulo}}
+
+        </span>
+    </h2>
+</div>

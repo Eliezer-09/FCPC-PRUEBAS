@@ -1,0 +1,183 @@
+<div @stagger class="p-gutter" vexContainer >
+  <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-scale-multiple"
+  >
+    <p style="font-size: 20px; color: white">Cargando...</p>
+  </ngx-spinner>
+
+  <h2 class="title mb-4" fxLayout="row" fxLayoutAlign="start center">
+    <span
+      @scaleIn
+      class="w-10 h-10 rounded-full text-primary mr-3 flex items-center justify-center bg-primary-light"
+    >
+      <ic-icon [icon]="icDescription" height="20px" width="20px"></ic-icon>
+    </span>
+    <span @fadeInRight class="block">Liquidación de cuenta individual</span>
+  </h2>
+
+  <div @fadeInUp class="card overflow-hidden" style="padding: 5%;">
+
+    <div @fadeInUp class="mt-4" fxLayout="column" fxLayoutGap="8px">
+      <h2 style="font-weight: bold">INGRESOS</h2>
+      <div *ngIf="simulacionCesantia">
+        <div *ngFor="let item of simulacionCesantia.detalles">
+          <div *ngIf="item.tipo == 'INGRESOS'">
+            <h3 style="font-weight: bold">{{ item.rubroCesantia }}</h3>
+            <div
+              *ngFor="let data of item.valores"
+              fxLayout="column"
+              fxLayout.gt-xs="row"
+              fxLayoutGap="8px"
+              fxLayoutGap.gt-xs="24px"
+            >
+              <div
+                class="vex-flex-form-field"
+                style="padding-left: 10px"
+                fxFlex="auto"
+              >
+                <h4>{{ data.detalle }}</h4>
+              </div>
+              <div class="vex-flex-form-field" fxFlex="auto">
+                <p style="text-align: right">
+                  ${{ data.valor | number: ".2-2" }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        fxLayout="column"
+        fxLayout.gt-xs="row"
+        fxLayoutGap="8px"
+        fxLayoutGap.gt-xs="24px"
+      >
+        <div class="vex-flex-form-field" fxFlex="auto">
+          <h4 style="font-weight: bold">TOTAL INGRESOS</h4>
+        </div>
+        <div class="vex-flex-form-field" fxFlex="auto">
+          <p style="text-align: right" *ngIf="simulacionCesantia.totalIngresos != 0">
+            ${{ simulacionCesantia.totalIngresos | number: ".2-2" }}
+          </p>
+          <p style="text-align: right" *ngIf="simulacionCesantia.totalIngresos == 0">
+            $0.00
+          </p>
+        </div>
+      </div>
+
+      <hr />
+
+      <h2 style="font-weight: bold">EGRESOS</h2>
+
+      <div *ngFor="let item of simulacionCesantia.detalles; let i = index">
+        <div *ngIf="item.tipo == 'EGRESOS'">
+          <h3 style="font-weight: bold">{{ item.rubroCesantia }}</h3>
+          <div
+            *ngFor="let data of item.valores"
+            fxLayout="column"
+            fxLayout.gt-xs="row"
+            fxLayoutGap="8px"
+            fxLayoutGap.gt-xs="24px"
+          >
+            <div class="vex-flex-form-field" fxFlex="auto">
+              <h4>{{ data.detalle }} - {{ data.referencia }}</h4>
+            </div>
+            <div class="vex-flex-form-field" fxFlex="auto">
+              <p style="text-align: right">
+                ${{ data.valor | number: ".2-2" }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        fxLayout="column"
+        fxLayout.gt-xs="row"
+        fxLayoutGap="8px"
+        fxLayoutGap.gt-xs="24px"
+      >
+        <div class="vex-flex-form-field" fxFlex="auto">
+          <h4 style="font-weight: bold">TOTAL EGRESOS</h4>
+        </div>
+        <div class="vex-flex-form-field" fxFlex="auto">
+          <p style="text-align: right">
+            ${{ simulacionCesantia.totalEgresos | number: ".2-2" }}
+          </p>
+        </div>
+      </div>
+
+      <hr />
+
+      <div
+        fxLayout="column"
+        fxLayout.gt-xs="row"
+        fxLayoutGap="8px"
+        fxLayoutGap.gt-xs="24px"
+      >
+        <div class="vex-flex-form-field" fxFlex="auto">
+          <h4 style="font-weight: bold">SALDO A PAGAR</h4>
+        </div>
+        <div class="vex-flex-form-field" fxFlex="auto">
+          <p style="text-align: right">
+            ${{ simulacionCesantia.saldoPagar | number: ".2-2" }}
+          </p>
+        </div>
+      </div>
+
+      <div
+        fxLayout="column"
+        fxLayout.gt-xs="row"
+        fxLayoutGap="8px"
+        fxLayoutGap.gt-xs="24px"
+      >
+        <div class="vex-flex-form-field" fxFlex="auto">
+          <h4 style="font-weight: bold">SALDO A COBRAR</h4>
+        </div>
+        <div class="vex-flex-form-field" fxFlex="auto">
+          <p style="text-align: right">
+            ${{ simulacionCesantia.saldoCobrar | number: ".2-2" }}
+          </p>
+        </div>
+      </div>
+      
+      <hr />
+
+      <div
+        fxLayout="column"
+        fxLayout.gt-xs="row"
+        fxLayoutGap="8px"
+        fxLayoutGap.gt-xs="24px">
+        <h4 style="font-weight: bold">Fecha de liquidación</h4>
+        <div class="vex-flex-form-field" fxFlex="auto">
+          <p style="text-align: right;">
+            <input [(ngModel)]="fechaLiquidacion" matInput [matDatepicker]="picker">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="actions"
+      fxLayout="row"
+      fxLayoutAlign="end center"
+      fxLayoutGap="8px"
+      style="margin-top: 2%"
+    >
+      <button
+        color="primary"
+        mat-raised-button
+        (click)="guardar()"
+      >
+        GUARDAR
+      </button>
+    </div>
+  </div>
+</div>

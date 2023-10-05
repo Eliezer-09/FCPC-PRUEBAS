@@ -1,0 +1,70 @@
+$border-color: rgba(82, 63, 105, 0.12); // Equal to Material Design Outline Input Border
+
+.vex-mail-compose-editor {
+  min-height: 250px;
+
+  .ql-toolbar.ql-snow {
+    border-color: $border-color;
+    @apply rounded-t;
+  }
+
+  .ql-container.ql-snow {
+    border-color: $border-color;
+    @apply rounded-b;
+  }
+
+  .ql-editor {
+    @apply flex-auto;
+
+    &.ql-blank::before {
+      font-style: normal;
+      @apply text-sm text-secondary;
+    }
+  }
+}
+
+.vex-mail-compose-attachment {
+  border-color: $border-color;
+}
+
+.input-file{
+  background-color: transparent;
+  position: relative;
+  height: 200px;
+  border:solid 1px rgb(228, 228, 132228);
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+
+.input-file:after{
+  content: "";
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-color: #f6f6f6;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 70px;
+  position: absolute;
+  top: 0;
+  cursor: pointer;
+
+}
+
+.file-input {
+  display: none;
+}
+
+::ng-deep  .snackBar-success {
+  color: #ffffff !important;
+  background-color: #4caf50 !important;
+}
+.ventanaError{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+

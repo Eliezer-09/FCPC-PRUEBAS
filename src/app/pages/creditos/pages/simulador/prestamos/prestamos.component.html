@@ -1,0 +1,85 @@
+
+<div class="mt-4" fxLayout="column" fxLayoutGap="8px" >
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="100px" fxLayoutGap.gt-xs="24px">
+        <div  style="width: 100%;" *ngIf="prestamosParticipe.length == 0">
+            <vex-info-message
+            [message]='buscar?infoMessage2:infoMessage'
+            [icon]='icroundCreditCard'
+            [typeicon]="'icIcon'"></vex-info-message>
+        </div>
+        <table *ngIf="prestamosParticipe.length != 0" @stagger [dataSource]="prestamosParticipe" class="w-full" mat-table matSort>
+
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="checkbox" >
+                <th *matHeaderCellDef mat-header-cell>
+                    <mat-checkbox *ngIf="!hasOnePrestamo" (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()" color="primary">
+                    </mat-checkbox>
+                </th>
+                <td *matCellDef="let row" class="w-4" mat-cell>
+                    <mat-checkbox (change)="seleccionado($event, row)"
+                        (click)="$event.stopPropagation()" [checked]="selection.isSelected(row)"
+                        color="primary">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="idPrestamo">
+                <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>N° Operación
+                </mat-header-cell>
+                <mat-cell class="description-cell" *matCellDef="let prestamo"
+                    style="color: rgb(0,0,0,0.54);">{{prestamo.idPrestamo}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="montoSolicitado">
+                <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>SALDO CAPITAL
+                </mat-header-cell>
+                <mat-cell class="description-cell" *matCellDef="let prestamo"
+                    style="color: rgb(0,0,0,0.54);">${{prestamo.saldoCapital | number:'.2-2'}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="capitalOtorgado">
+                <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>CAPITAL OTORGADO
+                </mat-header-cell>
+                <mat-cell class="description-cell" *matCellDef="let prestamo"
+                    style="color: rgb(0,0,0,0.54);">${{prestamo.montoSolicitado | number:'.2-2'}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container *ngIf="hasDiasVencidos" matColumnDef="diasVencido">
+                <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>Días Vencidos
+                </mat-header-cell>
+                <mat-cell class="description-cell" *matCellDef="let prestamo"
+                    style="color: rgb(0,0,0,0.54);">{{prestamo.diasVencido}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="tipoPrestamo">
+                <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>TIPO PRÉSTAMO
+                </mat-header-cell>
+                <mat-cell class="description-cell" *matCellDef="let prestamo"
+                    style="color: rgb(0,0,0,0.54);">{{prestamo.tipoPrestamo}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="fecha">
+                <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>FECHA
+                </mat-header-cell>
+                <mat-cell *matCellDef="let fecha" style="color: rgb(0,0,0,0.54);">{{fecha.fecha |
+                    date: 'dd/MM/yyyy'}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="calificacion">
+                <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>CALIFICACIÓN
+                </mat-header-cell>
+                <mat-cell class="description-cell" *matCellDef="let prestamo"
+                    style="color: rgb(0,0,0,0.54);">{{prestamo.calificacion}}</mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="columnasPrestamo"></mat-header-row>
+
+            <mat-row *matRowDef="let row; columns: columnasPrestamo"></mat-row>
+        </table>
+    </div>
+</div>

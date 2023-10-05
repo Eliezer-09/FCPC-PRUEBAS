@@ -1,0 +1,6 @@
+<div class="reports--grid">
+    <vex-simple-card
+        (openComponent)="OpenViewFilterReport.emit($event)"
+        [simpleCard]="transformSimpleCard(report)"
+        *ngFor="let report of reports"></vex-simple-card>
+</div>

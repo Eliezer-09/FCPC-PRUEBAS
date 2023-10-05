@@ -1,0 +1,69 @@
+<div class="subheading-1" style="font-weight: bold">Acreditación</div>
+<div class="subheading-1" style="font-weight: bold">
+  Nombre del proveedor: {{ razonSocialProveedor }}
+</div>
+<div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+  <div fxFlex="auto" fxLayout="row" fxLayoutGap="8px">
+    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+      <mat-label>Escoge una cuenta bancaria</mat-label>
+      <mat-select required [(value)]="postTransferir.idCuentaBancaria">
+        <mat-option
+          *ngFor="let item of cuentasBancarias"
+          [value]="item.idCuentaBancaria"
+          >{{ item.descripcion }} - {{ item.numeroCuenta }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+      <mat-label>Número de cheque depósito</mat-label>
+      <input
+        matInput
+        type="text"
+        min="1"
+        pattern="^[0-9]+"
+        [(ngModel)]="postTransferir.cheque"
+      />
+    </mat-form-field>
+  </div>
+
+  <div fxFlex="auto" fxLayout="row" fxLayoutGap="8px">
+    <mat-form-field
+      class="vex-flex-form-field"
+      fxFlex="auto"
+      style="margin-top: 4%; width: 100%; height: 60% !important"
+    >
+      <mat-label>Comentario</mat-label>
+      <textarea
+        rows="8"
+        matInput
+        style="height: 100%"
+        [(ngModel)]="postTransferir.comentarios"
+      ></textarea>
+    </mat-form-field>
+  </div>
+</div>
+
+<div
+  class="actions"
+  fxLayout="row"
+  fxLayoutAlign="end center"
+  fxLayoutGap="8px"
+  style="margin-top: 2%"
+>
+  <button
+    *ngIf="estado == 'firmado'"
+    class="bg-danger text-light"
+    mat-raised-button
+    (click)="anular()"
+  >
+    ANULAR
+  </button>
+  <button
+    mat-raised-button
+    style="background-color: rgb(11, 223, 0); color: white; font-weight: bold"
+    (click)="transferir()"
+  >
+    CONFIRMAR
+  </button>
+</div>

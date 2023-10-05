@@ -1,0 +1,60 @@
+<div @stagger class="max-w-xxxs w-full" style="width: 220px">
+  <div class="h-14 mb-6 flex px-gutter sm:px-0" fxLayout="row" fxLayoutAlign="start center"></div>
+  
+  <div class="px-gutter sm:px-0">
+    <ng-container>
+      
+      
+      <mat-accordion displayMode="flat">
+        <mat-expansion-panel>
+            <h3 @fadeInRight class="caption text-secondary text-center uppercase font-medium mb-2 mt-6" >
+                Estados
+            </h3>  
+        </mat-expansion-panel>
+        <mat-expansion-panel *ngFor="let item of items"  >
+          <mat-expansion-panel-header *ngIf="item.type === 'link'" (click)="setFilter(item)" 
+                  [class.bg-hover]="isActive(item.id)" 
+                  style="padding:12px;" >
+
+            <mat-panel-title>
+              <span>
+                <a @fadeInRight [class.text-primary]="isActive(item.id)"
+                  class="m-7 no-underline flex items-center" style="cursor: pointer;width:100%;  ">
+                  <ic-icon [icon]="item.icon" [ngClass]="item.classes?.icon" [ngStyle]="{ color: item.classes?.icon }"
+                    class="ltr:mr-3 rtl:ml-3" size="24px"></ic-icon>
+                  <span>{{ item.label }}</span>
+                </a>
+              </span>
+            </mat-panel-title>
+
+            <mat-icon *ngIf="item.hijos != null && item.hijos.length > 0">keyboard_arrow_down</mat-icon>
+
+          </mat-expansion-panel-header>
+          
+          <mat-accordion displayMode="flat" *ngIf="item.hijos != null && item.hijos.length > 0">
+            <mat-expansion-panel *ngFor="let hijo of item.hijos" [class.bg-hover]="isActive(hijo.idEstadoTicket)" 
+              style="box-shadow:none; background-color:transparent;border:none 0px" hideToggle>
+              <mat-expansion-panel-header (click)="setFilter(hijo)" 
+                  style="padding:0;">
+                <mat-panel-title>
+                  <span>
+                    <a @fadeInRight 
+                      [class.text-primary]="isActive(hijo.idEstadoTicket)"
+                      class="no-underline flex items-center"  
+                      style="cursor: pointer;width:100%;">
+                      <ic-icon [icon]="item.icon" [ngClass]="item.classes?.icon" [ngStyle]="{ color: hijo.color }"
+                        class="ltr:mr-1 rtl:ml-1" size="24px"></ic-icon>
+                      <span>{{ hijo.descripcion }}</span>
+                    </a>
+                  </span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+            </mat-expansion-panel>
+          </mat-accordion> 
+      
+        </mat-expansion-panel>
+      </mat-accordion>
+      
+    </ng-container>
+  </div>
+</div>

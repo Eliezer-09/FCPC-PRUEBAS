@@ -1,0 +1,35 @@
+//small
+@media screen and (max-width: 40em) {
+  .head-app-bar {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      height: 160px;
+      .search-bar {
+          min-width: 180px;
+      }
+  }
+  .head-title {
+      margin-bottom: 10px;
+      text-align: center;
+  }
+}
+
+//medium
+@media screen and (min-width: 40em) and (max-width: 63.9em) {
+  .head-app-bar {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      .search-bar {
+          min-width: 300px;
+      }
+  }
+}
+
+//large
+@media screen and (min-width: 64em) {
+  .head-app-bar {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+
+  }
+}
