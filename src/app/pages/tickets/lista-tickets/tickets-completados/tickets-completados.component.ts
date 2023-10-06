@@ -1,5 +1,7 @@
 import { SelectionModel } from "@angular/cdk/collections";
 import {
+  AfterViewChecked,
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -20,6 +22,7 @@ import icSearch from "@iconify/icons-ic/twotone-search";
 import icEye from "@iconify/icons-ic/visibility";
 import icArrowDown from "@iconify/icons-ic/arrow-drop-down";
 import icCalendarToday from "@iconify/icons-ic/sharp-calendar-today";
+
 import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { stagger80ms } from "src/@vex/animations/stagger.animation";
 import { LazyLoadEvent, PrimeNGConfig, TreeNode } from "primeng/api";
@@ -27,6 +30,7 @@ import { DatePipe, formatDate } from "@angular/common";
 import Swal from "sweetalert2";
 import { ComponentesService } from "src/app/services/componentes.service";
 import { LocalService } from "src/app/services/local.service";
+
 @Component({
   selector: "vex-tickets-completados",
   templateUrl: "./tickets-completados.component.html",
@@ -38,6 +42,7 @@ export class TicketsCompletadosComponent implements OnInit {
   layoutCtrl = new FormControl("boxed");
   searchCtrl = new FormControl();
   termino = new FormControl();
+
   displayedColumns = [
     "nombre",
     "asunto",
@@ -56,6 +61,7 @@ export class TicketsCompletadosComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   filterValue: string = null;
   estados = [];
+
   //Iconos
   icDelete = icDelete;
   icFolder = icFolder;
@@ -63,14 +69,17 @@ export class TicketsCompletadosComponent implements OnInit {
   icEye = icEye;
   icArrowDown = icArrowDown;
   icCalendarToday = icCalendarToday;
+
   pageEvent: PageEvent;
   panelOpenState = false;
   step = 0;
   busquedaAvanzada: boolean = false;
   filtroTermino: string = "";
+
   files: TreeNode[];
   cols: any[];
   loading: boolean;
+
   range = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
@@ -195,12 +204,10 @@ export class TicketsCompletadosComponent implements OnInit {
     }
   }
 
-
   cambiarAvanzado(event) {
     this.busquedaAvanzada = event;
     this.changeDetector.detectChanges();
   }
-
 
   filtro(tipo, desde?, hasta?) {
     if (this.range.value.start && this.range.value.end) {
@@ -220,7 +227,6 @@ export class TicketsCompletadosComponent implements OnInit {
       this.buscarTermino(this.termino.value, tipo);
     }
   }
-
 
   eliminarTicket(ticket) {
     Swal.fire({
@@ -249,7 +255,6 @@ export class TicketsCompletadosComponent implements OnInit {
       }
     });
   }
-
 
   buscarTermino(term: string, tipo?: string, desde?, hasta?) {
     if (term.length > 0) {
@@ -323,5 +328,4 @@ export class TicketsCompletadosComponent implements OnInit {
     }
     this.changeDetector.detectChanges();
   }
-
 }

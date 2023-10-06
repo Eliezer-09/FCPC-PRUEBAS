@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { HIGHLIGHT_OPTIONS, HighlightConfig, HighlightLanguage, HighlightOptions, HighlightResult } from './highlight.model';
-import * as hljs from 'highlight.js';
+import hljs from 'highlight.js';
 
 @Injectable()
 export class HighlightService {
@@ -28,11 +28,10 @@ export class HighlightService {
    * @param value A string with the code to highlight.
    * @param ignoreIllegals When present and evaluates to a true value, forces highlighting to finish
    * even in case of detecting illegal syntax for the language instead of throwing an exception.
-   * @param continuation An optional mode stack representing unfinished parsing.
    * When present, the function will restart parsing from this state instead of initializing a new one
    */
-  highlight(name: string, value: string, ignoreIllegals: boolean, continuation?: any): HighlightResult {
-    return hljs.highlight(name, value, ignoreIllegals, continuation);
+  highlight(name: string, value: string, ignoreIllegals: boolean): HighlightResult {
+    return hljs.highlight(name, value, ignoreIllegals);
   }
 
   /**
@@ -43,16 +42,6 @@ export class HighlightService {
    */
   highlightAuto(value: string, languageSubset: string[]): HighlightResult {
     return hljs.highlightAuto(value, languageSubset);
-  }
-
-  /**
-   * Post-processing of the highlighted markup.
-   * Currently consists of replacing indentation TAB characters and using <br> tags instead of new-line characters.
-   * Options are set globally with configure.
-   * @param value Accepts a string with the highlighted markup
-   */
-  fixMarkup(value: string): string {
-    return hljs.fixMarkup(value);
   }
 
   /**

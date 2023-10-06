@@ -6,11 +6,9 @@ th.mat-header-cell {
     background-color: var(--COLOR-PRIMARY);
     color: var(--COLOR-PRIMARY-CONTRAST);
     text-align: center;
-    align-items: center;
 }
 
 td.mat-cell {
-    align-items: center;
     text-align: center;
 }
 ::ng-deep .mat-sort-header-arrow.ng-trigger {
@@ -91,7 +89,6 @@ td.mat-cell {
 
 td.mat-footer-cell {
     padding-left: var(--padding-12);
-    align-items: center;
     text-align: center;
 }
 

@@ -8,15 +8,18 @@
                     <span *ngIf="selection.hasValue()">{{ selection.selected.length }}
                     Customer<span *ngIf="selection.selected.length > 1">s</span> selected</span>
                 </h2>
+
                 <div class="bg-card rounded-full border px-4" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row" fxLayoutAlign="start center">
                     <input [formControl]="searchCtrl" [(ngModel)]="filterValue" class="px-4 py-3 border-0 outline-none w-full bg-transparent" placeholder="Buscar..." type="search" (keyup.enter)="buscarTermino(filterValue)">
                     <button (click)="buscarTermino(filterValue)"  mat-mini-fab color="primary">
                         <i class="fa fa-search"></i>
                     </button>
                 </div>
+
                 <button (click)="cargarTickets(currentPage, 10)" mat-mini-fab color="primary" style="margin-left: 10px">
                     <mat-icon [icIcon]="icDelete"></mat-icon>
                 </button>
+
                 <mat-checkbox style="margin-left: 20px" color="primary" (change)="cambiarAvanzado($event.checked)" class="example-margin" [checked]="busquedaAvanzada">
                     Avanzado
                 </mat-checkbox>
@@ -34,6 +37,7 @@
                     </mat-date-range-picker>
                 </div>        
             </div>
+
             <div>
                 <!-- Busqueda avanzada -->
                 <p-treeTable #tt *ngIf="tickets.length > 0 && busquedaAvanzada" [value]="files" [columns]="cols" 
@@ -69,6 +73,7 @@
                             </th>
                         </tr>
                     </ng-template>
+
                     <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
                         <tr [ngClass]="{'kb-row': rowData.prioridad.startsWith('Al')}">
                             <td *ngFor="let col of columns; let i = index">
@@ -96,6 +101,7 @@
                         </tr>
                     </ng-template>
                 </p-treeTable>
+
                 <!-- Busqueda normal -->
                 <p-treeTable #tt *ngIf="tickets.length > 0 && !busquedaAvanzada" [value]="files" [columns]="cols" 
                     [loading]="loading" [resizableColumns]="true" [paginator]="true"   
@@ -137,7 +143,10 @@
                         </tr>
                     </ng-template>
                 </p-treeTable>
+
                 <h6 style="color: gray; text-align: center; padding: 2%" *ngIf="files.length == 0">No hay tickets</h6>
+
             </div>
         </div>
+
     </vex-page-layout-content>
