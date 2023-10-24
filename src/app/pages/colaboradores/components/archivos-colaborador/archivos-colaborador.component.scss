@@ -1,0 +1,124 @@
+
+.titulo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-color: var(--COLOR-PRIMARY);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 20px;
+  font-weight: bold;
+  color: #fff;
+  background-color: var(--COLOR-PRIMARY);
+  font-size: 15px;
+}
+
+.adjuntos-contenedor {
+  margin-left: 8px;
+  margin-right: 8px;
+  
+}
+
+.opciones-contenedor{
+  margin-left: 8px;
+  margin-right: 8px;
+  border-color: #cccfd9;
+  border-style: dashed;
+  margin: 0 13px;
+  height: 50px;
+  border-width: 1px;
+  display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.row-archivos{
+  display: flex;
+  align-items: center;
+  border-color: #cccfd9;
+  border-style: dashed;
+  border-width: 1px;
+  margin: 5px;
+  padding: 5px;
+  height: 40px;
+}
+.row-archivo-titulo {
+    display: flex;
+    align-items: center;
+    border-color: #cccfd9;
+    border-style: solid;
+    border-width: 1px;
+    margin: 5px;
+    padding: 5px;
+    height: 55px;
+    font-weight: 500;     
+   
+  }
+
+  ul.a {
+    list-style-type: circle;
+  }
+
+.row-archivo-options{
+  display: flex;
+  align-items: center;
+  border-color: #cccfd9;
+  border-style: solid;
+  border-width: 1px;
+  margin: 5px;
+  padding: 5px;
+  height: 55px;
+  justify-content: center;
+
+ }
+.row-archivo-icono-status {
+    display: flex;
+    align-items: center;
+    border-color: #cccfd9;
+    border-style: solid;
+    border-width: 1px;
+    margin: 5px;
+    padding: 5px;
+    justify-content: center;
+    flex-direction: column;
+
+  }
+
+  .row-archivo-icono-button {
+    display: flex;
+    align-items: center;
+    border-color: #cccfd9;
+    border-style: solid;
+    border-width: 1px;
+    margin: 5px;
+    padding: 5px;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  
+  .input-file {
+    background-color: #3F51B5;
+    margin-bottom: 30px;
+    color: #ffff;
+    margin: 20px 0;
+  }
+
+  .archivoRemove {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  
+  }
+  .nombre-archivo{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 68px;
+    overflow: hidden;
+  }
+
+  .buttons-options{
+    margin : 0 10px;
+  }

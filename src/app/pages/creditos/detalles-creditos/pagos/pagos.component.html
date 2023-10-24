@@ -1,0 +1,112 @@
+<!-- PAGOS -->
+<div *ngIf="pagos?.detalle?.length != 0" class="card" style="width: 100%;">
+    <div class="col-md-3 col-6 b-r" style="margin-top:12px; text-align: start">
+        <button (click)="getPagosCredito()" mat-raised-button style="background-color: #171d29; color: #ffffff">
+            <mat-icon style="height: 22px;" [icIcon]="icPrint"></mat-icon>
+            Imprimir
+        </button>
+    </div>
+
+    <vex-scrollbar class="mt-4">
+
+
+
+
+        <table mat-table matSort [dataSource]="pagos?.detalle" style="width: 100%;">
+            <ng-container matColumnDef="#">
+                <th mat-header-cell *matHeaderCellDef> # </th>
+                <td mat-cell *matCellDef="let item; let i = index" style="font-weight: 600;">{{i + 1}} </td>
+
+                <td mat-footer-cell *matFooterCellDef style="padding-left: 17px;">
+                    <strong>Totales</strong>
+                </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                <td mat-cell *matCellDef="let element"> {{element.fecha | date: 'dd/MM/yyyy'}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="capitalPagado">
+                <th mat-header-cell *matHeaderCellDef> Capital Pagado </th>
+                <td mat-cell *matCellDef="let element"> ${{element.capitalPagado | number: ".2-2" }} </td>
+                <td mat-footer-cell *matFooterCellDef style="font-weight: bold;"> ${{
+                    pagos.saldoCapitalPagado | number : '.2-2' }} </td>
+
+            </ng-container>
+
+
+            <ng-container matColumnDef="interesPagado">
+                <th mat-header-cell *matHeaderCellDef> Interés Pagado</th>
+                <td mat-cell *matCellDef="let element"> ${{element.interesPagado | number: ".2-2" }} </td>
+                <td mat-footer-cell *matFooterCellDef style="font-weight: bold;"> ${{
+                    pagos.saldoInteresPagado| number : '.2-2' }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="interesVencidoPagado">
+                <th mat-header-cell *matHeaderCellDef> Interés Vencido Pagado</th>
+                <td mat-cell *matCellDef="let element"> ${{element.interesVencidoPagado | number: ".2-2" }} </td>
+                <td mat-footer-cell *matFooterCellDef style="font-weight: bold;"> ${{
+                    pagos.totalInteresVencido| number : '.2-2' }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="morapagada">
+                <th mat-header-cell *matHeaderCellDef> Mora Pagada </th>
+                <td mat-cell *matCellDef="let element"> ${{element.morapagada | number: ".2-2"}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef style="font-weight: bold;"> ${{
+                    pagos.totalMoraPagada | number : '.2-2' }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="desgravamen">
+                <th mat-header-cell *matHeaderCellDef> Desgravamen </th>
+                <td mat-cell *matCellDef="let element"> ${{element.desgravamen | number: ".2-2"}}
+
+                </td>
+
+                <td mat-footer-cell *matFooterCellDef style="font-weight: bold;"> ${{
+                    pagos.desgraDesgravamentPagado | number : '.2-2' }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="saldoOtros">
+                <th mat-header-cell *matHeaderCellDef> Otros </th>
+                <td mat-cell *matCellDef="let element"> ${{element.saldoOtros | number: ".2-2"}}
+                </td>
+
+                <td mat-footer-cell *matFooterCellDef style="font-weight: bold;"> ${{
+                    getTotalColumn('saldoOtros') | number : '.2-2' }} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="valor">
+                <th mat-header-cell *matHeaderCellDef> Total </th>
+                <td mat-cell *matCellDef="let element"> <strong>${{element.valor | number: ".2-2"}}</strong>
+                </td>
+
+                <td mat-footer-cell *matFooterCellDef style="font-weight: bold;"> ${{
+                    pagos.totalPagado | number : '.2-2' }} </td>
+
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+            <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                class="interactive-rows overflow-hiden hover:bg-hover trans-ease-out  relative">
+            </tr>
+
+        </table>
+    </vex-scrollbar>
+
+</div>
+
+
+
+
+<div *ngIf="pagos?.detalle?.length == 0" align="center">
+    <h6>No hay información de tabla de pagos</h6>
+</div>

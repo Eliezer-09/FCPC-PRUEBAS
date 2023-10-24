@@ -1,0 +1,191 @@
+<div @stagger class="p-gutter" vexContainer *ngIf="dataTicket && dataTarea">
+  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Cargando...</p>
+  </ngx-spinner>
+  <h2 class="title mb-4" fxLayout="row warp" fxLayoutAlign="start center"
+    style="gap: 10px;">
+    <span @scaleIn
+      class="w-10 h-10 rounded-full text-primary mr-3 flex items-center justify-center bg-primary-light animate_animated animate__fadeInLeft">
+      <mat-icon> help</mat-icon>
+    </span>
+    {{dataTicket.asunto}}
+  </h2>
+  <p-breadcrumb styleClass="animate__animated animate__fadeIn menu"
+      *ngIf="subTareas.length> 0 && dataTicket" [model]="[{label:
+      dataTicket.asunto}]" [home]="home"></p-breadcrumb>
+    <p-breadcrumb styleClass="animate__animated animate__fadeIn menu"
+      *ngIf="subTareas.length == 0 && dataTicketPadre"
+      (onItemClick)="itemClicked($event)" [model]="[ {label:
+      dataTicketPadre.asunto}, {label: dataTicket.asunto}]" [home]="home"></p-breadcrumb>
+  <div class="container py-gutter">
+    <div class="container animate__animated animate__fadeIn" style="bottom: 230px;left:0rem;top: 0.5rem;width: 100%;">
+      <!--  -->
+      <div class="container ticket">
+        <div class="bp-card" data-clickthrough="link">
+          <div class="bp-card_label">
+            <div class="requiereAprobacion">
+              <h5 class="labelAprobacion"
+              *ngIf="dataTicket.fechaAprobacion != null && dataTicket.requiereAprobacion"
+              style="color: #158908;display: flex;flex-wrap: wrap;justify-content: space-evenly;">
+              <mat-icon>thumb_up</mat-icon>
+              <span>Ticket Aprobado</span>
+              </h5>
+              <h5 class="labelAprobacion"
+              style="color: #ff9500;display: flex;flex-wrap: wrap;justify-content: space-around;"
+              *ngIf="dataTicket.fechaAprobacion == null && dataTicket.requiereAprobacion && dataTicket.fechaAprobacion == null && dataTicket.fechaRechazo == null">
+                <mat-icon>warning</mat-icon>
+                <span>Requiere Aprobación</span>
+              </h5>
+              <h5 class="labelAprobacion"
+              style="color: #f72d2d;display: flex;flex-wrap: wrap;justify-content: space-around;"
+              *ngIf="dataTicket.requiereAprobacion && dataTicket.fechaRechazo != null">
+                <mat-icon>error</mat-icon>
+                <span>Rechazado</span>
+              </h5>
+
+            </div>
+            <div class="bd-border_solid"></div>
+            <div class="bd-border_dotted"></div>
+          </div>
+          <div class="bp-card_content">
+            <p class="secondary">Título</p>
+            <h3>{{dataTicket.asunto}}</h3>
+            <div class="row" style="margin-top: 3%;">
+              <div class="col-md-3 col-6 b-r">
+                <strong style="display: flex;">
+                  <mat-icon>person</mat-icon>Solicitado por:</strong>
+                <span style="color: #a8a8a8">{{dataTicket.nombre}}</span>
+              </div>
+              <div class="col-md-3 col-6 b-r">
+                <strong>Tipo de tarea:</strong>
+                <span style="color: #a8a8a8"> {{dataTicket.tipoTarea}}</span>
+              </div>
+              <div class="col-md-3 col-6 b-r">
+                <strong>Área:</strong>
+                <span style="display: flex;flex-wrap: wrap; gap: 8px;">
+                  <span style="color: #a8a8a8">
+                    {{ departamento }}
+                  </span>
+                </span>
+              </div>
+              <div class="col-md-3 col-6 b-r">
+                <strong> Estado:</strong>
+                <select (change)="seleccionarEstado($event.target.value)"
+                    *ngIf="flagEditarTicket" style="margin-bottom: 5px;">
+                    <option>Seleccionar</option>
+                    <option *ngFor="let item of estados">
+                      <strong style="color: orange;">
+                        {{item.descripcion}}
+                      </strong>
+                    </option>
+                </select>
+                <span *ngIf="!flagEditarTicket" [style.color]="statusColor">
+                  {{ dataTicket.estado }}
+                </span>
+                <br *ngIf="dataTicket.estadoHijo != 'Ninguno'">
+                <span *ngIf="dataTicket.estadoHijo != 'Ninguno'" [style.color]="statusChildColor">
+                  ({{ dataTicket.estadoHijo }})
+                </span>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 3%;">
+              <div class="col-md-3 col-6 b-r">
+                <strong>Fecha:</strong>
+                <span style="color: #a8a8a8">{{dataTicket.fecha |date}}</span>
+              </div>
+              <div class="col-md-3 col-6 b-r">
+                <strong *ngIf="dataTicket.estado != 'Completado'">Tiempo transcurrido:</strong>
+                <strong *ngIf="dataTicket.estado == 'Completado' || dataTicket.estado == 'Cerrado'">Finalizado en:</strong>
+                <span style="display: flex;flex-wrap: wrap; gap: 8px;">
+                  <span style="color: #a8a8a8">
+                    {{ dataTicket["espera"].dias }} Dias {{ dataTicket["espera"].horas }} Horas {{dataTicket["espera"].minutos}} Min
+                  </span>
+                </span>
+              </div>
+              <div class="col-md-3 col-6 b-r">
+                <strong>Categoría:</strong>
+                <span style="display: flex;flex-wrap: wrap; gap: 8px;">
+                  <span *ngIf="dataTicket.tags.length == 0" style="color: #a8a8a8">
+                    No tiene categoría
+                  </span>
+                  <span *ngIf="dataTicket.tags.length != 0" style="color: #a8a8a8">
+                    {{ dataTicket.tags[0].descripcion }}
+                  </span>
+                </span>
+              </div>
+              <div class="col-md-3 col-6 b-r">
+                <strong>Prioridad:</strong>
+                <span style="display: flex;flex-wrap: wrap; gap: 8px;">
+                  <span *ngIf="dataTicket.prioridad == 'Baja'" style="color: #0f9430">
+                    {{ dataTicket.prioridad }}
+                  </span>
+                  <span *ngIf="dataTicket.prioridad == 'Media'" style="color: #8b990f">
+                    {{ dataTicket.prioridad }}
+                  </span>
+                  <span *ngIf="dataTicket.prioridad == 'Alta'" style="color: #8a0a96">
+                    {{ dataTicket.prioridad }}
+                  </span>
+                  <span *ngIf="dataTicket.prioridad == 'Urgente'" style="color: #fa0404">
+                    {{ dataTicket.prioridad }}
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 3%;">
+              <div class="col-md-3 col-6 b-r">
+                <strong>Ticket Asignado a:</strong>
+                <span style="display: flex;flex-wrap: wrap; gap: 8px;">
+                  <span *ngIf="dataTarea.asignadoA != null" style="color: #a8a8a8">
+                    {{ dataTarea.asignadoA }}
+                  </span>
+                  <span *ngIf="dataTarea.asignadoA == null" style="color: #a8a8a8">
+                    Sin Asignar
+                  </span>
+                </span>
+              </div>
+              <div class="col-md-3 col-6 b-r">
+                <strong>Fecha Tentativa:</strong>
+                <mat-form-field *ngIf="dataTicket.estado != 'Completado'" appearance="standard" style="width: 150px;">
+                  <input (dateInput)="addEvent('input', $event)"
+                    [formControl]="date" matInput
+                    [matDatepicker]="picker" disabled>
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker disabled="false">
+                  </mat-datepicker>
+                </mat-form-field>
+                <span *ngIf="dataTicket.estado == 'Completado'" style="color: #a8a8a8">
+                  {{ dataTicket.fechaTentativa | date }}
+                </span>
+              </div>
+              <div class="col-md-3 col-6 b-r" *ngIf="dataTicket.requiereAprobacion &&
+              dataTicket.fechaAprobacion != null">
+                <strong>Ticket Aprobado por:</strong>
+                <span style="display: flex;flex-wrap: wrap; gap: 8px;">
+                  <span style="color: #a8a8a8">
+                    {{ dataTicket.usuarioAprobo }}
+                  </span>
+                </span>
+              </div>
+            </div>
+            <a class="price">
+              #{{dataTicket.idTicket}}
+            </a>
+          </div>
+        </div>
+      </div>
+      <!--  -->
+    </div>
+  </div>
+
+  <vex-info-ticket *ngIf="dataTicket && dataTarea"
+                    [dataTicket]="dataTicket"
+                    [subTareas]="subTareas" [dataTarea]="dataTarea"
+                    [comentarios]="actividades"
+                    (emitirTicket)="cambiarEstado($event)"
+                    (emitirTicketEditado)="ticketEditado($event)"
+                    (emitirTicketAsignado)="ticketAsignado($event)"
+                    (emitirTicketAdjunto)="ticketAdjunto($event)"
+                    (emitirDocumento)="getDocumento($event)"
+                    (emitirComentario)="getComentario($event)">
+                  </vex-info-ticket>
+</div>

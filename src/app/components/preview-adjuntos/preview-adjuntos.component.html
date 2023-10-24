@@ -1,0 +1,13 @@
+<div *ngIf="isImage">
+  <app-image-preview [imageUrl]="documentUrl"></app-image-preview>
+</div>
+
+<div *ngIf="isPdf">
+  <div *ngIf="innerHtml" style="width: 100%; height: 400px;" [innerHTML]="innerHtml">
+  </div>
+<!--   <app-pdf-preview [pdfUrl]="documentUrl"></app-pdf-preview> -->
+</div>
+
+<div *ngIf="!isImage && !isPdf" align="center">
+  <h6 style="width: 100%">No hay rol de pago</h6>
+</div>

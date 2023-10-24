@@ -1,0 +1,133 @@
+<ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Generando...</p>
+</ngx-spinner>
+
+<vex-page-layout>
+
+     <vex-page-layout-header class="page-head">
+        <div class="head-icon">
+          <h2 class="headline text-primary-contrast m-0 flex items-center">
+              <mat-icon [routerLink]="['/contabilidad/asiento-contable']" [icIcon]="icroundAutoStories" class="icon" matTooltip="Libros Contables"></mat-icon>
+              <mat-icon [icIcon]="icroundChevronRight" class="icon" ></mat-icon>
+              <span @fadeInRight class=" block">Registro de Asientos</span>
+          </h2>
+      </div>
+    </vex-page-layout-header> 
+    <vex-page-layout-content  [class.container]="layoutCtrl.value === 'boxed'" [class.px-gutter]="layoutCtrl.value === 'fullwidth'" class="-mt-6">
+
+                <div @fadeInUp class="card p-10">
+                  
+                  <form  #formLibro [formGroup]="formLibroDiario">
+
+      <div class="titulovalor" style="margin-top: 0%">    
+
+
+            <!--tipo de asiento-->
+            <mat-form-field   class="animate__animated animate__fade" fxFlex="auto" >
+              <mat-label class="labelForm">Tipo de Asiento</mat-label>
+              <mat-select id="idTipoAsiento"
+                          required="required" 
+                          formControlName="idTipoAsiento"
+                          (selectionChange)="changeTipoAsiento($event)">
+                      <mat-option *ngFor="let tipoAsiento of tiposAsiento" [value]="tipoAsiento.idTipoAsiento">
+                              {{ tipoAsiento.descripcion }}
+                      </mat-option>
+              </mat-select>
+              <mat-error  *ngIf="formLibroDiario.get('idTipoAsiento').errors">{{getErrorMessage(formLibroDiario.get('idTipoAsiento'))}}</mat-error>
+            </mat-form-field>
+
+
+           <!--Fecha-->
+            <mat-form-field  class="animate__animated animate__fade" fxFlex="auto">
+              <mat-label class="labelForm">Fecha</mat-label>
+              <input
+                  id="fecha"
+                  [(value)]="currentDate"
+                  [matDatepicker]="datepickerReffecha"
+                  type='datetime'
+                  matInput
+                  (change)="verifyAsientoForm()" >
+                  <mat-datepicker-toggle
+                          [for]="datepickerReffecha"
+                          class="block"
+                          matSuffix></mat-datepicker-toggle>
+                  <mat-datepicker #datepickerReffecha></mat-datepicker>
+                  <mat-error  *ngIf="formLibroDiario.get('fecha').errors">{{getErrorMessage(formLibroDiario.get('fecha'))}}</mat-error>
+          </mat-form-field>
+
+
+          <!--tipo de transaccion-->
+          <mat-form-field class="animate__animated animate__fade" fxFlex="auto" >
+            <mat-label class="labelForm">Tipo de Transacción</mat-label>
+            <mat-select id="idTipoTransaccion"
+                        required="required" 
+                        formControlName="idTipoTransaccion"
+                        (selectionChange)="changeTipoTransaccion($event)">
+                    <mat-option *ngFor="let tipoTransaccion of tiposTransaccion" [value]="tipoTransaccion.idTipoTransaccion">
+                            {{ tipoTransaccion.descripcion }}
+                    </mat-option>
+            </mat-select>
+            <mat-error  *ngIf="formLibroDiario.get('idTipoTransaccion').errors">{{getErrorMessage(formLibroDiario.get('idTipoTransaccion'))}}</mat-error>
+            </mat-form-field>
+
+
+         <!--Numero Control -->
+         <mat-form-field  class="vex-flex-form-field" fxFlex="auto">
+          <mat-label class="labelForm">Número de Control</mat-label>
+          <input
+      
+              id="valor"
+              required="required"
+              placeholder="0.00"
+              [min]="0"
+              formControlName="numeroControl"
+              (change)="setValue()"
+              [inputMask]="IntInputMask"
+              [ngModel]="this.formLibroDiario.value.numeroControl"
+              class="right-align"
+              matInput 
+              appTwoDigitDecimaNumber/>
+              <mat-error  *ngIf="formLibroDiario.get('numeroControl').errors">{{getErrorMessage(formLibroDiario.get('numeroControl'))}}</mat-error>
+      </mat-form-field>
+
+              </div>
+                    
+              <div class="mt-4" fxLayout="row warp" fxLayoutGap="10px">
+                <!-- observaciones -->
+                   <mat-form-field style="flex: 100% !important;"  class=" animate__animated animate__fade" fxFlex="auto">
+                     <mat-label>Observaciones</mat-label>
+                     <textarea  (change)="verifyAsientoForm()" matInput="matInput" rows="3" formControlName="observaciones"></textarea>
+                 </mat-form-field>
+              </div>
+
+                  <!-- tablaDetalleAsientos -->
+              <vex-scrollbar class="h-full relative">
+                <div class="content" fxLayout="column" fxLayoutAlign="space-between">
+                  <vex-table-asientos-contables [idAsientoContable]="formLibroDiario.value.idAsientoContable"  (ResultEmitter)="saveAsiento($event)"></vex-table-asientos-contables>
+                </div>
+              </vex-scrollbar>
+              
+              <ng-template #tpl let-element>
+                <div class="mat-row detail-row" style="overflow: hidden">
+                  The symbol for {{element.name}} is {{element.symbol}}
+                </div>
+              </ng-template>
+              
+                            
+
+            </form>
+                  
+            <mat-dialog-actions align="end">
+              <button class="mx-2" mat-button [disabled]="noAllow"  mat-raised-button color="primary" (click)="save()" >GUARDAR</button>
+              <button class="mx-2" mat-button [disabled]="noAllow"  mat-raised-button color="primary" (click)="finish()" >FINALIZAR</button>
+            </mat-dialog-actions>
+
+          </div>
+              
+
+    </vex-page-layout-content>
+</vex-page-layout>

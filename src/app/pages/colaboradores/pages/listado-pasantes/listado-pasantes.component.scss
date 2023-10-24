@@ -1,0 +1,88 @@
+.head-icon {
+    margin-left: 2%;
+  
+    .mat-icon {
+        font-size: 80px;
+        background-repeat: no-repeat;
+        display: inline-block;
+        fill: currentColor;
+        height: 80px;
+        width: 80px;
+    }
+  }
+  
+  .loading {
+    height: 400px;
+  }
+  
+  
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    background: var(--COLOR-WHITE) !important;
+    border-radius: 8px;
+  }
+  .filter-label {
+    margin: 1ch 0 1ch 3ch;
+    font-weight: bold;
+    font-size: medium;
+    margin-right: 10px;
+  }
+  .filter-box {
+    margin: 1ch 0;
+  }
+  .button-download {
+    position: inherit !important;
+    margin: 0 !important;
+    height: 50px;
+  }
+  //small
+  @media screen and (max-width: 40em) {
+    .head-app-bar {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        height: 160px;
+        .search-bar {
+            min-width: 180px;
+        }
+    }
+    .head-title {
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    .loading {
+        height: 200px;
+    }
+  }
+  
+  //medium
+  @media screen and (min-width: 40em) and (max-width: 63.9em) {
+    .head-app-bar {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        .search-bar {
+            min-width: 300px;
+        }
+    }
+  }
+  
+  //large
+  @media screen and (min-width: 64em) {
+    .head-app-bar {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+  
+    }
+    .contenedor-listado {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+  }
+  
+  ::ng-deep .swal2-confirm {
+    background-color: var(--COLOR-PRIMARY) !important;
+    color: var(--COLOR-PRIMARY-CONTRAST) !important;
+  }
+  
+  ::ng-deep .swal2-actions {
+    justify-content: space-around !important;
+  }
+  

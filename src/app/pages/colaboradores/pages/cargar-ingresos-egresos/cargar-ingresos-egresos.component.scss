@@ -1,0 +1,27 @@
+.head-icon {
+  margin-left: 2%;
+
+  .mat-icon {
+      font-size: 80px;
+      background-repeat: no-repeat;
+      display: inline-block;
+      fill: currentColor;
+      height: 80px;
+      width: 80px;
+  }
+}
+
+  
+.card {
+  margin-top: -3%;
+  overflow: auto;
+  width: -webkit-fill-available;
+}
+
+//small
+@media screen and  (max-width: 63.9em) {
+  .mat-selects {
+      grid-template-columns: repeat(1, 1fr);
+      column-gap: 3%;
+  }
+}

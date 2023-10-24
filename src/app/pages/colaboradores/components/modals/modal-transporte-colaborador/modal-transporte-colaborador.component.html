@@ -1,0 +1,142 @@
+<div mat-dialog-content>
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-title">Vehículo</h4>
+    </div>
+    <mat-vertical-stepper orientation="vertical" linear="true" #stepper>
+        <mat-step [stepControl]="formTransporte">
+            <form [formGroup]="formTransporte">
+                <ng-template matStepLabel>Datos</ng-template>
+
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Placa</mat-label>
+                    <input [disabled]="envioEnProgreso" [readonly]="data.visualizationMode" matInput formControlName="placa" required maxlength="7">
+                    <mat-error *ngIf="formTransporte.controls.placa.hasError('required')">
+                        Placa es requerida
+                    </mat-error>
+                </mat-form-field>
+
+
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Marca</mat-label>
+                    <input [readonly]="data.visualizationMode" matInput formControlName="marca" maxlength="20" required>
+                    <mat-error *ngIf="formTransporte.controls.marca.hasError('required')">
+                        La marca es requerida
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Modelo</mat-label>
+                    <input [readonly]="data.visualizationMode" matInput formControlName="modelo" maxlength="20"
+                        required>
+                    <mat-error *ngIf="formTransporte.controls.modelo.hasError('required')">
+                        El modelo es requerido
+                    </mat-error>
+
+                </mat-form-field>
+
+
+
+
+                <mat-form-field class="example-full-width">
+
+                    <mat-label>Tipo</mat-label>
+                    <mat-select required formControlName="idTipoVehiculo">
+                        <mat-option [disabled]="data.visualizationMode" *ngFor="let tipo of tipos"
+                            [value]="tipo.id">
+                            {{tipo.descripcion}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formTransporte.controls.idTipoVehiculo.hasError('required')">
+                        El tipo es requerido
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Color</mat-label>
+                    <input matInput [readonly]="data.visualizationMode"
+                        (keydown)="utilsService.validacionSoloLetras($event)" maxlength="15" formControlName="color"
+                        required>
+                    <mat-error *ngIf="formTransporte.controls.color.hasError('required')">
+                        El color es requerido
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Año</mat-label>
+                    <input [readonly]="data.visualizationMode" matInput formControlName="anio" required maxlength="4">
+                    <mat-error *ngIf="formTransporte.get('anio').hasError('required')">
+                        Año es requerido
+                    </mat-error>
+                    <mat-error *ngIf="formTransporte.get('anio').hasError('minlength')">
+                        Año debe tener 4 digitos
+                    </mat-error>
+
+                    <mat-error *ngIf="formTransporte.get('anio').hasError('pattern')">
+                        Año debe ser un número
+                    </mat-error>
+
+
+                </mat-form-field>
+
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Propietario</mat-label>
+                    <input [readonly]="data.visualizationMode" required matInput
+                        (keydown)="utilsService.validacionSoloLetras($event)" formControlName="propietario">
+                    <mat-error *ngIf="formTransporte.get('propietario').hasError('required')">
+                        El propietario es requerido
+                    </mat-error>
+
+
+                </mat-form-field>
+
+                <div mat-dialog-actions fxLayoutAlign="end center" fxLayoutGap="8px">
+
+                    <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                        (click)="onNoClick()">Cancelar</button>
+
+
+
+                    <button color="primary" mat-raised-button [disabled]="!formTransporte.valid || envioEnProgreso" cdkFocusInitial
+                        (click)="guardarReferenciaPersonal()">
+                        {{data.visualizationMode ? 'Siguiente' : 'Guardar'}}
+                    </button>
+
+
+                </div>
+
+            </form>
+        </mat-step>
+        <mat-step>
+            <br>
+            <ng-template matStepLabel>Adjunto</ng-template>
+            <div class="loading" *ngIf="loading">
+                <mat-progress-spinner diameter="60" mode="indeterminate"></mat-progress-spinner>
+            </div>
+
+            <div *ngIf="!loading">
+                <vex-archivos-colaborador [visualizationMode]="data.visualizationMode" [idColaborador]="idEntidad"
+                    (callCargarAdjuntos)="getAdjunto(idColaborador, tipoColaborador)" [idVehiculo]="idVehiculo"
+                    [adjuntosColaborador]="adjuntosColaborador" controlView="todos">
+                </vex-archivos-colaborador>
+            </div>
+
+            <div>
+
+
+                <div mat-dialog-actions fxLayoutAlign="end center" fxLayoutGap="8px">
+
+                    <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                        matStepperPrevious>Anterior</button>
+                    <button color="primary" mat-raised-button [disabled]="!formTransporte.valid"
+                        [mat-dialog-close]="formTransporte.value" cdkFocusInitial>
+                        {{data.visualizationMode ? 'Cerrar' : 'Guardar'}}
+                    </button>
+
+                </div>
+            </div>
+        </mat-step>
+    </mat-vertical-stepper>
+</div>

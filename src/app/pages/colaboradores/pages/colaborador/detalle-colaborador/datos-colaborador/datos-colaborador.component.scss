@@ -1,0 +1,62 @@
+.value-card {
+        justify-content: center;
+    }
+
+    .avatar-card {
+        background-size: cover;
+        background-color: var(--COLOR-PRIMARY);
+    }
+    .icon-card {
+        display: flex;
+        color: var(--COLOR-PRIMARY-CONTRAST);
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .center {
+        display: flex;
+        align-items: center;
+    }
+    
+
+    .content-resum-card {
+        font-size: medium;
+    }
+    
+.interno{
+    margin-left: 1rem;
+    margin-right: 1rem;
+    }
+
+    ::ng-deep .container-high{
+        background:none;
+        box-shadow: none;
+    }
+
+.content-grid{
+    display: grid;
+}
+//small
+@media screen and (max-width: 40em) {
+    .content-grid{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+//medium
+@media screen and (min-width: 40em) and (max-width: 63.9em) {
+    .content-grid{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+//large
+@media screen and (min-width: 64em) {
+    .content-grid{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

@@ -1,0 +1,93 @@
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Cargando...</p>
+</ngx-spinner>
+
+<div class="container py-gutter">
+  <div class="card">
+    <div class="h-64 relative bg-image">
+
+      <div class="absolute opacity-100 top-0 right-0 bottom-0 left-0 w-full h-full z-0">
+        <div style="margin-left: 5%; margin-top: 2%;" fxLayout="row" fxLayoutAlign="start center">
+          <div class="bg-card rounded-full border px-4" fxFlex="400px" fxFlex.lt-md="auto" fxLayout="row"
+            fxLayoutAlign="start center">
+            <input [formControl]="searchCtrl" style="color: black;" [(ngModel)]="buscar"
+              class="px-4 py-3 border-0 outline-none w-full" placeholder="Buscar..." type="Buscar..."
+              (keyup.enter)="buscarParticipe()">
+            <button (click)="buscarParticipe()" mat-mini-fab color="primary">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="z-10 relative -mt-16 px-gutter flex items-center">
+
+      <img @scaleIn *ngIf="!fotoPerfil"
+        class="avatar h-24 w-24 flex-none align-start hidden sm:block border-3 border-white"
+        src="assets/img/sinPerfil.jpg">
+
+      <img @scaleIn *ngIf="fotoPerfil"
+        class="avatar h-24 w-24 flex-none align-start hidden sm:block border-3 border-white" [src]="fotoPerfil">
+
+      <div class="max-w-full flex-auto sm:ltr:ml-6 sm:rtl:mr-6">
+        <div class="h-16 flex items-center">
+          <h1 *ngIf="participe" @fadeInRight class="headline text-contrast-white m-0" style="font-weight: bold;">
+            {{participe.razonSocial}}</h1>
+          <h1 *ngIf="!participe" @fadeInRight class="headline text-contrast-white m-0">Nombre Partícipe</h1>
+        </div>
+
+        <nav class="vex-tabs vex-tabs-dense border-0" mat-tab-nav-bar>
+          <a *ngFor="let link of links" [active]="activeLink == link" mat-tab-link
+            (click)="cambiarSegmento(link.label)">
+            {{ link.label }}
+          </a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <vex-info-posicion-participe *ngIf="segmento == 'ACERCA' && existeParticipe == true" [dataParticipe]="participe"
+    [dataPrestamosGarantizados]="prestamosGarantizados" [dataPrestamosGarantes]="prestamosGarantes"
+    [dataComprobantes]="dataComprobantes" [dataParticipeGarantias]="participeGarantias">
+  </vex-info-posicion-participe>
+
+  <vex-creditos-participe *ngIf="segmento == 'CRÉDITOS' && existeParticipe == true" [dataParticipe]="participe"
+    [dataCreditos]="prestamos">
+  </vex-creditos-participe>
+
+
+  <vex-posicion-consolidada-participe
+    *ngIf="segmento == 'POSICIÓN CONSOLIDADA' && existeParticipe == true && datosCargados" [dataAportes]="aportes"
+    [dataCreditos]="prestamos" [saldoTotal]="total" [dataPrestamosGarantizados]="prestamosGarantizados"
+    [dataRiesgos]="riesgos" [dataParticipe]="participe" [dataAportesVencidos]="aportesPendientes">
+  </vex-posicion-consolidada-participe>
+
+
+</div>
+
+<!-- <div class="container">
+  <div class="row" style="height: 30px; width: 100%; background-color: rgb(129, 129, 255); margin: 0;">
+    <div class="col">
+      <h6>Detalle</h6>
+    </div>
+    <div class="col">
+      <h6>Plazo</h6>
+    </div>
+    <div class="col">
+      <h6>Tasa Efectiva</h6>
+    </div>
+    <div class="col">
+      <h6>Monto Garantia</h6>
+    </div>
+  </div>
+  <div class="row" style="width: 100%; height:100% !important; margin: 0;" *ngFor="let item of [1,1,1]">
+    <div class="row" style="height: 30px; width: 100%; background-color: rgb(201, 201, 201); margin: 0;">
+
+    </div>
+    <div class="row" style="height: 30px; width: 100%; background-color: rgb(255, 255, 255); margin: 0;">
+    </div>
+  </div>
+</div>
+ -->

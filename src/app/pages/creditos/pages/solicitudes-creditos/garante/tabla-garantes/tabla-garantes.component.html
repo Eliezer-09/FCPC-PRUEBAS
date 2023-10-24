@@ -1,0 +1,67 @@
+
+<vex-scrollbar class="scrollbar">
+<table *ngIf="garantesdataSource.data.length != 0" @stagger [dataSource]="garantesdataSource.data" class="w-full" mat-table matSort>
+
+
+        <ng-container matColumnDef="identificacion">
+            <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>IDENTIFICACIÓN
+            </mat-header-cell>
+            <mat-cell class="description-cell" *matCellDef="let garante"
+                style="color: rgb(0,0,0,0.54);">{{garante.identificacion}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="montoGarantia">
+            <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>MONTO
+            </mat-header-cell>
+            <mat-cell class="description-cell" *matCellDef="let garante"
+                style="color: rgb(0,0,0,0.54);">${{garante.montoGarantia | number:'.2-2'}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="observaciones">
+            <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>OBSERVACIÓN
+            </mat-header-cell>
+            <mat-cell class="description-cell" *matCellDef="let garante"
+                style="color: rgba(164, 164, 164, 0.54);">{{garante.observaciones}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="documento" stickyEnd >
+            <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>DOCUMENTOS
+            </mat-header-cell>
+            <mat-cell class="description-cell" *matCellDef="let garante"> 
+                <div style="width: 130px;" >                   
+                  <mat-icon color="primary"   class="icon" [icIcon]="icroundAttachFile" [matTooltip]="'C.I. Frontal'" (click)="viewFile(garante.adjuntoFrontal)"></mat-icon>
+                  <mat-icon color="primary"   class="icon" [icIcon]="icroundAttachFile" [matTooltip]="'C.I. Posterior'" (click)="viewFile(garante.adjuntoPosterior)"></mat-icon>
+                  <mat-icon color="primary"   class="icon" [icIcon]="icroundAttachFile" [matTooltip]="'Rol'" (click)="viewFile(garante.adjuntoRol)"></mat-icon>
+                </div> 
+                </mat-cell>
+            <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="accion" stickyEnd>
+            <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header>ACCIONES
+            </mat-header-cell>
+            <mat-cell class="description-cell" *matCellDef="let garante">
+                <div style="width: 130px;">   
+                <mat-icon (click)="eliminarGarante(garante)" [matTooltip]="'Eliminar'" style="color:red" [icIcon]="icDelete"
+                class="icon"></mat-icon>
+            </div> 
+        </mat-cell>
+                
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="columnasGarante; sticky: true"></mat-header-row>
+
+        <mat-row *matRowDef="let row; columns: columnasGarante"></mat-row>
+</table>
+
+
+<div  style="width: 100%;" *ngIf="garantesdataSource.data.length == 0">
+    <vex-info-message
+    [message]='infoMessage'
+    [icon]='icroundPerson'
+    [typeicon]="'icIcon'"></vex-info-message>
+</div>
+ <vex-view-adjuntos></vex-view-adjuntos> 
+</vex-scrollbar>

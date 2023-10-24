@@ -1,0 +1,22 @@
+<div mat-dialog-content>
+
+    <div class="modal-header">
+      <h4  class="modal-title" id="modal-title">{{title}}</h4>
+    </div>
+  
+  
+    <form [formGroup]="form">
+
+      <mat-form-field class="example-full-width">
+        <mat-label>ID</mat-label>
+        <input matInput formControlName="text" readonly="readonly" required>
+      </mat-form-field>
+
+    </form>
+
+    <div mat-dialog-actions fxLayoutAlign="center" fxLayoutGap="8px">
+        <button color="primary" mat-raised-button  (click)="confirm()">CONFIRMAR</button>
+      </div>
+  
+  </div>
+  

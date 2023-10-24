@@ -1,0 +1,105 @@
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Cargando...</p>
+</ngx-spinner>
+<div>
+    <div class="head-modal" fxLayoutAlign="start center">
+        <h2 text-center="text-center" class="head-title">Actualizar Partícipe</h2>
+        <button class="simple-button" mat-dialog-close={{null}} mat-icon-button="mat-icon-button" type="button">
+            <mat-icon [icIcon]="icroundClose"></mat-icon>
+        </button>
+    </div>
+    
+    <div @fadeInUp class="card overflow-hidden" >
+<br/>
+        <mat-accordion class="headers-align">
+          <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title> {{Tab1}} </mat-panel-title>
+              <mat-panel-description>
+                &nbsp; <mat-icon>account_circle</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+    
+            <!--   Datos Participe -->
+            <vex-datos-participe *ngIf="participe.identificacion" [actualizarDatos]="participe">
+            </vex-datos-participe>
+    
+            <mat-action-row>
+              <button mat-raised-button color="primary" (click)="nextStep()">Siguiente</button>
+    
+            </mat-action-row>
+    
+            <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px" style="margin-top: 2%;">
+    
+            </div>
+    
+    
+          </mat-expansion-panel>
+    
+          <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>{{Tab2}} </mat-panel-title>
+              <mat-panel-description>
+                &nbsp; <mat-icon>description</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+    
+            <!--  Adjuntos -->
+            <vex-adjuntos-general *ngIf="participe.idParticipe" [id]="participe.idParticipe"
+              [adjuntosGenerales]="adjuntosGenerales"></vex-adjuntos-general>
+    
+            <mat-action-row>
+              <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                (click)="prevStep()">Anterior</button>
+              <button mat-raised-button color="primary" (click)="nextStep()">Siguiente</button>
+            </mat-action-row>
+          </mat-expansion-panel>
+    
+          <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title> {{Tab3}} </mat-panel-title>
+              <mat-panel-description>
+                &nbsp; <mat-icon>paid</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+    
+            <!-- perfil economico -->
+            <vex-perfil-economico *ngIf="participe.idParticipe"
+              [idParticipe]="participe.idParticipe"></vex-perfil-economico>
+    
+            <mat-action-row>
+              <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                (click)="prevStep()">Anterior</button>
+              <button mat-raised-button color="primary" (click)="nextStep()">Siguiente</button>
+            </mat-action-row>
+          </mat-expansion-panel>
+    
+    
+          <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title> {{Tab4}} </mat-panel-title>
+              <mat-panel-description>
+                &nbsp; <mat-icon>account_balance_wallet</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+    
+            <!-- datos bancarios -->
+    
+            <app-referencias-bancarias *ngIf="participe.idParticipe"
+              [idParticipe]="participe.idParticipe"></app-referencias-bancarias>
+    
+            <mat-action-row>
+              <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                (click)="prevStep()">Anterior</button>
+            </mat-action-row>
+          </mat-expansion-panel>
+    
+    
+    
+        </mat-accordion>
+        
+</div>
+<!-- <br/>
+        <div style="display:flex; justify-content: end; margin:10px">
+          <button mat-raised-button  class="forms-full-button"  color="primary" (click)="verificarActualizacion()">Finalizar</button>
+        </div> -->

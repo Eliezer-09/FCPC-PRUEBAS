@@ -1,0 +1,138 @@
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Cargando...</p>
+</ngx-spinner>
+
+
+<div>
+  <h4 style="font-weight: bold;">Crear ticket de atención</h4>
+  <br>
+  <form [formGroup]="datosTicket" class="example-form">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+
+      <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+        <mat-label>Tipos de tarea: </mat-label>
+        <mat-select (selectionChange)="seleccionarTarea($event.value)" name="idTipoTarea" ngDefaultControl required
+          formControlName="idTipoTarea" #singleSelect>
+          <mat-option>
+            <ngx-mat-select-search placeholderLabel="Buscar tipo de tareas..."
+              noEntriesFoundLabel="'No se encuentra el tipo de tarea'" [formControl]="tipoTareaFilterCtrl">
+              <mat-icon ngxMatSelectSearchClear>x</mat-icon>
+            </ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let item of filteredTipoTarea | async" [value]="item.idTipoTarea">
+            {{ item.descripcion }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div *ngIf="area">
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Área:</mat-label>
+          <input readonly matInput formControlName="area" [(ngModel)]="descripcionDepartamento">
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+      <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+        <mat-label>Tags:</mat-label>
+        <mat-select style="margin-bottom: 3%;" (selectionChange)="seleccionarTags($event.value)">
+          <mat-option *ngFor="let tag of tags" [value]="tag">
+            {{tag.descripcion}}
+          </mat-option>
+        </mat-select>
+        <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal">
+          <mat-chip class="example-box" cdkDrag *ngFor="let tag of tagsSeleccionados">
+            {{tag.descripcion}}
+            <ic-icon style="cursor: pointer" (click)="eliminarTag(tag)" [icon]="icClose" size="18px"></ic-icon>
+          </mat-chip>
+        </mat-chip-list>
+      </mat-form-field>
+
+      <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+        <mat-label>Prioridad:</mat-label>
+        <mat-select formControlName="prioridad">
+          <mat-option [value]="1">Urgente</mat-option>
+          <mat-option [value]="2">Alta</mat-option>
+          <mat-option [value]="3">Media</mat-option>
+          <mat-option [value]="4">Baja</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Asunto:</mat-label>
+      <input matInput formControlName="asunto">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Descripcion:</mat-label>
+      <textarea matInput formControlName="descripcion"></textarea>
+    </mat-form-field>
+    <div class="row">
+      <div class="col-6">
+        <mat-checkbox color="primary" (change)="datosParticipe($event.checked)">Incluir datos de un
+          participe</mat-checkbox>
+      </div>
+      <div class="col-6">
+        <mat-checkbox color="primary" (change)="checkAprobacion($event.checked)">Requiere aprobación</mat-checkbox>
+      </div>
+    </div>
+    <mat-form-field *ngIf="checkBox" class="example-full-width" appearance="fill">
+      <mat-label>Identificación del Partícipe:</mat-label>
+      <input matInput (ngModelChange)="change($event)" maxlength="10" formControlName="identificacion" matInput>
+    </mat-form-field>
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+      <mat-form-field *ngIf="checkBoxAprobacion" class="vex-flex-form-field" fxFlex="auto">
+        <mat-label>Requiere aprobacion de:</mat-label>
+        <mat-select style="margin-bottom: 3%;" (selectionChange)="seleccionarAprobador($event.value)">
+          <mat-option *ngFor="let usuario of aprobadores" [value]="usuario.idEntidad">
+            {{usuario.nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <h3 *ngIf="checkBox" style="text-align: center;">{{ nombreParticipe }}</h3>
+    <h4 style="font-weight: bold;">Mensajes predeterminados</h4>
+    <div class="row">
+      <div class="col" *ngFor="let item of mensajes">
+        <span (click)="setearMensaje(item)" class="badge badge-pill badge-secondary">
+          <h5 style="font-weight: bold">{{item.asunto}}</h5>
+          <p>{{item.descripcion}}</p>
+        </span>
+      </div>
+    </div>
+
+  </form>
+
+  <div style="margin-top: 1%;" *ngIf="mostrarAdjuntos">
+    <div
+      class="vex-mail-compose-attachment mt-4 mb-2 rounded-full border px-4 py-1 flex items-center hover:bg-hover transition duration-200 ease-in-out cursor-pointer relative"
+      matRipple *ngFor="let adjunto of adjuntos; let i = index">
+      <ic-icon [icon]="icPictureAsPdf" class="flex-none text-primary" size="18px"></ic-icon>
+      <p class="flex-auto ml-4 text-sm">{{adjunto.observaciones}}</p>
+
+      <p class="text-sm text-secondary mr-2 flex-none">{{adjunto.size}}kb</p>
+      <button class="flex-none w-8 h-8 leading-none" mat-icon-button type="button" (click)="removeAdjunto(i)">
+        <mat-icon [icIcon]="icClose" size="18px"></mat-icon>
+      </button>
+    </div>
+  </div>
+  <br>
+  <div mat-dialog-actions style="justify-content: space-between;">
+    <input class="btn" (change)="upload($event)" type="file" id="inputFile" />
+    <button (click)="upload($event)" mat-icon-button matTooltip="Adjuntar Archivo" type="button">
+      <mat-icon [icIcon]="icDocument"></mat-icon>
+      <span>Adjuntar</span>
+    </button>
+    <div align="end">
+      <button mat-button mat-dialog-close style="color: red;">Cerrar</button>
+      <button *ngIf="!existeSubTarea" style="float: right;" mat-raised-button color="primary"
+        (click)="generarTicket()">Crear ticket</button>
+      <button *ngIf="existeSubTarea" style="float: right;" mat-raised-button color="primary"
+        (click)="crearSubTarea()">Crear sub tarea</button>
+    </div>
+  </div>
+</div>

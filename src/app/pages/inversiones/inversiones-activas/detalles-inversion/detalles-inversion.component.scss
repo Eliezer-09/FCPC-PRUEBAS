@@ -1,0 +1,108 @@
+
+.head-icon {
+    margin-left: 2%;
+    .mat-icon {
+        font-size: 80px;
+        background-repeat: no-repeat;
+        display: inline-block;
+        fill: currentColor;
+        height: 80px;
+        width: 80px;
+    }
+}
+
+.card {
+    margin-top: -3%;
+    overflow: hidden;
+}
+
+.Resum-cards {
+    display: flex;
+    height: min-content;
+    text-align: center;
+    justify-content: center;
+    grid-column-end: 4;
+    grid-column-start: 2;
+    justify-self: end;
+    overflow: auto;
+}
+
+.content-resum-card {
+    font-size: medium;
+}
+
+.Resum-description {
+    margin: 1rem 2rem 0;
+}
+.head {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+}
+
+.value-card {
+    width: fit-content;
+    background-color: #f1f0f1;
+    margin: 10px;
+}
+
+.avatar-card {
+    background-size: cover;
+    background-color: var(--COLOR-PRIMARY);
+}
+.icon-card {
+    display: flex;
+    color: var(--COLOR-PRIMARY-CONTRAST);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center {
+    display: flex;
+    align-items: center;
+}
+
+::ng-deep .mat-tab-header {
+    align-self: center;
+}
+
+::ng-deep .tab-detalle .mat-tab-labels {
+    justify-content: center !important;
+}
+
+::ng-deep .mat-tab-group {
+    display: block;
+    flex-direction: column;
+}
+
+.icon-tab {
+    padding-right: 35px !important;
+}
+
+.label {
+    font-weight: bolder;
+}
+td {
+    text-transform: capitalize;
+    margin-bottom: 10px;
+}
+.value {
+    padding-left: 15px;
+}
+
+//small
+@media screen and (max-width: 40em) {
+    .head {
+        display: contents;
+    }
+}
+
+//medium
+@media screen and (min-width: 40em) and (max-width: 63.9em) {
+    .head {
+        display: contents;
+    }
+}
+
+//large
+@media screen and (min-width: 64em) {}

@@ -1,0 +1,113 @@
+<ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Generando...</p>
+</ngx-spinner>
+<h1 mat-dialog-title="mat-dialog-title">Asignar Calificación al Emisor</h1>
+<div mat-dialog-content="mat-dialog-content">
+
+    <div
+        fxLayout="column"
+        fxLayout.gt-xs="row"
+        fxLayoutGap="8px"
+        fxLayoutGap.gt-xs="24px"
+        *ngIf="data">
+        <h4>Razón Social:
+            {{data["razonSocial"]}}</h4>
+    </div>
+    <br/>
+    <form #formvalor [formGroup]="formCalificarEmisor">
+        <div
+            fxLayout="column"
+            fxLayout.gt-xs="row"
+            fxLayoutGap="8px"
+            fxLayoutGap.gt-xs="24px">
+
+            <mat-form-field appearance="outline" class="vex-flex-form-field" fxFlex="auto">
+                <mat-label>Calificadoras</mat-label>
+                <mat-select
+                    required="required"
+                    formControlName="idCalificadora"
+                    #singleSelect>
+                    <mat-option >
+                        <ngx-mat-select-search
+                            placeholderLabel="Buscar calificadoras..."
+                            noEntriesFoundLabel="No se encuentra la calificadora"
+                            [formControl]="calificadoraFilterCtrl">
+                            <mat-icon ngxMatSelectSearchClear="ngxMatSelectSearchClear">x</mat-icon>
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option
+                        *ngFor="let calificadora of filteredCalificadoras | async"
+                        [value]="calificadora.idEntidad">{{calificadora.descripcion }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="formCalificarEmisor.get('idCalificadora').errors">{{getErrorMessage(formCalificarEmisor.get('idCalificadora'))}}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="vex-flex-form-field" fxFlex="auto">
+                <mat-label>Calificación</mat-label>
+                <mat-select
+                    required="required"
+                    formControlName="idCalificacionFinanciera"
+                    #singleSelect>
+                    <mat-option >
+                        <ngx-mat-select-search
+                            placeholderLabel="Buscar calificación..."
+                            noEntriesFoundLabel="No se encuentra la calificación"
+                            [formControl]="calificacionEmisorFilterCtrl">
+                            <mat-icon ngxMatSelectSearchClear="ngxMatSelectSearchClear">x</mat-icon>
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option
+                        *ngFor="let item of filteredCalificaciones | async"
+                        [value]="item.idCalificacionFinanciera">
+                        {{ item.descripcion }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="formCalificarEmisor.get('idCalificacionFinanciera').errors">{{getErrorMessage(formCalificarEmisor.get('idCalificacionFinanciera'))}}</mat-error>
+            </mat-form-field>
+
+        </div>
+
+        <div
+            fxLayout="column"
+            fxLayout.gt-xs="row"
+            fxLayoutGap="8px"
+            fxLayoutGap.gt-xs="24px">
+            <mat-form-field appearance="outline" class="vex-flex-form-field" fxFlex="auto">
+                <mat-label>Fecha Calificación Emisor</mat-label>
+                <input
+                    id="fechaCompra"
+                    required="required"
+                    [matDatepicker]="datepickerReffechaCalificacion"
+                    max="{{today | date:'yyyy-MM-dd'}}"
+                    formControlName="fechaCalificacion"
+                    type='datetime'
+                    matInput="matInput">
+                    <mat-datepicker-toggle
+                        [for]="datepickerReffechaCalificacion"
+                        class="block"
+                        matSuffix="matSuffix"></mat-datepicker-toggle>
+                    <mat-datepicker
+                        #datepickerReffechaCalificacion></mat-datepicker>
+                    <mat-error *ngIf="formCalificarEmisor.get('fechaCalificacion').errors">{{getErrorMessage(formCalificarEmisor.get('fechaCalificacion'),"la fecha actual")}}</mat-error>
+
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+    <div style="float: left;" mat-dialog-actions="mat-dialog-actions">
+        <button
+            mat-button="mat-button"
+            [mat-dialog-close]="'cancelado'">Cancelar</button>
+    </div>
+    <div style="float: right;" mat-dialog-actions="mat-dialog-actions">
+        <button
+            [disabled]="formCalificarEmisor.invalid"
+            (click)="AsignarCalificacionEmisor()"
+            mat-raised-button="mat-raised-button"
+            color="primary"
+            mat-dialog-close="mat-dialog-close">Asignar Calificación</button>
+    </div>

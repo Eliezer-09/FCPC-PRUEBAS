@@ -1,0 +1,192 @@
+<div mat-dialog-content>
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-title">
+
+            {{tipo == 'certificado' ? 'Capacitación Complementaria' : 'Educación Formal'}}
+        </h4>
+    </div>
+
+
+
+    <mat-vertical-stepper orientation="vertical" linear="true" #stepper>
+        <mat-step [stepControl]="formFormacionAcademica">
+            <form [formGroup]="formFormacionAcademica">
+                <ng-template matStepLabel>Datos</ng-template>
+
+                <mat-form-field class="example-full-width" *ngIf="tipo!= 'certificado'">
+
+                    <mat-label>Nivel de estudios</mat-label>
+                    <mat-select (selectionChange)="noAplica($event.value)" required formControlName="idNivelEstudios">
+                        <mat-option [disabled]="data.visualizationMode" *ngFor="let area of nivelesEstudio"
+                            [value]="area.idNivelEstudios">
+                            {{area.descripcion}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formFormacionAcademica.get('idNivelEstudios').hasError('required')">
+                        El nivel de estudios es requerido
+                    </mat-error>
+                </mat-form-field>
+
+                <div *ngIf="!(tipo == 'formacion' && formFormacionAcademica.get('idNivelEstudios').value == idNoAplica)">
+                    <mat-form-field class="example-full-width" *ngIf="tipo!= 'certificado'">
+                        <mat-label>Institución educativa</mat-label>
+                        <input [readonly]="data.visualizationMode" matInput required
+                            formControlName="institucionEducativa" [disabled]="envioEnProgreso">
+                        <mat-error *ngIf="formFormacionAcademica.get('institucionEducativa').hasError('required')">
+                            La institución educativa es requerida
+                        </mat-error>
+                    </mat-form-field>
+
+
+                    <mat-form-field class="example-full-width" *ngIf="tipo == 'certificado'">
+
+                        <mat-label>Tipo de capacitación</mat-label>
+                        <mat-select required formControlName="idCertificacion">
+                            <mat-option [disabled]="data.visualizationMode" *ngFor="let area of tiposCurso"
+                                [value]="area.id">
+                                {{area.descripcion}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="formFormacionAcademica.get('idCertificacion').hasError('required')">
+                            El tipo de capacitación es requerido
+                        </mat-error>
+                    </mat-form-field>
+
+
+
+                    <mat-form-field class="example-full-width">
+                        <mat-label>{{tipo == 'certificado' ? 'Nombre de la capacitación' : 'Título'}}</mat-label>
+                        <input [readonly]="data.visualizationMode" matInput required formControlName="titulo">
+                        <mat-error *ngIf="formFormacionAcademica.get('titulo').hasError('required')">
+                            El {{tipo == 'certificado' ? 'nombre de la capacitación' : 'título'}} es requerido
+                        </mat-error>
+                    </mat-form-field>
+
+
+                    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+
+                        <section class="example-section">
+                            <label class="example-margin">¿Se encuentra cursando? *</label>
+                            <mat-radio-group (change)="cambiarValidacion()" [disabled]="data.visualizationMode"
+                                aria-label="Select an option" formControlName="cursandoActualmente">
+                                <mat-radio-button class="example-margin" [value]="true">Si</mat-radio-button>
+                                <mat-radio-button class="example-margin" [value]="false">No</mat-radio-button>
+
+                                <mat-error *ngIf="formFormacionAcademica.get('cursandoActualmente')?.touched 
+                            && formFormacionAcademica.get('cursandoActualmente').hasError('required')">
+                                    El campo es requerido
+                                </mat-error>
+
+
+                            </mat-radio-group>
+                        </section>
+
+                        <mat-form-field class="vex-flex-form-field" fxFlex="auto"
+                            *ngIf="formFormacionAcademica.get('cursandoActualmente').value">
+                            <mat-label>Nivel cursando</mat-label>
+                            <input [readonly]="data.visualizationMode" matInput formControlName="anioCursando">
+
+                        </mat-form-field>
+                    </div>
+
+
+
+
+
+
+
+
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Fecha de inicio</mat-label>
+                        <input [disabled]="data.visualizationMode" required matInput [matDatepicker]="picker4"
+                            (dateChange)="validarFecha() " formControlName="fechaInicio">
+                        <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                        <mat-datepicker #picker4></mat-datepicker>
+                        <mat-error *ngIf="formFormacionAcademica.get('fechaInicio').hasError('required')">
+                            La fecha de inicio es requerida
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width"
+                        *ngIf="!formFormacionAcademica.get('cursandoActualmente').value">
+                        <mat-label>Fecha de culminación</mat-label>
+                        <input [disabled]="data.visualizationMode" required matInput [matDatepicker]="pi"
+                            (dateChange)="validarFecha()" formControlName="fechaCulminacion">
+                        <mat-datepicker-toggle matSuffix [for]="pi"></mat-datepicker-toggle>
+                        <mat-datepicker #pi></mat-datepicker>
+                        <mat-error *ngIf="formFormacionAcademica.get('fechaCulminacion').hasError('required')">
+                            La fecha de culminación es requerida
+                        </mat-error>
+
+                        <mat-error *ngIf="formFormacionAcademica.get('fechaCulminacion').hasError('incorrect')">
+                            La fecha de culminación debe ser mayor a la fecha de inicio
+                        </mat-error>
+
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width" *ngIf="tipo == 'certificado'">
+                        <mat-label>Tiempo de curso (horas)</mat-label>
+                        <input [readonly]="data.visualizationMode" matInput type="number" formControlName="tiempoCurso">
+                        <mat-error *ngIf="formFormacionAcademica.get('tiempoCurso').hasError('pattern')">
+                            El tiempo de curso solo puede contener números enteros
+                        </mat-error>
+                        <mat-error *ngIf="formFormacionAcademica.get('tiempoCurso').hasError('max')">
+                            El tiempo de curso no puede ser mayor a 5 dígitos
+                        </mat-error>
+
+                    </mat-form-field>
+
+
+
+                </div>
+
+
+
+                <div mat-dialog-actions fxLayoutAlign="end center" fxLayoutGap="8px">
+
+                    <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                        (click)="onNoClick()">Cancelar</button>
+
+
+                    <button color="primary" mat-raised-button [disabled]="!formFormacionAcademica.valid || envioEnProgreso"
+                        (click)="guardarFormacionAcademica()">
+                        {{data.visualizationMode ? 'Siguiente' : 'Guardar'}}</button>
+
+
+                </div>
+
+
+            </form>
+        </mat-step>
+
+        <mat-step *ngIf="!(this.formFormacionAcademica.get('idNivelEstudios').value ==  idNoAplica && tipo == 'formacion')">
+
+
+            <br>
+            <ng-template matStepLabel>Adjunto</ng-template>
+            <div class="loading" *ngIf="loading">
+                <mat-progress-spinner diameter="60" mode="indeterminate"></mat-progress-spinner>
+            </div>
+            <div *ngIf="adjuntosColaborador?.length > 0  && !loading">
+                <vex-archivos-colaborador [visualizationMode]="data.visualizationMode" [idColaborador]="idEntidad"
+                    (callCargarAdjuntos)="getAdjunto(idColaborador, tipoColaborador)"
+                    [idFormacionAcademica]="idFormacionAcademica" [adjuntosColaborador]="adjuntosColaborador"
+                    controlView="todos">
+                </vex-archivos-colaborador>
+            </div>
+
+            <div>
+
+
+                <div mat-dialog-actions fxLayoutAlign="end center" fxLayoutGap="8px">
+
+                    <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+                        matStepperPrevious>Anterior</button>
+                    <button color="primary" mat-raised-button [disabled]="!formFormacionAcademica.valid"
+                        [mat-dialog-close]="formFormacionAcademica.value" cdkFocusInitial> {{data.visualizationMode ?
+                        'Cerrar' : 'Guardar'}}</button>
+
+                </div>
+            </div>
+        </mat-step>
+    </mat-vertical-stepper>
+</div>

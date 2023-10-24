@@ -1,0 +1,95 @@
+
+
+  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+      <p style="font-size: 20px; color: white">Cargando...</p>
+  </ngx-spinner>
+
+  <vex-page-layout-header class="page-head">
+        <vex-header [tituloHeader]="tituloHeader" [rutaHeader]="rutaHeader" [controlScreen]="controlScreen"
+            [icono]="icono"></vex-header>
+    </vex-page-layout-header>
+<!--     <vex-page-layout-content [class.container]="layoutCtrl.value === 'boxed'"
+        [class.px-gutter]="layoutCtrl.value === 'fullwidth'" class="-mt-6">  -->
+        <div class="-mt-14 pt-0 overflow-hidden flex px-gutter" >
+
+  <div class="main-container">
+      <div class="calendar-container">
+      <div style="width: 100%;" id="calendar"></div>
+  </div>
+
+  <div class="menu-cards-container" >
+    <div class="cards-row" style="margin-bottom: 15px;">
+        <div (click)="openDialog()" class="card">
+            <div class="title" style="border-bottom: 5px solid turquoise;">Total</div>
+            <div class="value-large">12</div>
+          </div>
+          <div class="card">
+            <div class="title" style="border-bottom: 5px solid orange;">Pendiente</div>
+            <div class="value-large">7</div>
+          </div>
+          <div class="card">
+            <div class="title" style="border-bottom: 5px solid red;">Rechazadas</div>
+            <div class="value-large">10</div>
+          </div>
+          <div class="card" >
+            <div class="title" style="border-bottom: 5px solid green;">Aprobadas</div>
+            <div class="value-large">7</div>
+          </div>
+    </div>
+    <div class="form-container">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Solicitud de vacaciones</h3>
+      </div>  
+          <form>
+            <mat-divider></mat-divider>
+            <mat-form-field style="width: 100%; display: contents !important;" appearance="fill">
+                <mat-label>Concepto</mat-label>
+                <mat-select [formGroup]="form" formControlName="tipo" required>
+                  <mat-option *ngFor="let tipo of tipo" [value]="tipo">
+                    {{tipo}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field style="width: 100%; display: contents !important;" appearance="fill">
+              <mat-label>Rango de Fecha</mat-label>
+              <mat-date-range-input [rangePicker]="picker" [formGroup]="form">
+                <input matStartDate placeholder="Inicio" formControlName="start" [min]="minDate">
+                <input matEndDate placeholder="Fin" formControlName="end" [min]="minDate">
+              </mat-date-range-input>
+              <mat-hint>MM-DD-YYYY – MM-DD-YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker disabled="false">
+                  <mat-datepicker-actions>
+                      <button mat-raised-button matDatepickerCancel>Borrar</button>
+                      <button mat-raised-button color="primary" matDatepickerApply>Guardar</button>
+                  </mat-datepicker-actions>
+              </mat-date-range-picker>
+            </mat-form-field>
+            <button (click)="fileInput.click()" mat-icon-button matTooltip="Adjuntar Archivo" type="button">
+              <mat-icon [icIcon]="icDocument"></mat-icon>
+              <span>Adjuntar</span>
+            </button>
+            <input type="file" #fileInput style="display: none" (change)="upload($event)">
+            
+            <!-- Mostrar el nombre del archivo adjunto y botón de eliminación -->
+            <div *ngIf="archivoCargado" class="archivo-adjunto">
+              <span>{{ archivoCargado.name }}</span>
+              <button mat-icon-button (click)="eliminarArchivoCargado()">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </div>
+        </form>
+        <div mat-dialog-actions fxLayoutAlign="center" fxLayoutGap="8px">
+          <button style="color: var(--COLOR-PRIMARY-CONTRAST); background-color: var(--COLOR-PRIMARY); " mat-raised-button (click)="enviarFormulario()" cdkFocusInitial>
+            Ingresar</button>
+            <button
+            style="color: #fff; background-color: #EF2E2E;"
+            mat-raised-button
+            [routerLink]="['/vacaciones']"
+          >
+            Regresar
+          </button>
+      </div>
+    </div>
+  </div>
+  </div>

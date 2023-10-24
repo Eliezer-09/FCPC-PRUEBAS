@@ -1,0 +1,66 @@
+<div class="row" style="background-color: #112d52; width:100%; height: 100%">
+    <div class="col-7" style="padding: 0 !important;">
+            <div class="card" style="background-color: #112d52; height: 40%">
+                <div class="card-body" style="display: flex;">
+                    <div align="center" style="display: flex; margin:auto">
+                         <img src="../../../assets/img/logoBlanco.png" alt="image" style="margin: auto;">
+                    </div>
+                </div>
+            </div>
+            <div style="position: fixed; bottom: 0%; width: inherit; height: 600px;">
+                <iframe width="100%" height="100%"
+                src="https://www.youtube.com/embed/SNcSYiOLrU4?autoplay=1&controls=1&loop=1&list=PLNR31Vsx_RLVo3smJjAuzWiHxvg8eaYpe&amp;showinfo=0"
+                webkitallowfullscreen mozallowfullscreen allowfullscreen>
+                </iframe>
+                <!-- <video width="100%" height="400px" controls autoplay loop>
+                    <source src="../../../../assets/videos/videoTurnos2.mp4" type="video/mp4">
+                </video> -->
+            </div>
+            <!-- <vex-video-turno>
+            </vex-video-turno> -->
+    </div>
+    <div class="col-5" style="padding: 0;">
+        <div class="card" style="height: 100%; background-color: #292d31">
+            <div class="card-body">
+
+                <div align="center">
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="titulos">MÓDULO</h1>
+                        </div>
+                        <div class="col">
+                            <h1 class="titulos">TURNO</h1>
+                        </div>
+                    </div>
+                    <div class="row" *ngFor="let turno of turnosEnProcesos" style="height: 100%; margin-top: 6%;">
+                        <div class="col" style="margin: auto;">
+                            <h1 style="font-weight: bold; height: 100%;font-family: 'reloj'; color: rgb(255, 0, 0);font-size:100px; margin-top: 2%;">{{turno.codigoModulo}}</h1>
+                            <h3 style="color: gainsboro; margin: auto; margin-top: 6%;height:auto">{{turno.nombreAgente}}</h3>
+
+                            <!-- <span style="font-family: 'reloj';font-size:6vw ; font-weight: bold; color: red">01</span> -->
+                        </div>
+                        <div class="col" style="margin: auto;">
+                            <!-- <h1 style="font-weight: bold; font-family: 'reloj'; color: rgb(0, 255, 21);font-size:xxx-large ; ">{{turno.codigo}}</h1> -->
+                            <h1 style="color: gainsboro; margin-top: auto; height:auto">{{turno.nombre}}</h1>
+                            <!-- <span style="font-family: 'reloj';font-size:6vw ; font-weight: bold ; color: rgb(0, 255, 21)">{{turno.codigo}}</span> -->
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 30%;">
+                        <div class="col">
+                            <h1 class="titulos">PENDIENTES</h1>
+                        </div>
+                    </div>
+                    <div class="row" *ngFor="let turno of turnosPendientes" style="margin: 5%; height: 80px">
+                            <!-- <h1 style="font-weight: bold; font-family: 'reloj'; color: white; font-size: 30px; ">{{turno.codigo}}</h1> -->
+                            <div style="background-color:#292d31;">
+                                <h1 style="color: gainsboro;  margin: auto; height:auto">{{turno.nombre}}</h1>
+                            </div>
+                            <!-- <span style="font-family: 'reloj';font-size:6vw ; font-weight: bold; color: rgb(255, 255, 255)">{{turno.codigo}}</span> -->
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+<div *ngIf="controlView === adjuntoColaborador.nombreSeccion || controlView == 'todos'">
+    <div class="flex flex-nowrap justify-content-end  adjuntos-contenedor">
+
+
+
+
+        <div class="flex-initial  w-100">
+            <mat-accordion>
+
+                <mat-expansion-panel
+                    style="box-shadow:  0px 0px 4px 1px rgba(164,198,252,1); margin-bottom: 15px; border-width: 1px; ">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="panel-header">
+                            {{adjuntoColaborador?.nombreAdjunto}}
+                        </mat-panel-title>
+
+                    </mat-expansion-panel-header>
+                    <div class="flex " *ngIf="!loading">
+                        <div class="w-100">
+                            <div class=" opciones-contenedor  mt-2" *ngFor="let file of adjuntoColaborador.archivos">
+                                <span class="nombre-archivo" style=" padding-left: 10px;   width: 252px;">{{file.path}}
+                                </span>
+                                <div></div>
+                                <div class="options">
+                                    <button type="button" mat-raised-button mat-mini-fab *ngIf="!visualizationMode"
+                                        style="background-color: red;     transform: scale(0.8);"
+                                        class="buttons-options" matTooltip="Eliminar adjunto"
+                                        (click)="removerArchivosMultiples(file.idAdjunto)">
+                                        <mat-icon style="color: #fff" [icIcon]="icDelete"> </mat-icon>
+                                    </button>
+
+                                    <button type="button" mat-raised-button mat-mini-fab color="primary"
+                                        style="transform: scale(0.8);" (click)="downloadFile(file)"
+                                        matTooltip="Descargar adjunto" class="buttons-options">
+                                        <mat-icon style="color: #fff;" [icIcon]="icDownload"> </mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+
+
+        <div class="flex-initial  w-40 mx-2 row-archivo-options" *ngIf="!loading; else loadingSpinner">
+            <mat-icon style="color: green; transform: scale(1.4);" matTooltip="Adjunto cargado" [icIcon]="icCheck"
+                *ngIf="adjuntoColaborador?.archivos != ''"></mat-icon>
+            <mat-icon style="color: red;  transform: scale(1.4)"
+                [icIcon]="adjuntoColaborador?.esRequerido ? icCancel : icPriority_high"
+                [matTooltip]="adjuntoColaborador?.esRequerido ? 'El adjunto es requerido' : 'El adjunto es opcional'"
+                *ngIf="adjuntoColaborador?.archivos == ''"></mat-icon>
+        </div>
+        <ng-template #loadingSpinner>
+            <div class="flex-initial  w-40 mx-2 row-archivo-options">
+
+                <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
+            </div>
+        </ng-template>
+
+
+        <div class="flex-initial row-archivo-options  w-40" *ngIf="!visualizationMode">
+            <button type="button" mat-raised-button mat-icon-button (click)="adjuntar.click()"
+                matTooltip="Subir adjunto">
+                <mat-icon style="color: blue;  transform: scale(1.4)" [icIcon]="icUpload"></mat-icon>
+            </button>
+
+            <input hidden style="display: none" #attachments type="file" accept=".pdf,.doc,.docx,.xls,.xlsx"
+                (change)="adjuntoColaborador?.multiple ? agregarArchivosMultiples($event, adjuntoColaborador?.idTipoAdjunto) : agregarArchivo($event, adjuntoColaborador.idTipoAdjunto, adjuntoColaborador.archivos.length)"
+                #adjuntar>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="loading" *ngIf="loading">
+    <mat-progress-spinner diameter="50" mode="indeterminate"></mat-progress-spinner>
+</div>

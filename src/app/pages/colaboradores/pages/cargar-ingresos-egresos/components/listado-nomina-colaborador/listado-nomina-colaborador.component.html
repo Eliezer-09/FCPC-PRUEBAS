@@ -1,0 +1,104 @@
+
+
+<div *ngIf="task.length!=0">
+<mat-divider class="text-border end-divider"></mat-divider>
+<div class="head-options">
+    <div class="search-bar">
+        <p><b>NÓMINA {{titleNomina | uppercase}}</b></p>
+
+        <div class="head-buttons">
+<!--             <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="download.emit({ tipoColaborador: tipoColaborador, formato: 'pdf',origin:titleNomina })">PDF</button>
+              <button mat-menu-item (click)="download.emit({ tipoColaborador: tipoColaborador, formato: 'Word',origin:titleNomina })">Word</button>
+              <button mat-menu-item (click)="download.emit({ tipoColaborador: tipoColaborador, formato: 'Excel',origin:titleNomina })">Excel</button>
+            </mat-menu> 
+          
+            <button mat-icon-button [matMenuTriggerFor]="menu" [matTooltip]="'Descargar Nómina '+titleNomina">
+              <mat-icon [icIcon]="icroundFileDownload"></mat-icon>
+            </button>-->
+            <button mat-icon-button (click)="download.emit({ tipoColaborador: tipoColaborador, formato: 'Excel',origin:titleNomina })" [matTooltip]="'Descargar Nómina '+titleNomina">
+                <mat-icon [icIcon]="icroundFileDownload"></mat-icon>
+              </button>
+          </div>
+
+</div>
+</div>
+
+    <mat-divider class="text-border end-divider"></mat-divider>
+    <br><br><br>
+</div>
+    
+   <mat-accordion class="headers-align" *ngIf="task.length!=0">
+        <section class="section">
+            <span class="list-section">
+                Seleccionar todo &nbsp;
+                <mat-checkbox class="example-margin"
+                            [checked]="allComplete"
+                            [color]="'primary'"
+                            [indeterminate]="someComplete(task)"
+                            (change)="setAll(task,$event.checked)">
+            </mat-checkbox>
+            </span>
+        
+        
+    
+        <div *ngFor="let nomina of task; let i=index">
+
+        <mat-expansion-panel  style="box-shadow: none" [expanded]="expansiveInitial?false:step === i" (opened)="setStep(i)" hideToggle>
+            <mat-expansion-panel-header [ngClass]="nomina.completed?'selected-check': ''">
+            <mat-panel-title>  {{nomina.nombre}}</mat-panel-title>
+            <mat-panel-description style="display:flex; justify-content: end;">
+                &nbsp;
+                &nbsp; 
+                    <mat-checkbox [(ngModel)]="nomina.completed"
+                                    [color]="'primary'"
+                                    (click)="$event.stopPropagation()"
+                                (ngModelChange)="updateAllComplete(task)">
+                </mat-checkbox>
+        
+            </mat-panel-description>
+        
+            </mat-expansion-panel-header>
+
+            <br>
+                <p><b>NÓMINA ID: {{nomina.idNominaCabecera}}</b></p>
+            <br>
+
+            <div class="head-divider">
+                <h3 class="head-icon-title labelseccion" style="width: 180px!important;">INGRESOS</h3>
+                <mat-divider class="text-border end-divider"></mat-divider>
+            </div>     
+
+        
+            <vex-rubros-table [data]="nomina.detalleIngreso.unidad" [showTotal]="false" ></vex-rubros-table>
+            <vex-rubros-table [data]="nomina.detalleIngreso.decimal" [total]="nomina.detalleIngreso.total"  [nameTotal]="'Ingreso'" ></vex-rubros-table> 
+          
+            <br>
+            <br>
+           <div class="head-divider"> 
+                <h3 class="head-icon-title labelseccion" style="width: 180px!important;">EGRESOS</h3>
+                <mat-divider class="text-border end-divider"></mat-divider>
+            </div>    
+           
+            <vex-rubros-table [data]="nomina.detalleEgresos.decimal" [total]="nomina.detalleEgresos.total" [nameTotal]="'Egresos'"></vex-rubros-table>
+            <br>
+            <div class="totalNeto">
+                <div><b>Total Neto:</b> </div>
+                <div><b>${{nomina.totalNeto.monto | number:'.2-2'}}</b></div>
+            </div>
+              
+       
+    
+        <mat-action-row >
+           <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button mat-button  *ngIf="step!=0" (click)="prevStep()">ANTERIOR</button>
+          <button color="primary" mat-raised-button *ngIf="step!=task.length-1" (click)="nextStep()">SIGUIENTE</button>
+
+        </mat-action-row>
+
+        
+      </mat-expansion-panel>
+    
+    </div>
+     
+    </section>
+    </mat-accordion>

@@ -1,0 +1,34 @@
+<ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-scale-multiple"> 
+    <p style="font-size: 20px; color: white">Generando...</p>
+</ngx-spinner>
+<div mat-dialog-content>
+    <vex-page-layout-content @stagger [class.container]="layoutCtrl.value === 'boxed'"  class="-mt-6">
+        <div class="card">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-title">Desglose de Vacaciones Pendientes</h4>
+            </div>
+            <div *ngIf="dataFondoSource.data.length !== 0 && !isLoading">
+                <section class="progress">
+                    <div class="progress-bar progress-bar-striped bg-success" style="width: 100%" aria-valuenow="100"></div>
+                </section>
+                <vex-view-table [menubutton]="true" [columns]="tableColumns" [data]="dataFondoSource.data">
+                </vex-view-table>
+                <div class="paginator-container">
+                    <mat-paginator [length]="dataFondoSource.data.length" [pageSizeOptions]="[5,10,25,100]" [pageSize]="pageSize"
+                        (page)="pageEvent = $event; onPaginateChange($event)" class="sticky left-0"></mat-paginator>
+                </div>
+            </div>
+            <div *ngIf="dataFondoSource.data.length === 0 && !isLoading">
+                <vex-info-message [message]='infoMessage' [icon]='icroundDiamond' [typeicon]="'icIcon'"></vex-info-message>
+            </div>
+            <div *ngIf="isLoading" class="loading">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                <p style="font-size: 20px; color: black">Generando...</p>
+            </div>
+        </div>
+    </vex-page-layout-content>
+</div>

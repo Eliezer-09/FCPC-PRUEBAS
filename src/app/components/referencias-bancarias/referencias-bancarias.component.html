@@ -1,0 +1,162 @@
+<div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <form [formGroup]="bancarioForm">
+        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+
+
+            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                <mat-label class="labelForm">Instituciones</mat-label>
+                <mat-select id="instituciones" required="required" ngDefaultControl="ngDefaultControl"
+                    formControlName="idEntidadFinanciera" #singleSelect>
+                    <mat-option>
+                        <ngx-mat-select-search placeholderLabel="Buscar Instituciones..."
+                            noEntriesFoundLabel="'No se encuentra la Institución'"
+                            [formControl]="institucionesFinancierasDataFilterCtrl">
+                            <mat-icon ngxMatSelectSearchClear="ngxMatSelectSearchClear">x</mat-icon>
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option style="font-size: small;" *ngFor="let inst of filteredInstituciones | async"
+                        [value]="inst.idEntidadFinanciera">
+                        <p style="font-size: small;">
+                            {{ inst.descripcion }}
+                        </p>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                <mat-label required>Tipos de cuenta</mat-label>
+                <mat-select formControlName="idTipoCuenta">
+                    <mat-option *ngFor="let tipos of tiposCuentas" [value]="tipos.idTipoCuenta">{{ tipos.descripcion
+                        }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                <mat-label required>Número de cuenta</mat-label>
+                <input formControlName="numeroCuenta" matInput />
+            </mat-form-field>
+
+            <div class="vex-flex-form-field" fxFlex="auto">
+                <button [disabled]="!bancarioForm.valid" (click)="agregarCuentaBancaria()" color="primary" mat-button
+                    mat-raised-button>
+                    AGREGAR +
+                </button>
+            </div>
+
+        </div>
+    </form>
+    <div *ngIf="!loading" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+        <div class="card" style="width: 100%">
+            <table mat-table [dataSource]="newataCuentasBancarias" matSort class="mat-elevation-z8">
+
+
+                <ng-container matColumnDef="fechaActualizacion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        FECHA ACTUALIZADO
+                    </th>
+                    <td mat-cell style="font-weight: 600" *matCellDef="let element">
+                        {{element.fechaActualizacion | date}}
+                    </td>
+                </ng-container>
+
+
+
+                <ng-container matColumnDef="institucion">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell>INSTITUCIÓN</mat-header-cell>
+                    <mat-cell *matCellDef="let item" style="font-weight: 600">{{
+                        item.nombreEntidadFinanciera
+                        }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="tipocuenta">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell>TIPO DE CUENTA</mat-header-cell>
+                    <mat-cell *matCellDef="let item" style="font-weight: 600">{{
+                        item.nombreTipoCuenta
+                        }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="numerocuenta">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell>NÚMERO DE CUENTA</mat-header-cell>
+                    <mat-cell *matCellDef="let item" style="font-weight: 600">{{
+                        item.numeroCuenta
+                        }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="adjunto">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell>ADJUNTO</mat-header-cell>
+                    <mat-cell *matCellDef="let item" style="font-weight: 400; width: 100%;">
+
+
+
+
+                        <button matTooltip="Subir certificado" (click)="adjuntar.click()"
+                            class="btnAdjunto btn btn-primary" type="button">
+                            <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+                            <span style="margin-left: 4px">Cargar certificado</span>
+                        </button>
+
+
+                        <input hidden style="display: none" #attachments type="file" accept=".pdf" class="btn"
+                            (change)="handleFileInput($event, item)" type="file" id="file" #adjuntar />
+
+                        <span *ngIf="item.idAdjuntos" matTooltip="Descargar certificado" style="margin-left: 15px">
+                            <ic-icon style="cursor: pointer" (click)="descargarCertificado(item)" [icon]="icDescription"
+                                height="40px" width="40px"></ic-icon>
+                        </span>
+
+
+
+
+
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="accion">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell>ACCIONES</mat-header-cell>
+
+                    <mat-cell style="width: 400px;" *matCellDef="let item">
+
+
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon [icIcon]="icMoreVert" class="icon-buttons"></mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+
+                            <a mat-icon-button type="button" class="linkbutton" (click)="openDialog(item)">
+                                <mat-icon class="linkiconbutton" [icIcon]="icEdit"></mat-icon>
+                                <span>Editar </span>
+                            </a>
+
+
+
+                            <a mat-icon-button type="button" class="linkbutton" (click)="eliminarCuenta(item)">
+                                <mat-icon class="linkiconbutton" [icIcon]="icDelete"></mat-icon>
+                                <span>Eliminar </span>
+                            </a>
+
+
+                        </mat-menu>
+
+
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
+
+                <mat-row *matRowDef="let row; columns: displayedColumns2"></mat-row>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize"
+                class="sticky left-0"></mat-paginator>
+        </div>
+    </div>
+
+    <div *ngIf="loading" class="loading">
+        <mat-progress-spinner diameter="60" mode="indeterminate"></mat-progress-spinner>
+    </div>
+
+
+
+
+</div>

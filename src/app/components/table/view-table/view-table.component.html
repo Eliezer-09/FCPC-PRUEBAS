@@ -1,0 +1,212 @@
+<vex-scrollbar class="scrollbar">
+  <div class="content" fxLayout="column" fxLayoutAlign="space-between">
+    <table [@stagger]="dataSource.filteredData" [dataSource]="dataSource" fxFlex="auto" mat-table matSort>
+
+      <ng-container *ngFor="let column of columns">
+        <ng-container *ngIf="column.cssClasses.includes('texto')" [matColumnDef]="column.property">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column.label | uppercase}}</th>
+          <td style="text-transform: capitalize;" *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+            {{row[column.property] | lowercase}}
+          </td>
+        </ng-container>
+
+        <ng-container *ngIf="column.cssClasses.includes('boolean')" [matColumnDef]="column.property">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column.label | uppercase}}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{row[column.property] ? "SI" : "NO" }}
+
+
+
+          </td>
+        </ng-container>
+
+
+        <ng-container *ngIf="column.cssClasses.includes('texto-No-Capital')" [matColumnDef]="column.property">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column.label | uppercase}}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{row[column.property]}}
+          </td>
+        </ng-container>
+
+
+        <ng-container *ngIf="column.cssClasses.includes('number')" [matColumnDef]="column.property">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column.label | uppercase}}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{row[column.property]}}
+          </td>
+        </ng-container>
+
+        <ng-container *ngIf="column.cssClasses.includes('fecha')" [matColumnDef]="column.property">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column.label | uppercase }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row[column.property] || row.fecha | date
+            }}</td>
+        </ng-container>
+
+
+        <ng-container *ngIf="column.cssClasses.includes('dateTime')" [matColumnDef]="column.property">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column.label | uppercase }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row[column.property] || row.fecha |
+            date:'short'
+            }}</td>
+        </ng-container>
+        <ng-container *ngIf="column.cssClasses.includes('decimal')" [matColumnDef]="column.property">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column.label | uppercase }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>${{row[column.property] | number:'.2-2'}}
+          </td>
+        </ng-container>
+
+        <ng-container *ngIf="column.cssClasses.includes('decimal-porcent')" [matColumnDef]="column.property">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column.label | uppercase }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{row[column.property] | number:'.2-2'}}
+            {{row[column.property] || (row[column.property]==0.00) ?'%':''}}</td>
+        </ng-container>
+
+        <ng-container *ngIf="column.label === 'tiempo'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column.label | uppercase }}</th>
+          <mat-cell class="time" *matCellDef="let id">
+            <td *ngIf="id.tiempo?.horas <= 2" class="bg-time badge-success" fxFlex="none" matTooltip="Antes de 2 horas">
+              {{id.tiempo?.horas}} h {{id.tiempo?.minutos}} min
+            </td>
+            <td *ngIf="id.tiempo?.horas > 2 && id.tiempo?.horas <= 8" class="bg-time badge-warning" fxFlex="none"
+              matTooltip="Pasado de 2 horas">
+              {{id.tiempo?.horas}} h {{id.tiempo?.minutos}} min
+            </td>
+            <td *ngIf="id.tiempo?.horas > 8" class="bg-time badge-danger" fxFlex="none" matTooltip="Pasado de 8 horas">
+              {{id.tiempo?.horas}} h {{id.tiempo?.minutos}} min
+            </td>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container *ngIf="column.label === 'estado'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column.label | uppercase }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses">
+            <div class="statusList badge badge-warning" class={{row[column.property]}}
+              *ngIf="row[column.property]=='Pendiente' && !row.reprocesado">
+              <p>{{ row[column.property] }}</p>
+              <p>{{row.fechaModificacion || row.fecha | date: 'dd/MM/yyyy'}}</p>
+            </div>
+            <div class="statusList badge badge-success" class={{row[column.property]}}
+              *ngIf="row[column.property]=='Aprobado'">
+              <p>{{ row[column.property] }}</p>
+              <p>{{row.fechaModificacion || row.fecha | date: 'dd/MM/yyyy'}}</p>
+            </div>
+            <div class="statusList badge badge-danger" class={{row[column.property]}}
+              *ngIf="row[column.property]=='Rechazado'">
+              <p>{{ row[column.property] }}</p>
+              <p>{{row.fechaModificacion || row.fecha | date: 'dd/MM/yyyy'}}</p>
+            </div>
+            <div class="statusList badge badge-info" class={{row[column.property]}}
+              *ngIf="row[column.property]=='Liquidado'">
+              <p>{{ row[column.property] }}</p>
+              <p>{{row.fechaModificacion || row.fecha | date: 'dd/MM/yyyy'}}</p>
+            </div>
+            <div class="statusList badge badge-danger" class={{row[column.property]}}
+              *ngIf="row[column.property]=='Anulado'">
+              <p>{{ row[column.property] }}</p>
+              <p>{{row.fechaModificacion || row.fecha | date: 'dd/MM/yyyy'}}</p>
+            </div>
+            <div class="statusList badge badge-success" class={{row[column.property]}}
+              *ngIf="row[column.property]=='Pagado'">
+              <p>{{ row[column.property] }}</p>
+              <p>{{row.fechaModificacion || row.fecha | date: 'dd/MM/yyyy'}}</p>
+            </div>
+            <div class="statusList badge badge-success" class={{row[column.property]}}
+              *ngIf="row[column.property]=='Legalizado'">
+              <p>{{ row[column.property] }}</p>
+              <p>{{row.fechaModificacion || row.fecha | date: 'dd/MM/yyyy'}}</p>
+            </div>
+            <div class="statusList badge badge-danger" class={{row[column.property]}} *ngIf="row.reprocesado">
+              <p>Reprocesado</p>
+              <p>{{row.fechaModificacion | date: 'dd/MM/yyyy'}}</p>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container *ngIf="column.property === 'tipoPrestamo'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column.label | uppercase }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+            <h4 style="margin: 1px;"><span>
+                {{row[column.property] | lowercase}}
+                <br />
+                <p class="badge badge-danger" *ngIf="row.restructurado == true" style="width: 130px;">Reestructuración
+                </p>
+                <p class="badge badge-warning" *ngIf="row.refinanciado == true" style="width: 130px;">Refinanciamiento
+                </p>
+                <p class="badge badge-warning" *ngIf="row.esNovacion == true" style="width: 130px;">Novacion</p>
+              </span>
+            </h4>
+            <div *ngIf="row.idProducto === 7" style="margin: 1px;">
+              <span class="badge badge-danger" matTooltip={{row.producto}} style="width: 130px;  overflow: hidden;">
+                {{row.producto}}
+              </span>
+            </div>
+          </td>
+
+
+        </ng-container>
+
+
+        <ng-container *ngIf="column?.property === 'medio'" [matColumnDef]="column?.property">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column?.label | uppercase }}</th>
+          <td *matCellDef="let row" [ngClass]="column?.cssClasses" mat-cell>
+            <h4 style="margin: 1px;"><span>
+                {{row[column?.property] | titlecase}}
+
+                <br />
+
+                <p class="badge badge-warning" *ngIf="row?.firmadoDigitalmente == true" style="width: 130px;">Firma
+                  electrónica
+                </p>
+              </span>
+            </h4>
+            <div *ngIf="row.idProducto === 7" style="margin: 1px;">
+              <span class="badge badge-danger" matTooltip={{row?.producto}} style="width: 130px;  overflow: hidden;">
+                {{row?.producto}}
+              </span>
+            </div>
+          </td>
+
+
+        </ng-container>
+
+
+
+        <ng-container *ngIf="column.property === 'acciones'" [matColumnDef]="column.property" stickyEnd>
+          <th *matHeaderCellDef mat-header-cell mat-sort-header> {{ column.label | uppercase }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" class="w-10" mat-cell>
+            <a *ngIf="!menubutton && actions[0].type=='routerLink'" matTooltip={{actions[0].name}} mat-icon-button
+              type="button" (click)="generateRouter.emit({data:row,action:actions[0].accion})" [routerLink]="routers"
+              target="_blank">
+              <mat-icon class="icon-buttons">{{actions[0].icon}}</mat-icon>
+            </a>
+            <a *ngIf="!menubutton && actions[0].type=='function'" matTooltip={{actions[0].name}} mat-icon-button
+              type="button" (click)="actionMenu.emit({data:row,action:actions[0].accion})">
+              <mat-icon class="icon-buttons">{{actions[0].icon}}</mat-icon>
+            </a>
+            <button *ngIf="menubutton" mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon [icIcon]="icroundMoreVert" class="icon-buttons"></mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <div *ngFor="let action of actions">
+                <a *ngIf="action.type=='routerLink'" mat-icon-button type="button" class="linkbutton"
+                  (click)="generateRouter.emit({data:row,action: action.accion})" [routerLink]="routers"
+                  [target]="action.target || '_blank'">
+                  <mat-icon class="linkiconbutton">{{action.icon}}</mat-icon>
+                  <span>{{action.name}}</span>
+                </a>
+                <a *ngIf="action.type=='function'" mat-icon-button type="button" class="linkbutton"
+                  (click)="actionMenu.emit({data:row,action:action.accion})">
+                  <mat-icon class="linkiconbutton">{{action.icon}}</mat-icon>
+                  <span>{{action.name}}</span>
+                </a>
+              </div>
+            </mat-menu>
+          </td>
+        </ng-container>
+
+      </ng-container>
+
+      <tr *matHeaderRowDef="visibleColumns; sticky: true" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: visibleColumns;" @fadeInUp
+        class="interactive-rows overflow-hiden hover:bg-hover trans-ease-out cursor-pointer relative" mat-row>
+      </tr>
+    </table>
+  </div>
+</vex-scrollbar>

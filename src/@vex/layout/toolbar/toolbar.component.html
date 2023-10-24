@@ -1,0 +1,166 @@
+<div class="toolbar w-full px-gutter" fxLayout="row" fxLayoutAlign="start center" vexContainer>
+  <button (click)="openSidenav()" [fxHide]="!mobileQuery" mat-icon-button type="button">
+    <mat-icon [icIcon]="icMenu"></mat-icon>
+  </button>
+
+  <a *ngIf="isVerticalLayout$ | async" [routerLink]="['/']" class="ltr:mr-4 rtl:ml-4 block" fxLayout="row"
+    fxLayoutAlign="start center">
+    <img class="w-8 select-none" src="assets/img/demo/logo.svg">
+    <h1 [fxHide]="mobileQuery" class="title ltr:pl-4 rtl:pr-4 m-0 select-none">VEX</h1>
+  </a>
+
+  <mat-menu #addNewMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
+    <button mat-menu-item>
+      <mat-icon [icIcon]="icPersonAdd"></mat-icon>
+      <span>Add Contact</span>
+    </button>
+
+    <button mat-menu-item>
+      <mat-icon [icIcon]="icDoneAll"></mat-icon>
+      <span>Add Task</span>
+    </button>
+
+    <button mat-menu-item>
+      <mat-icon [icIcon]="icAssignmentTurnedIn"></mat-icon>
+      <span>Add Project</span>
+    </button>
+
+    <button [matMenuTriggerFor]="documentMenu" mat-menu-item>
+      <mat-icon [icIcon]="icBallot"></mat-icon>
+      <span>Add Document</span>
+    </button>
+  </mat-menu>
+
+  <mat-menu #documentMenu="matMenu">
+    <button mat-menu-item>
+      <mat-icon [icIcon]="icDescription"></mat-icon>
+      <span>Add Quote</span>
+    </button>
+
+    <button mat-menu-item>
+      <mat-icon [icIcon]="icAssignment"></mat-icon>
+      <span>Add Invoice</span>
+    </button>
+
+    <button mat-menu-item>
+      <mat-icon [icIcon]="icReceipt"></mat-icon>
+      <span>Add Receipt</span>
+    </button>
+  </mat-menu>
+
+  <div *ngIf="(isVerticalLayout$ | async) && isNavbarInToolbar$ | async" [fxHide]="mobileQuery" class="px-gutter"
+    fxFlex="none" fxLayout="row" fxLayoutAlign="start center">
+    <vex-navigation-item *ngFor="let item of navigationItems" [item]="item"></vex-navigation-item>
+  </div>
+
+  <span fxFlex></span>
+
+  <div class="-mx-1 flex items-center" style="width: fit-content;">
+
+    <!-- <div class="px-1">
+      <button (click)="openSearch()" mat-icon-button type="button">
+        <mat-icon [icIcon]="icSearch"></mat-icon>
+      </button>
+    </div> -->
+
+    <!-- Mantener comentado hasta que este listo -->
+    <div *ngIf="mostrarAsignacion" class="px-1" style="width: fit-content;">
+      <button *ngIf="countNotificaciones != 0" mat-button [matMenuTriggerFor]="menu2" matTooltip="Tickets Pendientes"
+        class="button" mat-icon-button type="button">
+        <span style="color: red;">{{ countNotificaciones }}</span>
+        <mat-icon style="color:red" [icIcon]="icNotification"></mat-icon>
+      </button>
+
+      <button *ngIf="countNotificaciones == 0" mat-button [matMenuTriggerFor]="menu2" matTooltip="Tickets Pendientes"
+        class="button" mat-icon-button type="button">
+        <mat-icon [icIcon]="icNotificationsActive"></mat-icon>
+      </button>
+    
+
+      <mat-menu #menu2="matMenu" style="width: fit-content;">
+        <div style="height: 100%;" *ngIf="countNotificaciones > 0">
+          <button mat-menu-item style="height: auto;" *ngFor="let item of notificaciones">
+            <div @fadeInRight fxFlex="auto" style="padding: 1%;height: fit-content; margin: auto;" (click)="showTicketInfo(item)">
+              <p *ngIf="item.modulo == 'mencion'" matLine style="font-size: small; font-weight: bold;">(Mención)</p>
+              <p matLine style="font-size: small; font-weight: bold;">{{ item.asunto }}</p>
+              <p matLine style="font-size: small;">{{ item.nombre }}</p>
+              <p matLine class="text-secondary" style="font-size: small;">{{ item.fecha | date: 'h:mm a' }}</p>
+            </div>
+          </button>
+        </div>
+        
+        <div *ngIf="countNotificaciones == 0">
+          <button [routerLink]="['tickets/detalle-ticket', 1]" mat-menu-item >
+            No tiene notificaciones
+          </button>
+        </div>
+      </mat-menu>
+    </div>
+
+    <div class="px-1">
+      <button (click)="openQuickpanel()" mat-icon-button type="button" matTooltip="Tareas Pendientes">
+        <!-- <mat-icon [icIcon]="icSms"></mat-icon> -->
+        <!-- <mat-icon matBadge="{{notificaciones.length}}" matBadgeColor="warn">bookmarks</mat-icon> -->
+        <mat-icon matBadgeColor="warn" style="color: #5c77ff" [icIcon]="icBookmarks"></mat-icon>
+      </button>
+    </div>
+
+    <div class="px-1">
+      <button (click)="crearTikects()" matTooltip="Crear Ticket" mat-icon-button type="button">
+        <!-- <mat-icon [icIcon]="icTickets"></mat-icon> -->
+        <mat-icon svgIcon="ticket" style="width: 23px;"></mat-icon>
+        <!-- <img src="assets/img/ticket-01.svg" style="width: 24px;"> -->
+      </button>
+    </div>
+    
+    <!-- Mantener comentado hasta que este listo -->
+
+    <!-- <div class="px-1">
+      <button mat-icon-button type="button">
+        <mat-icon [icIcon]="emojioneUS"></mat-icon>
+      </button>
+    </div> -->
+
+    <div #originRef [matMenuTriggerFor]="menu"
+      class="flex items-center rounded cursor-pointer relative trans-ease-out select-none py-1 pr-1 pl-3 hover:bg-hover"
+      matRipple>
+      <div class="body-1 font-medium leading-snug ltr:mr-3 rtl:ml-3" fxHide.xs>{{funcionario}}</div>
+      <div class="rounded-full h-9 w-9 flex items-center justify-center text-primary bg-primary-light">
+        <mat-icon *ngIf="!fotoPerfil" [icIcon]="icPerson"></mat-icon>
+        <img class="avatar" *ngIf="fotoPerfil" [src]="fotoPerfil" alt="">
+      </div>
+    </div>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [routerLink]="['/auth/perfil']" routerLinkActive="router-link-active">
+        <mat-icon color="primary" [icIcon]="icPerson"></mat-icon>
+        <span>Mi perfil</span>
+      </button>
+      <button mat-menu-item [routerLink]="['/auth/cambiar-clave']" routerLinkActive="router-link-active">
+        <mat-icon color="primary" [icIcon]="icVpnKey"></mat-icon>
+        <span>Cambiar clave</span>
+      </button>
+      <button mat-menu-item (click)="logOut()">
+        <mat-icon color="primary" [icIcon]="iclogout"></mat-icon>
+        <span>Cerrar sesion</span>
+      </button>
+    </mat-menu>
+    
+    <!-- <div *ngIf="!isdark" class="px-1">
+      <button (click)="enableDarkMode()" matTooltip="Modo oscuro" mat-icon-button type="button">
+        <mat-icon fontIcon="fa-moon" class="icon" fontSet="fa"></mat-icon>
+      </button>
+    </div>
+
+    <div *ngIf="isdark" class="px-1">
+      <button (click)="enableLightMode()" matTooltip="Modo claro" mat-icon-button type="button">
+        <mat-icon fontIcon="fa-sun" class="icon" fontSet="fa"></mat-icon>
+      </button>
+    </div> -->
+
+    
+  </div>
+</div>
+
+<vex-navigation *ngIf="(isVerticalLayout$ | async) && isNavbarBelowToolbar$ | async" [fxHide]="mobileQuery">
+</vex-navigation>

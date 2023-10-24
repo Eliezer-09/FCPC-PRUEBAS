@@ -1,0 +1,544 @@
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+</ngx-spinner>
+
+<vex-page-layout>
+  <vex-page-layout-header class="page-head">
+    <vex-header tituloHeader="Pagos individuales" [icono]="icroundPayment"></vex-header>
+  </vex-page-layout-header>
+  <vex-page-layout-content class="-mt-6">
+    <div @fadeInUp class="card">
+
+
+
+
+      <div class="head-bar ">
+
+        <div class=" head-options">
+          <div class="search-bar">
+            <input [(ngModel)]="filterValue" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+              placeholder="Ingrese una identificación..." type="search" (keyup.enter)="traerAlParticipe(filterValue)">
+            <button (click)="traerAlParticipe(filterValue)" class="head-buttons" mat-button="mat-button"
+              matTooltip="Buscar">
+              <mat-icon [icIcon]="icroundSearch"></mat-icon>
+            </button>
+          </div>
+
+
+
+        </div>
+      </div>
+
+
+      <!--   <div class="head-bar2">
+            <div fxLayout="column" style="margin-top: 12px" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+              <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                <mat-label>Identificación</mat-label>
+                <input [disabled]="isLoading" (keydown.enter)="traerAlParticipe($event)" [(ngModel)]="identificacion"
+                  formControlName="identificacion" matInput>
+              </mat-form-field>
+    
+              <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                <mat-label>Fecha</mat-label>
+                <input [(ngModel)]="fecha" formControlName="fecha" matInput [matDatepicker]="picker">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="formPagosIndividuales.get('fecha').hasError('required')">
+                  La fecha es requerida
+                </mat-error>
+              </mat-form-field>
+              <button style="height: 42px; width: 42px;" (click)="traerAlParticipe(filterValue)" class="head-buttons"
+                mat-button="mat-button" matTooltip="Buscar">
+                <mat-icon [icIcon]="icroundSearch"></mat-icon>
+              </button>
+            </div>
+          </div>
+     -->
+
+
+
+
+
+      <div *ngIf="participe?.identificacion; else displayImage" style="margin-top: 3%;">
+
+
+        <div class="five">
+          <h1 class="animate__animated animate__backInLeft">{{participe.razonSocial}}
+            <span>C.I. {{participe.identificacion}}</span>
+          </h1>
+        </div>
+
+        <div class=" animate__animated  animate__bounceInRight">
+
+          <span class="subheading-1 mx-4 mt-4 ml4 " style="font-weight: bold; color: gray;">
+            Datos del partícipe
+          </span>
+          <div class="px-gutter py-4" gdColumns="1fr 1fr 1fr" style="margin: 0 2rem;" gdColumns.xs="1fr" gdGap="16px">
+            <!--   <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+
+              <div @scaleIn
+                class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+                <ic-icon [icon]="icCedula" size="20px"></ic-icon>
+              </div>
+
+              <div @fadeInRight>
+                <p class="m-0 body-1">{{participe.identificacion}}</p>
+                <p class="m-0 caption text-hint">Cédula del participe</p>
+              </div>
+            </div>
+
+
+
+
+
+            <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+              <div @scaleIn
+                class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+                <ic-icon [icon]="icName" size="20px"></ic-icon>
+              </div>
+
+              <div @fadeInRight>
+                <p class="m-0 body-1">{{participe.razonSocial}}</p>
+                <p class="m-0 caption text-hint">Razón Social</p>
+              </div>
+            </div>
+
+
+ -->
+
+
+
+
+            <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+              <div @scaleIn
+                class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+                <ic-icon [icon]="icEmail" size="20px"></ic-icon>
+              </div>
+
+              <div @fadeInRight>
+                <p class="m-0 body-1">{{participe.correo1}}</p>
+                <p class="m-0 caption text-hint">Correo Electrónico</p>
+              </div>
+            </div>
+
+
+
+
+            <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+              <div @scaleIn
+                class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+                <ic-icon [icon]="icCellphone" size="20px"></ic-icon>
+              </div>
+
+              <div @fadeInRight>
+                <p class="m-0 body-1">{{participe.celular}}</p>
+                <p class="m-0 caption text-hint">Celular</p>
+              </div>
+            </div>
+
+
+            <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+              <div @scaleIn
+                class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+                <ic-icon [icon]="icPhone" size="20px"></ic-icon>
+              </div>
+
+              <div @fadeInRight>
+                <p class="m-0 body-1">{{participe.telefono1}}</p>
+                <p class="m-0 caption text-hint">Teléfono</p>
+              </div>
+            </div>
+
+
+
+
+
+
+          </div>
+
+
+
+
+
+
+          <mat-divider></mat-divider>
+
+
+          <div class="subheading-1 mx-4 mt-4 ml4" style="font-weight: bold; color: gray;">Proceso pago<br>
+          </div>
+
+          <div class="border-step">
+            <mat-vertical-stepper #stepper="matVerticalStepper" [linear]="true">
+              <mat-step [stepControl]="stepPrestamoForm">
+
+                <ng-template matStepLabel>Préstamos</ng-template>
+                <p style="font-weight: bold; color: gray;">
+                  Seleccione un tipo de pago:
+                </p>
+                <form [formGroup]="stepPrestamoForm">
+
+                  <div>
+
+                    <mat-form-field class="vex-flex-form-field mt-2" fxFlex="auto">
+
+                      <mat-label>Tipo de pago</mat-label>
+                      <mat-select formControlName="idTipoPago" (selectionChange)="tipoPagoChange($event.value)">
+                        <mat-option *ngFor="let formaPago of tiposPagos" [value]="formaPago">{{formaPago.descripcion}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </form>
+
+
+
+
+
+                <vex-scrollbar>
+
+                  <div class="disabled-container"
+                    [ngStyle]="{ 'display': stepPrestamoForm.value.idTipoPago?.idTipoPago ? 'none' : 'block' }"></div>
+
+
+                  <table mat-table matSort [dataSource]="prestamosDataSource" class="mat-elevation-z8"
+                    [ngStyle]="{ 'opacity': stepPrestamoForm.value.idTipoPago?.idTipoPago ? '1' : '0.5' }"
+                    (click)="handleClick()">
+
+                    <!-- Checkbox Column -->
+                    <ng-container matColumnDef="select">
+                      <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox *ngIf="stepPrestamoForm.value.idTipoPago?.idTipoPago == 1"
+                          (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        </mat-checkbox>
+                      </th>
+                      <td mat-cell *matCellDef="let row">
+                        <mat-checkbox
+                          (click)="stepPrestamoForm.value.idTipoPago?.idTipoPago ? $event.stopPropagation() : showAlert()"
+                          (change)="$event ?  onRowClicked(row) : null"
+                          [checked]=" selection.isSelected(row) ? true : false">
+
+
+
+                        </mat-checkbox>
+                      </td>
+                      <td mat-footer-cell *matFooterCellDef style="padding-left: 17px;">
+                        <strong>Totales</strong>
+                      </td>
+
+                    </ng-container>
+
+
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="idPrestamo">
+                      <th mat-header-cell mat-sort-header *matHeaderCellDef> No. Operación </th>
+                      <td mat-cell *matCellDef="let element"> {{element.idPrestamo}} </td>
+                      <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="fecha">
+                      <th mat-header-cell mat-sort-header *matHeaderCellDef> Fecha de solicitud </th>
+                      <td mat-cell *matCellDef="let element"> {{element.fecha | date: 'dd/MM/yyyy'}} </td>
+                      <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="saldoCapital">
+                      <th mat-header-cell mat-sort-header *matHeaderCellDef> Capital </th>
+                      <td mat-cell *matCellDef="let element"> {{element.saldoCapital | number: ".2-2" }} </td>
+                      <td mat-footer-cell *matFooterCellDef style="padding-left: 11px;">
+                        <strong>${{prestamosTotal.capital | number: ".2-2"}}</strong>
+                      </td>
+
+                    </ng-container>
+
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="saldoInteres">
+                      <th mat-header-cell mat-sort-header *matHeaderCellDef> Interés </th>
+                      <td mat-cell *matCellDef="let element"> {{element.saldoInteres | number: ".2-2" }} </td>
+                      <td mat-footer-cell *matFooterCellDef style="padding-left: 11px;">
+                        <strong>${{pagosTotal.interes | number: ".2-2"}}</strong>
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="totalMora">
+                      <th mat-header-cell mat-sort-header *matHeaderCellDef> Mora </th>
+                      <td mat-cell *matCellDef="let element"> <strong>{{element.totalMora | number: ".2-2"}}</strong>
+                      </td>
+                      <td mat-footer-cell *matFooterCellDef style="padding-left: 11px;">
+                        <strong>${{prestamosTotal.interes | number: ".2-2"}}</strong>
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="saldoOtros">
+                      <th mat-header-cell mat-sort-header *matHeaderCellDef> Desgravamen </th>
+                      <td mat-cell *matCellDef="let element"> <strong>{{element.saldoOtros | number: ".2-2"}}</strong>
+
+                      </td>
+
+                      <td mat-footer-cell *matFooterCellDef style="padding-left: 11px;">
+                        <strong>${{prestamosTotal.desgravamen | number: ".2-2"}}</strong>
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="saldoTotal">
+                      <th mat-header-cell mat-sort-header *matHeaderCellDef> Saldo </th>
+                      <td mat-cell *matCellDef="let element"> <strong>{{element.saldoTotal | number: ".2-2"}}</strong>
+                      </td>
+
+                      <td mat-footer-cell *matFooterCellDef style="padding-left: 11px;">
+                        <strong>${{prestamosTotal.total | number: ".2-2"}}</strong>
+                      </td>
+
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="saldoVencido">
+                      <th mat-header-cell mat-sort-header *matHeaderCellDef> Saldo Vencido </th>
+                      <td mat-cell *matCellDef="let element"> <strong>{{element.saldoVencido | number: ".2-2"}}</strong>
+                      </td>
+
+                      <td mat-footer-cell *matFooterCellDef style="padding-left: 11px;">
+                        <strong>${{prestamosTotal.vencido | number: ".2-2"}}</strong>
+                      </td>
+
+                    </ng-container>
+
+                    <ng-container matColumnDef="calificacion">
+                      <th mat-header-cell mat-sort-header *matHeaderCellDef> Calificación </th>
+                      <td mat-cell *matCellDef="let element"> <strong>{{element.calificacion }}</strong>
+                      </td>
+                      <td mat-footer-cell *matFooterCellDef></td>
+
+                    </ng-container>
+
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+                    <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                      class="interactive-rows overflow-hiden hover:bg-hover trans-ease-out cursor-pointer relative"
+                      (click)=" onRowClicked(row)">
+                    </tr>
+
+                  </table>
+                </vex-scrollbar>
+
+                <div *ngIf="prestamos && saldoTotal > 0" style="margin-top: 3%;" class="actions" fxLayout="row"
+                  fxLayoutAlign="end center" fxLayoutGap="8px">
+                  <button color="primary" mat-raised-button (click)="onPrestamo()">
+                    SIGUIENTE
+                  </button>
+                </div>
+
+
+
+
+              </mat-step>
+              <mat-step [stepControl]="stepDatosForm">
+
+                <div class="mt-3" fxLayout="column" fxLayoutGap="8px">
+                  <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                    <mat-form-field class="vex-flex-form-field" fxFlex="fixed">
+                      <mat-label>Saldo Total</mat-label>
+                      <input [disabled]="true" [(ngModel)]="saltoTotalMostrar" matInput>
+                    </mat-form-field>
+
+                    <mat-form-field class="vex-flex-form-field" fxFlex="fixed">
+                      <mat-label>Cuota Mínima</mat-label>
+                      <input [disabled]="true" [(ngModel)]="cuotaMinima" matInput>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+
+                <ng-template matStepLabel>Datos</ng-template>
+
+                <form [formGroup]="stepDatosForm">
+                  <div class="mt-3" fxLayout="column" fxLayoutGap="8px">
+                    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                      <mat-form-field class="vex-flex-form-field" fxFlex="fixed">
+                        <mat-label>Fecha de pago</mat-label>
+                        <input matInput [matDatepicker]="fechaEmisionConadis" formControlName="fecha" required>
+                        <mat-datepicker-toggle matSuffix [for]="fechaEmisionConadis"></mat-datepicker-toggle>
+                        <mat-datepicker #fechaEmisionConadis></mat-datepicker>
+                        <mat-error *ngIf="stepDatosForm.get('fecha').hasError('required')">
+                          La fecha es requerida
+                        </mat-error>
+
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+
+
+
+                  <div class="mt-3" fxLayout="column" fxLayoutGap="8px">
+                    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+
+                      <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Método de pago</mat-label>
+                        <mat-select required (selectionChange)="seleccionarFormaPago($event.value)"
+                          formControlName="idMetodoPago">
+                          <mat-option *ngFor="let formaPago of metodosPagos" [value]="formaPago.idMetodoPago">
+                            {{formaPago.descripcion}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+ 
+                      <mat-form-field class="vex-flex-form-field" fxFlex="auto" >
+                        <mat-label>Valor a pagar</mat-label>
+                        <input
+                        [readonly]="pagoReadonly"
+                        required type="number" [max]="saldoTotal" min="0.01"
+                        formControlName="valor" matInput
+                        id="ValorPagar"
+                        required 
+                        class="right-align"
+                        (change)="setTwoNumberDecimal('valor')"
+                        [inputMask]="DecimalInputMask"/>
+                        <span matPrefix>{{simboloMoneda}}&nbsp;</span>
+                        <mat-error *ngIf="stepDatosForm.get('valor').hasError('max')">
+                          El valor a pagar no puede ser mayor a la cuota mínima
+                        </mat-error>
+                    </mat-form-field>
+
+              <!--         <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Valor a pagar</mat-label>
+                        <input [readonly]="pagoReadonly" required type="number" [max]="saldoTotal" min="0.01"
+                          formControlName="valor" matInput>
+                        <mat-error *ngIf="stepDatosForm.get('valor').hasError('max')">
+                          El valor a pagar no puede ser mayor a la cuota mínima
+                        </mat-error>
+
+
+                      </mat-form-field> -->
+
+                    </div>
+
+                    <div *ngIf="mostrarBanco" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px"
+                      fxLayoutGap.gt-xs="24px">
+
+                      <mat-form-field class="vex-flex-form-field" fxFlex="fixed">
+                        <mat-label>Seleccione el banco</mat-label>
+                        <input matInput placeholder="Buscar banco" [matAutocomplete]="auto" [formControl]="filtroBanco">
+                        <mat-autocomplete #auto="matAutocomplete" >
+                          <mat-option *ngFor="let institucion of filteredInstituciones | async" [value]="institucion" (onSelectionChange)="onSelectInstitucion($event)">
+                            {{ institucion.descripcion }}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      
+                      
+                      
+
+
+                   <!--    <mat-form-field class="vex-flex-form-field" fxFlex="fixed">
+                        <mat-label>Seleccione el banco</mat-label>
+                        <mat-select required formControlName="idTipoFinanciera">
+                          <mat-option *ngFor="let institucion of institucionesFinancieras"
+                            [value]="institucion.idTipoFinanciera">{{institucion.descripcion}}</mat-option>
+                        </mat-select>
+                      </mat-form-field> -->
+
+                      <mat-form-field class="vex-flex-form-field" fxFlex="fixed">
+                        <mat-label>Num. Referencia</mat-label>
+                        <input formControlName="numeroReferencia" matInput>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+
+                  <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+                    <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button matStepperPrevious>
+                      ANTERIOR
+                    </button>
+                    <button color="primary" mat-raised-button (click)="crearSimulacion(stepper)">
+                      SIGUIENTE
+                    </button>
+                  </div>
+                </form>
+              </mat-step>
+
+
+              <mat-step [stepControl]="horizontalperfileconomicoFormGroup2">
+                <ng-template matStepLabel>Pagos a aplicar</ng-template>
+
+
+                <vex-view-table-numeric [menubutton]="true" [columns]="tablePagosAplicarColumns" [data]="pagosDataSource.data" [footerdata]="TotalsPagosAplicar">
+                </vex-view-table-numeric>
+
+
+                <div *ngIf="prestamos && prestamos.length>0" style="margin-top: 3%;" class="actions" fxLayout="row"
+                  fxLayoutAlign="end center" fxLayoutGap="8px">
+
+                  <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button matStepperPrevious>
+                    ANTERIOR
+                  </button>
+
+                  <button *ngIf="amortizacionDataSource.data.length == 0 && pagos && pagos.length > 0" color="primary"
+                    mat-raised-button (click)="guardarPagos()">
+                    GUARDAR
+                  </button>
+
+                  <button color="primary" mat-raised-button matStepperNext
+                    *ngIf="amortizacionDataSource.data.length > 0">
+                    SIGUIENTE
+                  </button>
+
+                </div>
+
+
+
+              </mat-step>
+
+
+              <mat-step *ngIf="amortizacionDataSource.data.length > 0"
+                [stepControl]="horizontalperfileconomicoFormGroup2">
+                <ng-template matStepLabel>Tabla de Amortización Actualizada</ng-template>
+
+                <vex-view-table-numeric [menubutton]="true" [columns]="tableAmortizacionActualizadaColumns" [data]="amortizacionDataSource.data" [footerdata]="TotalsAmortizacionActualizada">
+                </vex-view-table-numeric>
+
+
+                <div style="margin-top: 3%;" class="actions" fxLayout="row" fxLayoutAlign="end center"
+                  fxLayoutGap="8px">
+
+                  <button style="color: #fff; background-color: #EF2E2E;" mat-raised-button matStepperPrevious>
+                    ANTERIOR
+                  </button>
+                
+                  <button *ngIf="amortizacionDataSource.data.length > 0  && tipoPago && pagos" color="primary"
+                    mat-raised-button (click)="guardarPagos()">
+                    GUARDAR
+                  </button>
+                </div>
+
+
+
+              </mat-step>
+
+
+
+            </mat-vertical-stepper>
+
+
+          </div>
+        </div>
+      </div>
+
+
+      <ng-template #displayImage>
+        <div class="search-results">
+          <img src="assets/img/payment.png" alt="Imagen de ejemplo" style="width: 35%;">
+        </div>
+
+      </ng-template>
+
+
+
+
+    </div>
+  </vex-page-layout-content>
+</vex-page-layout>

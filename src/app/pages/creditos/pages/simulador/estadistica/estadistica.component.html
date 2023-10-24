@@ -1,0 +1,21 @@
+<div class="content-div">
+
+
+<div   fxFlex="auto" class="flex-100" style="margin-top:10px">
+    <div  style="width: 100%;">
+    <div *ngIf="simulacionData.length>0" > 
+        <app-icon-data [items]="simulacionData"></app-icon-data>
+    </div>
+    <div style="display: flex; justify-content: start;margin-left:25px">
+     <button color="primary" style="margin-bottom:30px" mat-raised-button (click)="tablaAmortizacionEmit.emit()">TABLA DE AMORTIZACIÓN</button>
+    </div>
+    </div>
+</div>
+
+    <div  fxFlex="auto" class="flex-100" style="display: flex; justify-content: center; align-items: center;" >
+        <div #canvasContainer >
+            <canvas id="myCanvas" width="400" height="400">
+            </canvas>
+        </div>
+    </div>
+</div>

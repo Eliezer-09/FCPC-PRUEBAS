@@ -1,0 +1,68 @@
+<div class="card" *ngIf="subTareas">
+    <div class="px-gutter py-4 border-b">
+        <h2 class="title m-0">Subtareas</h2>
+    </div>
+
+    <div @stagger class="px-6 py-4" fxLayout="column" fxLayoutGap="16px" *ngIf="subTareas.length > 0">
+        <div  *ngFor="let subTarea of subTareas" fxLayout="row" fxLayoutAlign="start center">
+            <div @fadeInRight fxFlex="auto">
+                <!-- Asunto ticket -->
+                <h3 class="body-2 m-0 leading-snug">
+                    <strong>{{subTarea.tipoTarea}}</strong>
+                    <span>
+                        <div style="float: right"> 
+                            <h3 *ngIf="subTarea.estado == 'Creado' ">
+                                <span style=" background-color: rgb(216, 173, 79) !important; font-weight: bold;" class="badge bg-primary">
+                                    {{subTarea.estado}}
+                                </span>
+                                </h3>
+                                <h3 *ngIf="subTarea.estado == 'Pendiente' "><span style=" background-color: rgb(48, 240, 41) !important; font-weight: bold;" class="badge bg-primary">{{subTarea.estado}}
+                                    </span>
+                                </h3>
+                                <h3 *ngIf="subTarea.estado == 'Iniciado' "><span style=" background-color: rgb(255, 162, 40) !important; font-weight: bold;" class="badge bg-primary">{{subTarea.estado}}
+                                    </span>
+                                </h3>
+                                <h3 *ngIf="subTarea.estado == 'Anulado'"><span style="background-color: rgb(255, 72, 40) !important; font-weight: bold;" class="badge bg-primary">{{subTarea.estado}}
+                                    </span>
+                                </h3>
+                                <h3 *ngIf="subTarea.estado == 'Atendido' || subTarea.estado == 'Completado'"><span style="background-color: rgb(68, 95, 153) !important; font-weight: bold;" class="badge bg-primary">Completado
+                                    </span>
+                                </h3>
+                                <h3 *ngIf="subTarea.estado == 'Cerrado'"><span style="background-color: rgb(68, 95, 153) !important; font-weight: bold;" class="badge bg-primary">Cerrado
+                                    </span>
+                                </h3>
+                                <h3 *ngIf="subTarea.estado == 'Reabierto'"><span style="background-color: rgb(47, 112, 47) !important; font-weight: bold;" class="badge bg-primary">{{subTarea.estado}}
+                                    </span>
+                                </h3>
+                                <h3 *ngIf="subTarea.estado == 'Asignado'"><span style="background-color: rgb(47, 48, 112) !important; font-weight: bold;" class="badge bg-primary">{{subTarea.estado}}
+                                    </span>
+                                </h3>
+                                <h3 *ngIf="subTarea.estado == 'Leido'"><span style="background-color: rgb(58, 134, 128) !important; font-weight: bold;" class="badge bg-primary">{{subTarea.estado}}
+                                    </span>
+                                </h3>
+                                <h3 *ngIf="subTarea.estado == 'EnProceso'"><span style="background-color: rgb(165, 117, 53) !important; font-weight: bold;" class="badge bg-primary">{{subTarea.estado}}
+                                    </span>
+                                </h3>
+                                <h3 *ngIf="subTarea.estado == 'EsperaRespuesta'"><span style="background-color: rgb(53, 165, 62) !important; font-weight: bold;" class="badge bg-primary">{{subTarea.estado}}
+                                    </span>
+                                </h3>  
+                        </div>
+                    </span>
+                </h3>
+                <h4 class="caption leading-none" *ngIf="tipoTarea" style="color: gray;">{{subTarea.asunto}}</h4>
+
+                <p matLine class="text-secondary" style="font-size: small;">
+                    {{ subTarea.espera.dias }} dias {{ subTarea.espera.horas }} horas {{subTarea.espera.minutos}} minutos
+                </p>
+            </div>
+        
+            <!-- Direccionar al participe -->
+            <button (click)="verSubTarea(subTarea.idTicket)" color="primary" mat-icon-button type="button">
+                <mat-icon [icIcon]="icSearch"></mat-icon>
+            </button>
+        </div>
+    </div>
+    <div @stagger class="px-6 py-4" fxLayout="column" fxLayoutGap="16px" *ngIf="subTareas.length == 0">
+        <p style="color: gray;">No tiene sub tareas</p>
+    </div>
+</div>

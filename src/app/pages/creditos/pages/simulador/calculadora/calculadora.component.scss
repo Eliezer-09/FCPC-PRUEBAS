@@ -1,0 +1,51 @@
+
+.container-prestamos{
+    width: 100%;
+    padding: 0px;
+    }
+
+.search-bar{
+    min-width: 300px;
+    margin: 0.5rem!important;
+    border: 1px solid var(--COLOR-NEUTRAL-LIGHT-GRAY) ;
+  
+  }
+
+  .head-button{
+    width: 15rem;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    margin: 0 10px 0px 10px !important;
+    border-radius: 20px !important;
+    color: var(--COLOR-PRIMARY-CONTRAST) !important;
+    background-color: var(--COLOR-PRIMARY) !important; 
+  }
+
+  .head-options{
+    margin:2%; 
+    width: max-content;
+  }
+
+  .container-prestamo{
+    display: flex;
+    margin-left: 20px;
+  }
+
+  .button-download {
+    position: inherit !important;
+    margin: 0 !important;
+    height: 50px;
+    width: 100%;
+}
+
+
+.negativeNumber{
+  color:red
+}
+
+.sublabel{
+  color: gray;
+  font-size: small;
+/*   padding: 0.25em 0 0 1.25rem !important;
+  text-align: left; */
+}

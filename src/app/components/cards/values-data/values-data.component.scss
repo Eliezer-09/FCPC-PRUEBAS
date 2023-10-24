@@ -1,0 +1,19 @@
+.icon-card {
+    display: flex;
+    color: var(--COLOR-PRIMARY-CONTRAST);
+    margin-left: auto;
+    margin-right: auto;
+    height: 50px!important;
+    width: 40px!important;
+    font-size: -webkit-xxx-large!important;;
+}
+
+.avatar-card {
+    background-size: cover;
+    background-color: var(--COLOR-PRIMARY);
+}
+
+.card{
+    display: flex!important;
+    justify-content: center!important;
+}

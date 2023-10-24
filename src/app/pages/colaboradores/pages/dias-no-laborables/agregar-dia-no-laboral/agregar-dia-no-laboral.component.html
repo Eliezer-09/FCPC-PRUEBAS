@@ -1,0 +1,40 @@
+<div mat-dialog-content>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-title" *ngIf = "data.action == 'Editar'">Editar día no laborable</h4>
+        <h4 class="modal-title" id="modal-title" *ngIf = "data.action !== 'Editar'">Agregar día no laborable</h4>
+    </div>  
+    <form [formGroup]="form">
+        <mat-divider></mat-divider>
+        <mat-form-field class="example-full-width">
+            <mat-label>Nombre</mat-label>
+            <input [disabled]="data.visualizationMode" matInput formControlName="nombre">
+            <mat-error *ngIf="form.get('nombre').hasError('required')">
+                El campo es requerido
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Rango de Fecha</mat-label>
+            <mat-date-range-input [formGroup]="form" [rangePicker]="picker">
+                <input matStartDate placeholder="Inicio" formControlName="start">
+                <input matEndDate placeholder="Fin" formControlName="end">
+            </mat-date-range-input>
+            <mat-hint>MM-DD-YYYY – MM-DD-YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker disabled="false">
+                <mat-datepicker-actions>
+                    <button mat-raised-button matDatepickerCancel>Borrar</button>
+                    <button mat-raised-button color="primary" matDatepickerApply>Guardar</button>
+                </mat-datepicker-actions>
+            </mat-date-range-picker>
+        </mat-form-field>
+    </form>
+</div>
+
+<div mat-dialog-actions fxLayoutAlign="end center" fxLayoutGap="8px">
+    <button *ngIf="!data.visualizationMode" style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+        (click)="onNoClick()">Cancelar</button>
+    <button color="primary" mat-raised-button [disabled]="!form.valid"
+        (click)="data.visualizationMode ? onNoClick() : enviarFormulario()" cdkFocusInitial>
+        {{data.visualizationMode ? 'Cerrar' : 'Guardar'}}
+    </button>
+</div>

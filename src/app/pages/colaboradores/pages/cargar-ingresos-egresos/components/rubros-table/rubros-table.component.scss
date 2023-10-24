@@ -1,0 +1,29 @@
+.mat-dialog-content {
+    display: block !important;
+    height: 200px!important;
+}
+
+.modal-header{
+  justify-content: center;
+  background-color:  var(--COLOR-PRIMARY);
+  color: var(--COLOR-PRIMARY-CONTRAST);
+  margin-bottom: 15px;
+}
+
+.example-section {
+    display: flex;
+    //align-content: center;
+    //align-items: center;
+    margin-top: 40px;
+  }
+  
+  .example-margin {
+    margin: 0 10px;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+
+ ::ng-deep .mat-table tfoot{
+  background-color: var(--COLOR-NEUTRAL-LIGHT-GRAY);
+ }

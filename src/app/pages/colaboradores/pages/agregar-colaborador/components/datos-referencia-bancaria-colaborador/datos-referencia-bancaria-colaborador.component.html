@@ -1,0 +1,42 @@
+<div [formGroup]="datosGuardarReferenciaBancaria ">
+
+
+
+
+
+
+    <div *ngIf="dataReferenciasBancarias.length > 0 && !loading">
+        <section class="progress">
+            <div class="progress-bar progress-bar-striped" style="width: 100%" aria-valuenow="100"></div>
+        </section>
+
+
+
+        <vex-view-table [actions]="menuOption" [menubutton]="true" [columns]="tableColumns"
+            [data]="dataReferenciasBancarias" (actionMenu)="actionMenu($event)">
+        </vex-view-table>
+
+        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+
+
+            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                <mat-label>Seleccione la referencia bancaria a utilizar</mat-label>
+                <mat-select [required]="!visualizationMode" formControlName="idReferenciaBancaria"
+                    [disabled]="visualizationMode">
+                    <mat-option *ngFor="let tipo of dataReferenciasBancarias" [value]="tipo.idReferenciaBancaria">
+                        {{tipo.nombreEntidadFinanciera}} - {{tipo.nombreTipoCuenta}} # {{tipo.numeroCuenta}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+
+    </div>
+
+
+
+    <div class="loading" *ngIf="loading">
+        <mat-progress-spinner diameter="60" mode="indeterminate"></mat-progress-spinner>
+    </div>
+
+</div>

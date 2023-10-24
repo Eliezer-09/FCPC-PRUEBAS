@@ -1,0 +1,318 @@
+<div [formGroup]="datosContrato">
+
+
+  <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+
+      <mat-label>Tipo de contrato</mat-label>
+      <mat-select required (selectionChange)="ocultarFecha($event.value)" formControlName="idTipoContrato">
+        <mat-option [disabled]="visualizationMode" *ngFor="let idTipoContrato of tiposContrato"
+          [value]="idTipoContrato.idTipoContrato">
+          {{idTipoContrato.descripcion}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="datosContrato.get('idTipoContrato').hasError('required')">
+        El tipo de contrato es requerido
+      </mat-error>
+    </mat-form-field>
+
+
+
+    <mat-form-field class="vex-flex-form-field" fxFlex="auto" *ngIf="tipoColaborador != 2">
+
+      <mat-label>Tipo de jornada</mat-label>
+      <mat-select required formControlName="idTipoJornada" (selectionChange)="cambiarValidacionHoras($event.value)">
+        <mat-option [disabled]="visualizationMode" *ngFor="let tipoJornada of tiposJornada"
+          [value]="tipoJornada.id">
+          {{tipoJornada.descripcion}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="datosContrato.get('idTipoJornada').hasError('required')">
+        El tipo de jornada es requerido
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="vex-flex-form-field" fxFlex="auto"
+      *ngIf="tipoColaborador != 2 && this.datosContrato.get('idTipoJornada').value == 2">
+
+      <mat-label>Horas semanales</mat-label>
+      <input [readonly]="visualizationMode" matInput type="number" formControlName="horasLaborales" required>
+      <mat-error *ngIf="datosContrato.get('horasLaborales').hasError('required')">
+        Las horas semanales son requeridas
+      </mat-error>
+      <mat-error *ngIf="datosContrato.get('horasLaborales').hasError('min')">
+        Las horas semanales deben ser mayor a 0
+      </mat-error>
+      <mat-error *ngIf="datosContrato.get('horasLaborales').hasError('max')">
+        Ingrese un valor correcto
+      </mat-error>
+      <mat-error *ngIf="datosContrato.get('horasLaborales').hasError('pattern')">
+        Ingrese un valor entero
+      </mat-error>
+
+
+
+    </mat-form-field>
+
+    <mat-form-field class="vex-flex-form-field" fxFlex="auto" *ngIf="tipoColaborador != 2">
+
+      <mat-label>Modalidad de trabajo</mat-label>
+      <mat-select required formControlName="idModalidad">
+        <mat-option [disabled]="visualizationMode" *ngFor="let modalidadTrabajo of modalidadesTrabajo"
+          [value]="modalidadTrabajo.id">
+          {{modalidadTrabajo.descripcion}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="datosContrato.get('idModalidad').hasError('required')">
+        La modalidad de trabajo es requerida
+      </mat-error>
+    </mat-form-field>
+
+
+
+  </div>
+
+  <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+
+    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+      <mat-label>Fecha de inicio contrato</mat-label>
+      <input (dateChange)="validarFechaVencimiento()" [readonly]="visualizationMode" matInput
+        [matDatepicker]="fechaInicioContrato" formControlName="fechaInicioContrato" required>
+      <mat-datepicker-toggle [disabled]="visualizationMode" [disabled]="visualizationMode" matSuffix
+        [for]="fechaInicioContrato"></mat-datepicker-toggle>
+      <mat-datepicker #fechaInicioContrato></mat-datepicker>
+      <mat-error *ngIf="datosContrato.get('fechaInicioContrato').hasError('required')">
+        La fecha de inicio es requerida
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+      <mat-label>Fecha de vencimiento contrato</mat-label>
+      <input [readonly]="visualizationMode" matInput [matDatepicker]="fechaVencimiento"
+        (dateChange)="validarFechaVencimiento()" formControlName="fechaVencimiento" required>
+      <mat-datepicker-toggle [disabled]="visualizationMode" [disabled]="visualizationMode" matSuffix
+        [for]="fechaVencimiento"></mat-datepicker-toggle>
+      <mat-datepicker #fechaVencimiento></mat-datepicker>
+      <mat-error *ngIf="datosContrato.get('fechaVencimiento').hasError('required')">
+        La fecha de vencimiento es requerida
+      </mat-error>
+
+      <mat-error *ngIf="datosContrato.get('fechaVencimiento').hasError('incorrect')">
+        La fecha de vencimiento debe ser mayor a la fecha de inicio del período de prueba
+      </mat-error>
+
+    </mat-form-field>
+
+
+  </div>
+
+
+
+  <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+
+    <mat-form-field class="vex-flex-form-field" fxFlex="auto" style="width: 70px;">
+      <mat-label>Fecha terminación periodo de prueba</mat-label>
+      <input [readonly]="visualizationMode" matInput [matDatepicker]="fechaTerminacion"
+        (dateChange)="validarFechaPeriodoPrueba()" formControlName="fechaTerminacion" required>
+      <mat-datepicker-toggle [disabled]="visualizationMode" [disabled]="visualizationMode" matSuffix
+        [for]="fechaTerminacion"></mat-datepicker-toggle>
+      <mat-datepicker #fechaTerminacion></mat-datepicker>
+      <mat-error *ngIf="datosContrato.get('fechaTerminacion').hasError('required')">
+        La fecha de terminación del periodo de prueba es requerida
+      </mat-error>
+
+      <mat-error *ngIf="datosContrato.get('fechaTerminacion').hasError('incorrect')">
+        La fecha de terminación del período de prueba debe estar entre la fecha de inicio y la fecha de vencimiento
+      </mat-error>
+
+    </mat-form-field>
+
+
+
+    <mat-form-field class="vex-flex-form-field" fxFlex="auto" *ngIf="tipoColaborador == 1">
+      <mat-label>Código sectorial afiliación IESS</mat-label>
+      <input [readonly]="visualizationMode" matInput formControlName="codigoSectorialIess">
+
+    </mat-form-field>
+
+
+  </div>
+
+
+
+  <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+    <section class="example-section">
+      <label class="example-margin">{{tipoColaborador ==1 || tipoColaborador == 3 ? 'Anticipo quincenal *' : 'Anticipo factura *'}}</label>
+      <mat-radio-group [disabled]="visualizationMode" formControlName="anticipo"
+        (ngModelChange)="onAnticipoChange($event)">
+        <mat-radio-button class="example-margin" [value]="true">Si</mat-radio-button>
+        <mat-radio-button class="example-margin" [value]="false">No</mat-radio-button>
+        <mat-error
+          *ngIf="datosContrato.get('anticipo')?.touched  && datosContrato.get('anticipo').hasError('required')">
+          El campo es requerido
+        </mat-error>
+
+      </mat-radio-group>
+    </section>
+
+
+
+
+    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+      <mat-label>{{tipoColaborador ==1 || tipoColaborador == 3 ? 'Sueldo nominal' : 'Valor de facturación'}}
+      </mat-label>
+      <input placeholder="0.00" [min]="0" [inputMask]="DecimalInputMask" [readonly]="visualizationMode"
+        required="required" [ngModel]="this.datosContrato.value.sueldoNominal" formControlName="sueldoNominal" required
+        (change)="onChangeMontoBase()" matInput appTwoDigitDecimaNumber />
+      <span matPrefix>$&nbsp;</span>
+      <mat-error *ngIf="datosContrato.get('sueldoNominal').hasError('required')">
+        El campo es requerido
+      </mat-error>
+
+      <mat-error *ngIf="datosContrato.get('sueldoNominal').hasError('max')">
+        El campo solo puede tener 6 digitos
+      </mat-error>
+
+      <mat-error *ngIf="datosContrato.get('sueldoNominal').hasError('pattern')">
+        El campo solo puede tener números y hasta 2 decimales
+      </mat-error>
+
+      <mat-error
+        *ngIf="datosContrato.get('sueldoNominal').errors">{{getErrorMessage(datosContrato.get('sueldoNominal'))}}</mat-error>
+
+    </mat-form-field>
+
+
+
+    <mat-form-field class="vex-flex-form-field" fxFlex="auto" *ngIf="tipoColaborador == 2">
+      <mat-label>IVA 12%</mat-label>
+      <input [readonly]="true" matInput readonly="readonly" formControlName="impuestos" type="number">
+      <mat-error *ngIf="datosContrato.get('impuestos').hasError('required')">
+        El IVA es requerido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="vex-flex-form-field" fxFlex="auto" *ngIf="datosContrato.get('anticipo').value">
+      <mat-label>Porcentaje anticipo</mat-label>
+      <span matPrefix>% &nbsp;</span>
+      <input [readonly]="visualizationMode" matInput formControlName="porcentajeAnticipo" type="number"
+        (change)="calcularAnticipo($event, false)">
+      <mat-error *ngIf="datosContrato.get('porcentajeAnticipo').hasError('max')">
+        El campo solo puede hasta 100
+      </mat-error>
+
+      <mat-error *ngIf="datosContrato.get('porcentajeAnticipo').hasError('pattern')">
+        El campo solo puede tener números y hasta 2 decimales
+      </mat-error>
+      <mat-error *ngIf="datosContrato.get('porcentajeAnticipo').hasError('required')">
+        El campo es requerido
+      </mat-error>
+
+    </mat-form-field>
+
+
+    <mat-form-field class="vex-flex-form-field" fxFlex="auto" *ngIf="datosContrato.get('anticipo').value">
+      <mat-label>Valor anticipo </mat-label>
+      <span matPrefix>$&nbsp;</span>
+      <input [readonly]="visualizationMode" matInput formControlName="valorAnticipo" [inputMask]="DecimalInputMask"
+        (change)="calcularAnticipo($event, true)">
+      <mat-error *ngIf="datosContrato.get('valorAnticipo').hasError('max')">
+        El campo solo puede tener 6 digitos
+      </mat-error>
+
+      <mat-error *ngIf="datosContrato.get('valorAnticipo').hasError('pattern')">
+        Solo se permiten 2 decimales
+      </mat-error>
+      <mat-error *ngIf="datosContrato.get('valorAnticipo').hasError('required')">
+        El campo es requerido
+      </mat-error>
+      <mat-error *ngIf="datosContrato.get('valorAnticipo').hasError('incorrect')">
+        El valor del anticipo no puede ser mayor al monto base
+      </mat-error>
+
+
+    </mat-form-field>
+
+
+
+
+
+  </div>
+
+  <mat-divider *ngIf="tipoColaborador == 1" style="margin-bottom: 20px;"></mat-divider>
+  <p *ngIf="tipoColaborador ==1" style="font-weight: bold; margin-top: 2%; margin-bottom: 2%;">
+    Acumula
+ </p>
+  <div fxLayout="column" *ngIf="tipoColaborador ==1" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+    <section>
+      <label class="example-margin">Fondo de Reserva *</label>
+      <mat-radio-group [disabled]="visualizationMode" formControlName="acumulaFondoReserva">
+        <mat-radio-button class="example-margin" [value]="true">Si</mat-radio-button>
+        <mat-radio-button class="example-margin" [value]="false">No</mat-radio-button>
+        <mat-error
+          *ngIf="datosContrato.get('acumulaFondoReserva')?.touched  && datosContrato.get('acumulaFondoReserva').hasError('required')">
+          El campo es requerido
+        </mat-error>
+      </mat-radio-group>
+    </section>
+
+    <section >
+      <label class="example-margin">Décimo Tercero *</label>
+      <mat-radio-group [disabled]="visualizationMode" formControlName="acumulaDecimoTercero">
+        <mat-radio-button class="example-margin" [value]="true">Si</mat-radio-button>
+        <mat-radio-button class="example-margin" [value]="false">No</mat-radio-button>
+        <mat-error
+          *ngIf="datosContrato.get('acumulaDecimoTercero')?.touched  && datosContrato.get('acumulaDecimoTercero').hasError('required')">
+          El campo es requerido
+        </mat-error>
+      </mat-radio-group>
+    </section>
+
+
+    <section >
+      <label class="example-margin">Décimo Cuarto *</label>
+      <mat-radio-group [disabled]="visualizationMode" formControlName="acumulaDecimoCuarto">
+        <mat-radio-button class="example-margin" [value]="true">Si</mat-radio-button>
+        <mat-radio-button class="example-margin" [value]="false">No</mat-radio-button>
+        <mat-error
+          *ngIf="datosContrato.get('acumulaDecimoCuarto')?.touched  && datosContrato.get('acumulaDecimoCuarto').hasError('required')">
+          El campo es requerido
+        </mat-error>
+      </mat-radio-group>
+    </section>
+</div>
+
+
+<div fxLayout="column" *ngIf="tipoColaborador ==2" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+  <section>
+    <label class="example-margin">Aplica Retencion del Iva*</label>
+    <mat-radio-group [disabled]="visualizationMode" formControlName="aplicaRetencionIva"
+      (ngModelChange)="onAnticipoChange($event)">
+      <mat-radio-button class="example-margin" [value]="true">Si</mat-radio-button>
+      <mat-radio-button class="example-margin" [value]="false">No</mat-radio-button>
+      <mat-error
+        *ngIf="datosContrato.get('aplicaRetencionIva')?.touched  && datosContrato.get('aplicaRetencionIva').hasError('required')">
+        El campo es requerido
+      </mat-error>
+    </mat-radio-group>
+  </section>
+
+  <mat-form-field class="vex-flex-form-field" fxFlex="auto" *ngIf="datosContrato.get('aplicaRetencionIva').value">
+    <mat-label>Porcentaje de retención</mat-label>
+    <span matPrefix>% &nbsp;</span>
+    <input [readonly]="visualizationMode" matInput formControlName="porcentajeRetencion" type="number">
+    <mat-error *ngIf="datosContrato.get('porcentajeRetencion').hasError('max')">
+      El campo solo puede hasta 100
+    </mat-error>
+
+    <mat-error *ngIf="datosContrato.get('porcentajeRetencion').hasError('pattern')">
+      El campo solo puede tener números y hasta 2 decimales
+    </mat-error>
+    <mat-error *ngIf="datosContrato.get('porcentajeRetencion').hasError('required')">
+      El campo es requerido
+    </mat-error>
+
+  </mat-form-field>
+</div>
+ 
+
+  <mat-divider style="margin-bottom: 20px;"></mat-divider>
+</div>

@@ -1,0 +1,170 @@
+.mat-column-nombre {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 15% !important;
+  width: 28% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-tipoTarea {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 15% !important;
+  width: 28% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-asunto {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 15% !important;
+    width: 28% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+:host ::ng-deep .mat-datepicker-toggle-default-icon {
+  margin: auto;
+}
+
+:host ::ng-deep .mat-checkbox-layout {
+  margin: auto;
+}
+
+:host ::ng-deep .p-chip.custom-chip-urgente {
+  background: rgb(255, 0, 72);
+  color: var(--primary-color-text);
+}
+
+:host ::ng-deep .p-chip.custom-chip-alta {
+  background: rgb(221, 99, 0);
+  color: var(--primary-color-text);
+}
+
+:host ::ng-deep .p-chip.custom-chip-media {
+  background: #dede3a;
+  color: var(--primary-color-text);
+}
+
+:host ::ng-deep .p-chip.custom-chip-baja {
+  background: green;
+  color: var(--primary-color-text);
+}
+
+// .mat-column-fecha {
+//     word-wrap: break-word !important;
+//     white-space: unset !important;
+//     flex: 0 0 10% !important;
+//     width: 28% !important;
+//     overflow-wrap: break-word;
+//     word-wrap: break-word;
+  
+//     word-break: break-word;
+  
+//     -ms-hyphens: auto;
+//     -moz-hyphens: auto;
+//     -webkit-hyphens: auto;
+//     hyphens: auto;
+//   }
+
+// .mat-column-nombre {
+//     word-wrap: break-word !important;
+//     white-space: unset !important;
+//     flex: 0 0 20% !important;
+//     width: 28% !important;
+//     overflow-wrap: break-word;
+//     word-wrap: break-word;
+  
+//     word-break: break-word;
+  
+//     -ms-hyphens: auto;
+//     -moz-hyphens: auto;
+//     -webkit-hyphens: auto;
+//     hyphens: auto;
+//   }
+
+// .mat-column-tipo {
+//     word-wrap: break-word !important;
+//     white-space: unset !important;
+//     flex: 0 0 15% !important;
+//     width: 28% !important;
+//     overflow-wrap: break-word;
+//     word-wrap: break-word;
+  
+//     word-break: break-word;
+  
+//     -ms-hyphens: auto;
+//     -moz-hyphens: auto;
+//     -webkit-hyphens: auto;
+//     hyphens: auto;
+//   }
+
+// .mat-column-prioridad {
+//     word-wrap: break-word !important;
+//     white-space: unset !important;
+//     flex: 0 0 8% !important;
+//     width: 28% !important;
+//     overflow-wrap: break-word;
+//     word-wrap: break-word;
+  
+//     word-break: break-word;
+  
+//     -ms-hyphens: auto;
+//     -moz-hyphens: auto;
+//     -webkit-hyphens: auto;
+//     hyphens: auto;
+//   }
+
+// .mat-column-estado {
+//     word-wrap: break-word !important;
+//     white-space: unset !important;
+//     flex: 0 0 11% !important;
+//     width: 28% !important;
+//     overflow-wrap: break-word;
+//     word-wrap: break-word;
+  
+//     word-break: break-word;
+  
+//     -ms-hyphens: auto;
+//     -moz-hyphens: auto;
+//     -webkit-hyphens: auto;
+//     hyphens: auto;
+//   }
+
+
+// .example-headers-align .mat-expansion-panel-header-title,
+// .example-headers-align .mat-expansion-panel-header-description {
+//   flex-basis: 0;
+// }
+
+// .mat-expansion-panel-header-description {
+//   justify-content: space-between;
+//   align-items: center;
+// }
+
+// .example-headers-align .mat-form-field + .mat-form-field {
+//   margin-left: 8px;
+// }

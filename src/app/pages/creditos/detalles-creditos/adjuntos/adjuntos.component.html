@@ -1,0 +1,514 @@
+<!--Cédula frontal del conyuge  -->
+<div *ngIf="showAdjuntosTipoCredito.CedulaConyugeFrontal">
+  <strong>Cédula frontal del conyuge</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntoCedulaConyugeFrontal?.innerHtml" [innerHTML]="adjuntoCedulaConyugeFrontal?.innerHtml"
+        style="width: 100%; height: 400px"></div>
+    </div>
+    <div>
+      <input #adjuntoCedulaConyugeFrontal1 class="btn" (change)="buildCedulaConyugeFrontal($event.target.files)"
+        type="file" id="file" accept="application/pdf" />
+      <button class="btn btn-primary" type="button" (click)="adjuntoCedulaConyugeFrontal1.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar cédula cónyuge frontal</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px; cursor: pointer">{{ nombreCedulaConyugeFrontal }}</span>
+    </div>
+  </div>
+  <br />
+</div>
+
+
+
+<!--Cédula posterior del conyuge  -->
+<div *ngIf="showAdjuntosTipoCredito.CedulaConyugePosterior">
+  <strong>Cédula posterior del conyuge</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntoCedulaConyugePosterior?.innerHtml" [innerHTML]="adjuntoCedulaConyugePosterior?.innerHtml"
+        style="width: 100%; height: 400px"></div>
+    </div>
+    <div>
+      <input #adjuntoCedulaConyugeFrontal2 class="btn" (change)="buildCedulaConyugePosterior($event.target.files)"
+        type="file" id="file" accept="application/pdf" />
+      <button class="btn btn-primary" type="button" (click)="adjuntoCedulaConyugeFrontal2.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar cédula cónyuge posterior</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px; cursor: pointer">{{ nombreCedulaConyugePosterior }}</span>
+    </div>
+  </div>
+  <br />
+</div>
+
+
+<!--Croquis  -->
+<div *ngIf="showAdjuntosTipoCredito.croquis">
+  <strong>Croquis</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntoCroquis?.innerHtml" [innerHTML]="adjuntoCroquis?.innerHtml" style="width: 100%; height: 400px">
+      </div>
+    </div>
+    <div>
+      <input #adjuntoCroquis2 class="btn" (change)="buildCroquis($event.target.files)" type="file" id="file"
+        accept="application/pdf" />
+      <button class="btn btn-primary" type="button" (click)="adjuntoCroquis2.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar croquis</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px; cursor: pointer">{{ nombreCroquis }}</span>
+    </div>
+  </div>
+  <br />
+</div>
+
+
+
+
+<!--Certificado Predio-->
+<div *ngIf="showAdjuntosTipoCredito.CertificadoPredio">
+  <strong>Certificado Predio</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntoCertificadoPredio?.innerHtml" [innerHTML]="adjuntoCertificadoPredio?.innerHtml"
+        style="width: 100%; height: 400px"></div>
+    </div>
+    <div>
+      <input #adjuntoCertificadoPredio2 class="btn" (change)="buildCertificadoPredio($event.target.files)" type="file"
+        id="file" accept="application/pdf" />
+      <button class="btn btn-primary" type="button" (click)="adjuntoCertificadoPredio2.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar certificado predio</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px; cursor: pointer">{{ nombreCertificadoPredio }}</span>
+    </div>
+  </div>
+  <br />
+</div>
+
+
+<!--Registro de propiedad-->
+<div *ngIf="showAdjuntosTipoCredito.RegistroPropiedad">
+  <strong>Registro de propiedad</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntoRegistroPropiedad?.innerHtml" [innerHTML]="adjuntoRegistroPropiedad?.innerHtml"
+        style="width: 100%; height: 400px"></div>
+    </div>
+    <div>
+      <input #adjuntoRegistroPropiedad2 class="btn" (change)="buildRegistroPropiedad($event.target.files)" type="file"
+        id="file" accept="application/pdf" />
+      <button class="btn btn-primary" type="button" (click)="adjuntoRegistroPropiedad2.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar registro de propiedad</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px; cursor: pointer">{{ nombreRegistroPropiedad }}</span>
+    </div>
+  </div>
+  <br />
+</div>
+
+
+
+<!--Autorización de buro-->
+<div *ngIf="showAdjuntosTipoCredito.AutorizacionBuro">
+  <strong>Autorización de buro</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntoAutorizacion?.innerHtml" [innerHTML]="adjuntoAutorizacion?.innerHtml"
+        style="width: 100%; height: 400px"></div>
+    </div>
+    <div>
+      <input #adjuntoAutorizacion2 class="btn" (change)="buildadjuntoAutorizacion($event.target.files)" type="file"
+        id="file" accept="application/pdf" />
+      <button class="btn btn-primary" type="button" (click)="adjuntoAutorizacion2.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar autorización de buró de crédito</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px; cursor: pointer">{{ nombreAutorizacion }}</span>
+    </div>
+  </div>
+  <br />
+</div>
+
+<!--proforma vehiculo  -->
+<div *ngIf="showAdjuntosTipoCredito.Proforma && prendario">
+  <strong>Proforma del vehículo</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntoProformaVehiculo?.innerHtml" [innerHTML]="adjuntoProformaVehiculo?.innerHtml"
+        style="width: 100%; height: 400px"></div>
+    </div>
+    <div *ngIf="!creditoExpress">
+      <input #adjuntoProformaVehiculo2 class="btn" (change)="buildadjuntoProforma($event.target.files)" type="file"
+        id="file" accept="application/pdf" />
+      <button class="btn btn-primary" type="button" (click)="adjuntoProformaVehiculo2.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar proforma del vehículo</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px; cursor: pointer">{{ nombreProforma }}</span>
+    </div>
+  </div>
+</div>
+<!--todo verfiicar   -->
+
+
+
+<!--Firma de solicitud de reestructuración  -->
+<div *ngIf="showAdjuntosTipoCredito.firmaSolicitud && adjuntofirmaSolicitud.idAdjunto">
+  <strong *ngIf="reestructurado">Firma de solicitud de restructuración</strong>
+  <strong *ngIf="refinanciado">Firma de solicitud de refinanciamiento</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntofirmaSolicitud?.innerHtml" [innerHTML]="adjuntofirmaSolicitud?.innerHtml"
+        style="width: 100%; height: 400px"></div>
+    </div>
+    <div>
+      <input #adjuntofirmaSolicitud2 class="btn" (change)="buildadjuntofirmaSolicitud($event.target.files)" type="file"
+        id="file" accept="application/pdf" />
+      <button class="btn btn-primary" type="button" (click)="adjuntofirmaSolicitud2.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar solicitud</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px; cursor: pointer">{{ nombreSolicitud }}</span>
+    </div>
+  </div>
+  <br />
+</div>
+
+
+
+
+<!--Otros ingresos  -->
+<div *ngIf="showAdjuntosTipoCredito.OtrosIngresos">
+  <strong>Otros Ingresos</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntoOtrosIngresos?.innerHtml" [innerHTML]="adjuntoOtrosIngresos?.innerHtml"
+        style="width: 100%; height: 400px"></div>
+    </div>
+    <div>
+      <input #adjuntoOtrosIngresos2 class="btn" (change)="buildadjuntoOtrosIngresos($event.target.files)" type="file"
+        id="file" accept="application/pdf" />
+      <button class="btn btn-primary" type="button" (click)="adjuntoOtrosIngresos2.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar otros ingresos</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px; cursor: pointer">{{ nombreOtrosIngresos }}</span>
+    </div>
+  </div>
+  <br />
+</div>
+
+
+
+<!--Liquidacion del BIESS  -->
+<div *ngIf="showAdjuntosTipoCredito.LiquidacionBIESS">
+  <strong>Liquidacion del BIESS</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntoLiquidacionBIESS?.innerHtml" [innerHTML]="adjuntoLiquidacionBIESS?.innerHtml"
+        style="width: 100%; height: 400px"></div>
+    </div>
+    <div>
+      <input #adjuntoOtrosIngresos2 class="btn" (change)="buildadjuntoLiquidacionBIESS($event.target.files)" type="file"
+        id="file" accept="application/pdf" />
+      <button class="btn btn-primary" type="button" (click)="adjuntoOtrosIngresos2.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar Liquidación</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px; cursor: pointer">{{ nombreLiquidacion }}</span>
+    </div>
+  </div>
+  <br />
+</div>
+
+
+<!--Autorizaciones  -->
+<div *ngIf="showAdjuntosTipoCredito.Autorizacion">
+  <strong>Autorizaciones</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntoAutorizacion?.innerHtml" [innerHTML]="adjuntoAutorizacion?.innerHtml"
+        style="width: 100%; height: 400px"></div>
+    </div>
+    <div>
+      <input #adjuntoAutorizacion2 class="btn" (change)="buildadjuntoAutorizacion($event.target.files)" type="file"
+        id="file" accept="application/pdf" />
+      <button class="btn btn-primary" type="button" (click)="adjuntoAutorizacion2.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar autorización</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px; cursor: pointer">{{ nombreAutorizacion }}</span>
+    </div>
+  </div>
+
+  <br>
+</div>
+
+<!-- TODO  -->
+<div *ngIf="!prestamo.esNovacion">
+
+
+  <strong>Solicitud de crédito</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntoSolicitudCredito?.innerHtml" style="width: 100%; height: 400px"
+        [innerHTML]="adjuntoSolicitudCredito?.innerHtml">
+      </div>
+      <br />
+      <div *ngIf="!adjuntoSolicitudCredito?.innerHtml" style="width: 100%">
+        <h6 style="width: 100%">No tiene solicitud de crédito</h6>
+      </div>
+    </div>
+    <div *ngIf="!prestamo.electronica">
+      <input #adjuntoSolicitudCredito2 type="file" id="file" accept="application/pdf"
+        (change)="buildadjuntoSolicitudCredito($event.target.files)" />
+      <button class="btn btn-primary" type="button" (click)="adjuntoSolicitudCredito2.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar solicitud de crédito</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px">{{
+        nombreSolicitudCredito
+        }}</span>
+    </div>
+  </div>
+  <br />
+</div>
+
+<div *ngIf="prestamo.esNovacion && !hipotecario">
+
+
+  <strong>Solicitud de crédito novación</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntoSolicitudCreditoNovacion?.innerHtml" style="width: 100%; height: 400px"
+        [innerHTML]="adjuntoSolicitudCreditoNovacion?.innerHtml">
+      </div>
+      <br />
+      <div *ngIf="!adjuntoSolicitudCreditoNovacion?.innerHtml" style="width: 100%">
+        <h6 style="width: 100%">No tiene solicitud de crédito de novación</h6>
+      </div>
+    </div>
+    <div *ngIf="!prestamo.electronica" >
+      <input #adjuntoSolicitudCreditoNovacion2 type="file" id="file" accept="application/pdf"
+        (change)="buildadjuntoSolicitudCreditoNovacion($event.target.files)" />
+      <button class="btn btn-primary" type="button" (click)="adjuntoSolicitudCreditoNovacion2.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar solicitud de crédito de novación</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px">{{
+        nombreSolicitudCreditoNovacion
+        }}</span>
+    </div>
+  </div>
+  <br />
+</div>
+
+
+
+<!--TODO: CREDITOS UNIFORMADOS -->
+<div class="mt-4" fxLayout="column" fxLayoutGap="8px" *ngIf="creditoExpress">
+
+
+  <!--proforma creditoExpress  -->
+  <div *ngIf="showAdjuntosTipoCredito.Proforma && creditoExpress">
+    <strong>Proforma de credito Express</strong>
+    <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+      <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+        <div *ngIf="adjuntoProformaVehiculo?.innerHtml" [innerHTML]="adjuntoProformaVehiculo?.innerHtml"
+          style="width: 100%; height: 400px"></div>
+      </div>
+      <div>
+        <input #adjuntoProformaVehiculo3 class="btn" (change)="buildadjuntoProforma($event.target.files)" type="file"
+          id="file" accept="application/pdf" />
+        <button class="btn btn-primary" type="button" (click)="adjuntoProformaVehiculo3.click()">
+          <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+          <span style="margin-left: 4px">Cargar proforma del vehículo</span>
+        </button>
+        <span style="font-size: 18px; margin-left: 10px; cursor: pointer">{{ nombreProforma }}</span>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div *ngIf="adjuntoPagoProveedor?.innerHtml">
+
+
+    <strong>Autorización de pago a proveedores</strong>
+    <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+      <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+        <div *ngIf="adjuntoPagoProveedor?.innerHtml" style="width: 100%; height: 400px"
+          [innerHTML]="adjuntoPagoProveedor?.innerHtml">
+        </div>
+        <br />
+
+      </div>
+    </div>
+    <br />
+  </div>
+  <div>
+    <input #adjuntoPagoProveedor2 type="file" id="file" accept="application/pdf"
+      (change)="buildadjuntoPagoProveedor($event.target.files)" />
+    <button class="btn btn-primary" type="button" (click)="adjuntoPagoProveedor2.click()">
+      <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+      <span style="margin-left: 4px">Cargar autorización</span>
+    </button>
+    <span style="font-size: 18px; margin-left: 10px">{{
+      nombrePagoProveedor
+      }}</span>
+  </div>
+
+
+</div>
+
+<!--TODO: DOCUMENTOS LEGALIZADOS -->
+<div class="mt-4" fxLayout="column" fxLayoutGap="8px"
+  *ngIf="estado == 'firmado' || estado == 'pagado' || estado == 'completado' || estado == 'legalizado' || estado == 'transferido'">
+
+  <div *ngIf="prestamo.electronica">
+    <strong>Resumen de Crédito</strong>
+    <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+      <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+        <div *ngIf="adjuntoResumenCredito?.innerHtml" style="width: 100%; height: 400px"
+          [innerHTML]="adjuntoResumenCredito?.innerHtml">
+        </div>
+        <br />
+        <div *ngIf="!adjuntoResumenCredito?.innerHtml" style="width: 100%">
+          <h6 style="width: 100%">No tiene resumen de crédito</h6>
+        </div>
+      </div>
+      <div *ngIf="!prestamo.electronica">
+        <input #adjuntoResumenCredito2 type="file" id="file" accept="application/pdf"
+          (change)="buildadjuntoResumenCredito($event.target.files)" />
+        <button class="btn btn-primary" type="button" (click)="adjuntoResumenCredito2.click()">
+          <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+          <span style="margin-left: 4px">Cargar resumen de crédito</span>
+        </button>
+        <span style="font-size: 18px; margin-left: 10px">{{
+          nombrereResumenCredito
+          }}</span>
+      </div>
+    </div>
+    <br />
+  </div>
+
+
+
+
+
+  <strong>Pagaré</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntoPagare?.innerHtml" style="width: 100%; height: 400px" [innerHTML]="adjuntoPagare?.innerHtml">
+      </div>
+      <br />
+      <div *ngIf="!adjuntoPagare?.innerHtml" style="width: 100%">
+        <h6 style="width: 100%">No tiene pagare</h6>
+      </div>
+    </div>
+    <div *ngIf="!prestamo.electronica">
+
+
+
+      <input hidden style="display: none" #attachments type="file" accept=".pdf,.doc,.docx,.xls,.xlsx"
+        (change)="buildadjuntoPagare($event.target.files)" #adjuntar>
+
+
+
+      <button class="btn btn-primary" type="button" (click)="adjuntar.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar pagaré</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px">{{
+        nombrePagare
+        }}</span>
+    </div>
+  </div>
+  <br />
+
+
+
+
+
+  <strong>Autorización de débito</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntoDebitoPrestamo?.innerHtml" style="width: 100%; height: 400px"
+        [innerHTML]="adjuntoDebitoPrestamo?.innerHtml"></div>
+      <br />
+      <div style="width: 100%" *ngIf="!adjuntoDebitoPrestamo?.innerHtml">
+        <h6 style="width: 100%">No tiene autorización de débito</h6>
+      </div>
+    </div>
+    <div *ngIf="!prestamo.electronica">
+      <input #adjuntoDebitoPrestamo2 type="file" id="file" accept="application/pdf"
+        (change)="buildadjuntoDebito($event.target.files)" />
+      <button class="btn btn-primary" type="button" (click)="adjuntoDebitoPrestamo2.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar débito de préstamo</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px">{{
+        nombreDebitoPrestamo
+        }}</span>
+    </div>
+  </div>
+  <br />
+
+
+
+
+  <strong>Tabla informativa de costos</strong>
+  <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+      <div *ngIf="adjuntoTablaInformativa?.innerHtml" style="width: 100%; height: 400px"
+        [innerHTML]="adjuntoTablaInformativa?.innerHtml"></div>
+      <br />
+      <div style="width: 100%" *ngIf="!adjuntoTablaInformativa?.innerHtml">
+        <h6 style="width: 100%">No tiene tabla de costos</h6>
+      </div>
+    </div>
+    <div *ngIf="!prestamo.electronica">
+      <input #adjuntoTablaInformativa2 type="file" id="file" accept="application/pdf"
+        (change)="buildadjuntoTabla($event.target.files)" />
+      <button class="btn btn-primary" type="button" (click)="adjuntoTablaInformativa2.click()">
+        <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+        <span style="margin-left: 4px">Cargar tabla de costos</span>
+      </button>
+      <span style="font-size: 18px; margin-left: 10px">{{
+        nombreTablaCostos
+        }}</span>
+    </div>
+  </div>
+
+
+  <div *ngIf="prestamo?.montoSolicitado > 50000">
+    <strong>Declaración de seguro</strong>
+    <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+      <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="44px">
+        <div *ngIf="adjuntoDeclaracionSeguro?.innerHtml" style="width: 100%; height: 400px"
+          [innerHTML]="adjuntoDeclaracionSeguro?.innerHtml"></div>
+        <br />
+        <div style="width: 100%" *ngIf="!adjuntoDeclaracionSeguro?.innerHtml">
+          <h6 style="width: 100%">No tiene tabla declaración de seguro</h6>
+        </div>
+      </div>
+      <div>
+        <input #adjuntoDeclaracionSeguro2 type="file" id="file" accept="application/pdf"
+          (change)="buildadjuntoDeclaracionSeguro($event.target.files)" />
+        <button class="btn btn-primary" type="button" (click)="adjuntoDeclaracionSeguro2.click()">
+          <mat-icon style="height: 18px" [icIcon]="icPdf"></mat-icon>
+          <span style="margin-left: 4px">Cargar declaración de seguro</span>
+        </button>
+        <span style="font-size: 18px; margin-left: 10px">{{
+          nombreDeclaracionSeguro
+          }}</span>
+      </div>
+    </div>
+  </div>
+
+  <br />
+</div>

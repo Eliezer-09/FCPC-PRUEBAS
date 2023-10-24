@@ -1,0 +1,17 @@
+<div
+    class="card overflow-hiden hover:bg-hover trans-ease-out cursor-pointer relative"
+    matRipple="matRipple"
+    [matRippleCentered]="centered"
+    [matRippleRadius]="radius"
+    [matRippleColor]="color"
+    (click)="openComponent.emit(simpleCard)">
+    <div class="head-card">
+        <div *ngIf="simpleCard.innerHTML!==''" class="content-innerhtml" [innerHTML]="simpleCard.innerHTML"></div>
+        <div class="content-font">
+            <span class="font-body text-white">{{ simpleCard.name }}</span>
+        </div>
+    </div>
+    <div class="body-card">
+        <p class="font-body">{{simpleCard.description}}</p>
+    </div>
+</div>

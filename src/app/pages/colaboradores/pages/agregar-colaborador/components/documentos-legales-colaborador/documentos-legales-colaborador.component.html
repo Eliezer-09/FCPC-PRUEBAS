@@ -1,0 +1,15 @@
+<!-- <div [formGroup]="documentosLegales">
+    <vex-archivos-colaborador [idColaborador]="idColaborador" [tipoColaborador]="tipoColaborador"
+        controlView="documentosLegales">
+    </vex-archivos-colaborador>
+</div>
+ -->
+<div *ngIf="adjuntosDocumentosLegales.length>0">
+
+    <div *ngFor="let adjuntosColaborador of adjuntosDocumentosLegales">
+      <vex-archivos-colaborador  [adjuntosColaborador]="adjuntosColaborador"  [idColaborador]="idColaborador" [tipoColaborador]="tipoColaborador"
+        controlView="DOCUMENTOS LEGALES"  [visualizationMode]="false" >
+      </vex-archivos-colaborador>
+    </div>
+      
+    </div> 

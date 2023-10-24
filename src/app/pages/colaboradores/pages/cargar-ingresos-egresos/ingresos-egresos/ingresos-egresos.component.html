@@ -1,0 +1,137 @@
+<div class="card overflow-auto mt-16" *ngIf="habilitarGuardar">
+    <div class="head-app-bar">
+        <h2 class="head-title">
+           {{title}} 
+        </h2>
+        <div class="head-options">
+            <div class="search-bar">
+                <input
+                    [formControl]="searchCtrl"
+                    class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+                    placeholder="Buscar ..."
+                    type="search"
+                    (keyup.enter)="searchTerm(filterValue)">
+                    <button
+                        (click)="searchTerm(filterValue)"
+                        class="head-buttons"
+                        mat-button="mat-button"
+                        matTooltip="Buscar">
+                        <mat-icon [icIcon]="icroundSearch"></mat-icon>
+                    </button>
+                </div>
+                <button
+                    *ngIf="habilitarGuardar"
+                    (click)="guardar.emit(dataFondoSource)"
+                    class="head-buttons"
+                    mat-button="mat-button"
+                    matTooltip="Guardar Ingresos/Egresos">
+                    <mat-icon [fontIcon]="faSave" fontSet="fa"></mat-icon>
+                </button>
+            </div>
+
+        </div>
+
+        <vex-scrollbar class="h-full relative">
+            <div class="content" fxLayout="column" fxLayoutAlign="space-between">
+                <table
+                    @stagger
+                    [dataSource]="dataSource"
+                    fxFlex="auto"
+                    mat-table matSort>
+                    <caption></caption>
+                    <ng-container *ngFor="let column of tableColumns">
+
+                       <ng-container
+                            *ngIf="column.cssClasses.includes('texto')"
+                            [matColumnDef]="column.property">
+                            <th
+                                *matHeaderCellDef
+                                mat-header-cell
+                                mat-sort-header>{{ column.label | uppercase}}</th>
+                            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell="mat-cell">{{row[column.property] | lowercase}}
+                            <!-- </td>
+                            <td mat-footer-cell *matFooterCellDef></td> -->
+                        </ng-container>
+
+                        <ng-container *ngIf="column.cssClasses.includes('fecha')" [matColumnDef]="column.property">
+                            <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column.label | uppercase }}</th>
+                          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row[column.property] || row.fecha | date
+                              }}</td>
+                             <!--    <td mat-footer-cell *matFooterCellDef></td> -->
+                          </ng-container>
+                        
+                        <ng-container
+                            *ngIf="column.cssClasses.includes('decimal')"
+                            [matColumnDef]="column.property">
+                            <th
+                                *matHeaderCellDef
+                                mat-header-cell
+                                mat-sort-header>{{ column.label  | uppercase }}</th>
+                            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell="mat-cell">
+                                <div *ngIf="column.property=='aportePersonal'; else aportePersonal">
+                                    ${{row[column.alternative][0]['valor'] | number:'.2-2'}}
+                                </div>
+                                <ng-template #aportePersonal>
+                                    <div *ngIf="column.property=='aporteAdicional'; else elseBlock">
+                                        ${{row[column.alternative][1]['valor'] | number:'.2-2'}}
+                                    </div>
+                                </ng-template>
+                                <ng-template #elseBlock>
+                                    ${{row[column.property] | number:'.2-2'}}
+                                </ng-template>
+                               
+                            </td>
+                           <!--  <td mat-footer-cell *matFooterCellDef>
+                            <span class="totals" >${{footerdata[column.footerProperty] || 0.00 | number:'.2-2'}}</span>
+                        </td> -->
+                        </ng-container>
+
+
+                        <ng-container  *ngIf="column.cssClasses.includes('textArea')" [matColumnDef]="column.property">
+                            <th
+                                *matHeaderCellDef
+                                mat-header-cell
+                                mat-sort-header>{{ column.label  | uppercase }}</th>
+                            <mat-cell *matCellDef="let row" style="color: rgb(0,0,0,0.54); display: list-item;">
+                                <div *ngIf="row[column.property] != 'OK'" style="color: red; margin-top: 12px;"><mat-icon style="height: 17.5px;" [icIcon]="icError"></mat-icon><span> {{row[column.property]}}</span></div>
+                                <div *ngIf="row[column.property] == 'OK'" style="color: green; margin-top: 12px;"><mat-icon style="height: 17.5px;" [icIcon]="icCheck"></mat-icon><span> {{row[column.property]}}</span></div>
+                            </mat-cell>
+                          <!--   <td mat-footer-cell *matFooterCellDef></td> -->
+                        </ng-container>
+                    </ng-container>
+
+                    <tr
+                        *matHeaderRowDef="visibleColumns; sticky: true"
+                        mat-header-row="mat-header-row"></tr>
+                    <tr
+                        *matRowDef="let row; columns: visibleColumns;"
+                        @fadeInUp
+                        class="interactive-rows overflow-hiden hover:bg-hover trans-ease-out cursor-pointer relative"
+                        mat-row="mat-row"></tr>
+                   <!-- <tr mat-footer-row *matFooterRowDef="visibleColumns; sticky: true" style="background-color: #8080802e;"></tr> -->
+                </table>
+            </div>
+        </vex-scrollbar>
+
+<!--         <div class="info-adicional-container">
+        <span class="totals" style="margin:20px" >Total de Ingresos/Egresos: ${{footerdata["total"] || 0.00 | number:'.2-2'}}</span>
+       </div> -->
+
+        <div class="paginator-container">
+            <mat-paginator
+                [pageSizeOptions]="[5,10,25,100]"
+                [pageSize]="pageSize"
+                class="sticky left-0"></mat-paginator>
+        </div>
+
+        <div *ngIf="dataSource.data.length === 0 && !isLoading">
+            <vex-info-message
+                [message]='infoMessage'
+                [icon]='icroundRequestPage'
+                [typeicon]="'icIcon'"></vex-info-message>
+        </div>
+
+        <div *ngIf="isLoading" class="loading">
+            <mat-progress-spinner diameter="60" mode="indeterminate"></mat-progress-spinner>
+        </div>
+    </div>

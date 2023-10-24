@@ -1,0 +1,46 @@
+<div class="card">
+    <div class="px-gutter py-4 border-b">
+        <h2 class="title m-0">Documentos</h2>
+    </div>
+
+    <div @stagger class="px-6 py-4" fxLayout="column" fxLayoutGap="16px">
+        <div *ngFor="let adjunto of adjuntos; let i = index">
+            <div @fadeInRight class="row">
+                <div class="col-7">
+                    <!-- Asunto ticket -->
+                    <h4 class="body-2 m-0 leading-snug">{{adjunto.observaciones}}</h4>
+                    <span *ngIf="adjunto.url == 'ELIMINADO'" class="badge bg-danger">Eliminado</span>
+                </div>
+
+                <!-- Manejo de documentos adjuntos -->
+                <div class="col-5">
+                    <button color="primary" mat-icon-button title="Descargar Archivo" type="button"
+                        (click)="verAdjunto(adjunto.url)">
+                        <mat-icon [icIcon]="icFile"></mat-icon>
+                    </button>
+                    <button *ngIf="adjunto.url != 'ELIMINADO'" mat-icon-button title="Eliminar Archivo" type="button"
+                        style="color: red;" (click)="eliminarAdjunto(adjunto)">
+                        <mat-icon [icIcon]="icDelete"></mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div @stagger class="px-6 py-4" fxLayout="column" fxLayoutGap="16px" *ngIf="adjuntos.length == 0">
+            <p style="color: gray;">No hay adjuntos en este ticket</p>
+        </div>
+        <mat-divider class="-mx-6 text-border"></mat-divider>
+        <div class="row">
+            <div class="col">
+                <p style="color:gray">¿Deseas agregar un documento?</p>
+            </div>
+            <div class="col">
+                <div style="float:right">
+                    <input class="btn" (change)="upload($event)" type="file" id="inputFile" />
+                    <button mat-icon-button matTooltip="Adjuntar Archivo" type="button" id="excel">
+                        <mat-icon [icIcon]="icDocument"></mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

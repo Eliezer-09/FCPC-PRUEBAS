@@ -1,0 +1,413 @@
+<div class="content">
+  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Generando...</p>
+  </ngx-spinner>
+  <div class="text-center py-18 header" style="position: relative;">
+    <div class="container">
+      <div class="img-container">
+        <img src="../../../assets/img/logoBlanco.png" style="width: 450px;">
+      </div>
+      <button mat-icon-button color="warn" (click)="return()"
+          @fadeInUp
+          class="white"
+          fxLayoutAlign="left left"
+          matRipple
+          routerLinkActive>
+          <ic-icon [icIcon]="icLeft" style="color:white" size="42px"></ic-icon>
+      </button>
+      <!-- <h2 @fadeInUp class="display-2 mt-16 mb-8" style="color: white;">Hola, ¿Cómo podemos ayudarte?</h2> -->
+      
+      <div @fadeInUp
+           class="border rounded-full bg-card py-2 pl-6 pr-3 text-secondary max-w-xl mx-auto shadow-8"
+           fxLayoutAlign="center" style="margin-top: 40px;">
+           <div class="row" style="padding:20px 0;"> 
+
+               <div class="col-12">
+                 <span class="datos-tag">NOMBRE: </span>
+                 <span style="font-size: 18px;">{{nombre_completo}}</span>
+               </div>
+               <div class="col-12">
+                 <span class="datos-tag">ESTADO: </span>
+                 <span *ngIf="estado == 'PARTICIPE ACTIVO'" style="color: green; font-size: 18px;">{{estado}}</span>
+                 <span *ngIf="estado != 'PARTICIPE ACTIVO'" style="color: red; font-size: 18px;">{{estado}}</span>
+               </div>
+           </div>
+      </div>
+
+      <div *ngIf="tipo == 'servicios_participe'">
+        <div @stagger 
+          class="mt-24 -mb-16 mx-auto"
+          fxLayout="row"
+          fxLayout.xs="column"
+          fxLayoutGap="24px"
+          fxLayoutGap.xs="16px">
+          <a (click)="cuentaIndividual()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="personAdd" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Cuenta Individual</h3>
+          </a>
+          <a (click)="consultaDeuda()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icAttachMoney" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Consulta de Deudas</h3>
+          </a>
+        </div>
+        <div @stagger 
+          class="mt-24 -mb-16 mx-auto"
+          fxLayout="row"
+          fxLayout.xs="column"
+          fxLayoutGap="24px"
+          fxLayoutGap.xs="16px">
+          <a (click)="actualizacionAportes()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icRefresh" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Actualización de Aportes</h3>
+          </a>
+          <a (click)="otros()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icFolder" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Otros</h3>
+          </a>
+        </div>
+      </div>
+
+      <div *ngIf="tipo == 'creditos' && visible == true">
+        <div @stagger
+          class="mt-24 -mb-16 mx-auto"
+          fxLayout="row"
+          fxLayout.xs="column"
+          fxLayoutGap="24px"
+          fxLayoutGap.xs="16px">
+          <a (click)="creditoNuevo()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="personAdd" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Nueva Solicitud de Credito</h3>
+          </a>
+          <a (click)="consultaCredito()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icAttachMoney" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Consulta</h3>
+          </a>
+        </div>
+        <div @stagger
+          class="mt-24 -mb-16 mx-auto"
+          fxLayout="row"
+          fxLayout.xs="column"
+          fxLayoutGap="24px"
+          fxLayoutGap.xs="16px">
+          <a (click)="pagos()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icAttachMoney" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Precancelaciones / Pagos</h3>
+          </a>
+          <a (click)="otros()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icFolder" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Otros</h3>
+          </a>
+        </div>
+      </div>
+
+      <div *ngIf="tipo == 'creditos' && visible == false">
+        <div @stagger
+          class="mt-24 -mb-16 mx-auto"
+          fxLayout="row"
+          fxLayout.xs="column"
+          fxLayoutGap="24px"
+          fxLayoutGap.xs="16px">
+          <a (click)="creditoQuirografario()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icHospital" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Crédito Quirografario</h3>
+          </a>
+          <a (click)="creditoPrendario()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icAttachMoney" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Crédito Prendario</h3>
+          </a>
+        </div>
+        <div @stagger
+          class="mt-24 -mb-16 mx-auto"
+          fxLayout="row"
+          fxLayout.xs="column"
+          fxLayoutGap="24px"
+          fxLayoutGap.xs="16px">
+          
+          <a (click)="creditoHipotecario()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icStore" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Crédito Hipotecario</h3>
+          </a>
+
+          <a (click)="otros()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icFolder" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Otros</h3>
+          </a>
+        </div>
+      </div>
+
+      <div *ngIf="tipo == 'legal'">
+        <div @stagger
+          class="mt-24 -mb-16 mx-auto"
+          fxLayout="row"
+          fxLayout.xs="column"
+          fxLayoutGap="24px"
+          fxLayoutGap.xs="16px">
+          <a (click)="firmaPagare()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icSign" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Firma de Pagaré Titular</h3>
+          </a>
+          <a (click)="firmaPagareGarante()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icSign" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Firma de Pagaré Garante</h3>
+          </a>
+          <a (click)="reclamos()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="personAdd" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Reclamos</h3>
+          </a>
+        </div>
+        <div @stagger
+          class="mt-24 -mb-16 mx-auto"
+          fxLayout="row"
+          fxLayout.xs="column"
+          fxLayoutGap="24px"
+          fxLayoutGap.xs="16px">
+          <a (click)="coactivas()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icAttachMoney" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Coactivas</h3>
+          </a>
+          <a (click)="oficio()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icPerson" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Oficio</h3>
+          </a>
+          <a (click)="otros()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icFolder" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Otros</h3>
+          </a>
+        </div>
+      </div>
+
+      <div *ngIf="tipo == 'cesantia' && visible == true">
+        <div @stagger
+          class="mt-24 -mb-16 mx-auto"
+          fxLayout="row"
+          fxLayout.xs="column"
+          fxLayoutGap="24px"
+          fxLayoutGap.xs="16px">
+          <a (click)="solicitudCesantia()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="personAdd" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Solicitud Cesantía</h3>
+          </a>
+          <a (click)="otros()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icFolder" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Otros</h3>
+          </a>
+        </div>
+      </div>
+
+      <div *ngIf="tipo == 'cesantia' && visible == false">
+        <div @stagger
+          class="mt-24 -mb-16 mx-auto"
+          fxLayout="row"
+          fxLayout.xs="column"
+          fxLayoutGap="24px"
+          fxLayoutGap.xs="16px">
+          <a (click)="cesante()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icPerson" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Cesante</h3>
+          </a>
+          <a (click)="PagoBeneficiarios()"
+            @fadeInUp
+            class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+            fxFlex
+            fxFlex.xs="auto"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            matRipple
+            routerLinkActive>
+            <ic-icon [icIcon]="icAttachMoney" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">Pago a Beneficiarios</h3>
+          </a>
+        </div>
+      </div>
+
+      <!-- <div @stagger
+          class="mt-24 -mb-16 mx-auto"
+          fxLayout="row"
+          fxLayout.xs="column"
+          fxLayoutGap="4px"
+          fxLayoutGap.xs="16px">
+
+          <button mat-icon-button color="warn" (click)="return()"
+          @fadeInUp
+          class="white"
+          fxFlex
+          fxFlex.xs="auto"
+          fxLayout="column"
+          fxLayoutAlign="left left"
+          matRipple
+          routerLinkActive>
+          <ic-icon [icIcon]="icLeft" style="color:white" size="42px"></ic-icon>
+          
+    </button>
+      </div> -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class=" titulo" *ngIf="cantidadAdjuntos > 0">
+    {{ controlView }}
+
+</div><!--  -->
+
+
+<div *ngIf="adjuntosColaborador?.length>0">
+<div *ngFor="let adjunto of adjuntosColaborador">
+    <vex-archivo-colaborador [visualizationMode]="visualizationMode" (callCargarAdjuntosChild)="emitirCargarAdjuntos($event)"
+        [idColaborador]="idColaborador" [tipoColaborador]="tipoColaborador"
+        [idReferenciaPersonal]="idReferenciaPersonal" [idFormacionAcademica]="idFormacionAcademica"
+        [idReferenciaBancaria]="idReferenciaBancaria" [idVehiculo]=" idVehiculo" [adjuntoColaborador]="adjunto"
+        [nombreSeccion]="adjunto.nombreSeccion" [controlView]="controlView">
+    </vex-archivo-colaborador>
+
+</div>
+</div>

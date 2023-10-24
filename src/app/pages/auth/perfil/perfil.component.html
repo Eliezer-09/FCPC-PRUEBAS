@@ -1,0 +1,15 @@
+<vex-page-layout mode="card">
+
+    <vex-page-layout-header fxLayout="column" fxLayoutAlign="center start">
+        <div vexContainer>
+            <h2 class="title m-0">PERFIL DEL FUNCIONARIO</h2>
+        </div>
+    </vex-page-layout-header>
+    <vex-page-layout-content>
+        <div align="center" style="padding-right: 10%; padding-left:10%">
+            <vex-info-perfil *ngIf="funcionario" [dataFuncionario]="funcionario">
+            </vex-info-perfil>
+        </div>
+    </vex-page-layout-content>
+
+</vex-page-layout>

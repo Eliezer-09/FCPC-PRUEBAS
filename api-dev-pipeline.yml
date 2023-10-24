@@ -1,0 +1,52 @@
+# Node.js with Angular
+
+# Build a Node.js project that uses Angular.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- developer
+
+pool:
+  vmImage: windows-latest
+
+steps:
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.22.x'
+  displayName: 'Install Node.js'
+
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    customCommand: 'install -g @angular/cli@11.2.14'
+  displayName: 'Angular CLI'
+
+- task: Npm@1
+  inputs:
+    command: 'ci'
+  displayName: NPM Install Dependencies 
+ 
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    customCommand: 'run stage'
+  displayName: 'Build Stagging'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)\dist\vex'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)\Development'
+    OverWrite: true
+  displayName: 'Save Artifact'
+ 
+## Generamos el artefacto para publicar en produccion
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\Development'
+    ArtifactName: 'EasyFCPC-Backoffice-DEV'
+    publishLocation: 'Container'
+    Parallel: false
+  displayName: 'Publish Artifact'

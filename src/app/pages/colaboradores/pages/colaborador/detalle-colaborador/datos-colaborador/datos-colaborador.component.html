@@ -1,0 +1,33 @@
+<mat-card class=" value-card center">
+  <div style="display: flex; grid-template-columns: repeat(4, 1fr); ">
+      <div class="avatar-card center" style="grid-column-end: 1;grid-column-start: 1;" mat-card-avatar="mat-card-avatar">
+          <mat-icon class="icon-card center" [icIcon]="icroundPerson"></mat-icon>
+      </div>
+      <div style="grid-column-end: 2;grid-column-start: 4; margin-left: 10px;" *ngIf="datosPersonales.value.identificacion">
+        <mat-card-title>{{datosPersonales.value.nombres}} {{datosPersonales.value.apellidos}}</mat-card-title>
+        <mat-card-subtitle *ngIf="datosPersonales.value.identificacion" class="content-resum-card" style="display: flex; justify-content: center;">C.I.{{datosPersonales.value.identificacion}}</mat-card-subtitle> 
+      </div>
+      
+  </div>
+</mat-card>
+
+<br>
+
+<div class="card" style="width: inherit;">  
+  <div class="px-gutter py-4">
+    <h2 class="title m-0">Datos de trabajador</h2>
+  </div>
+
+    <div class="px-gutter py-4 content-grid" >
+      <ng-container *ngFor="let item of templateDatos">
+        <ng-container *ngIf="datosPersonales.value[item.value]">
+        <div class="py-3"  style="justify-content: center; text-align: center;" >
+          <p *ngIf="item.type=='date'" class="m-0 body-1">{{datosPersonales.value[item.value] | date: 'dd/MM/yyyy' }}</p>
+          <p *ngIf="item.type=='decimal'" class="m-0 body-1">${{datosPersonales.value[item.value]  | number:'.2-2' }}</p>
+          <p *ngIf="item.type=='porcent'" class="m-0 body-1">{{datosPersonales.value[item.value] }}%</p>
+          <p *ngIf="item.type==null || item.type==undefined" class="m-0 body-1">{{datosPersonales.value[item.value]}}</p>
+          <p class="m-0 caption text-hint">{{item.label}}</p>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>

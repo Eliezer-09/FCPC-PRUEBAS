@@ -1,0 +1,59 @@
+ <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Cargando...</p>
+</ngx-spinner>
+ 
+
+<div class="card overflow-auto -mt-16" style="padding: 10px; margin: auto; text-align: center;">
+    <p><b>PAGO NÓMINA</b></p>
+    <form [formGroup]="parameters">
+
+        
+  <div class="mat-selects" >
+
+    <mat-form-field 
+                class="flex-100"
+                fxFlex="auto">
+                <mat-label>Código</mat-label>
+                <input 
+                    id="code"
+                    matInput="matInput"
+                    formControlName="code"  />
+</mat-form-field>
+
+    <mat-form-field class="flex-100" fxFlex="auto">
+      <mat-label>Tipo Colaborador</mat-label>
+      <mat-select formControlName="idTipoColaborador">
+        <mat-option [value]="1">REDEP</mat-option>
+        <mat-option [value]="2">Honorarios</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field class="flex-100" fxFlex="auto">
+      <mat-label>Formato</mat-label>
+      <mat-select formControlName="formato">
+        <mat-option [value]="'Excel'">Excel</mat-option>
+        <mat-option [value]="'Word'">Word</mat-option>
+        <mat-option [value]="'PDF'">PDF</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+</div>
+</form>
+<br>
+      <button
+          mat-raised-button="mat-raised-button"
+          [disabled]="parameters.invalid"
+          color="primary"
+          type="button"
+          id="excel"
+          class="forms-full-button button-download"
+          (click)="descargarPagoNomina()">
+          <mat-icon style="height: 18px" [icIcon]="icroundSearch"></mat-icon>
+          <span style="margin-left: 4px">Descargar Pago</span>
+      </button>
+</div>

@@ -1,0 +1,57 @@
+<div mat-dialog-content>
+
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-title">{{data.action}} Vacaciones</h4>
+    </div>  
+  
+    <form [formGroup]="form">
+ 
+      <mat-form-field class="example-full-width">
+        <mat-label>FECHA INICIO</mat-label>
+        <input [disabled]="data.visualizationMode" matInput [matDatepicker]="picker1" formControlName="fechaInicio" required>
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>FECHA FINAL</mat-label>
+        <input [disabled]="data.visualizationMode" matInput [matDatepicker]="picker2" formControlName="fechaFinal" required>
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+        <mat-error *ngIf="form.get('fechaFinal').hasError('invalid')">
+          La fecha final debe ser posterior a la fecha de inicio y la duración debe ser al menos de 6 días.
+        </mat-error>
+      </mat-form-field>
+      
+      
+      <mat-form-field class="example-full-width">
+        <mat-label>DURACIÓN</mat-label>
+        <input [disabled]="data.visualizationMode" matInput formControlName="duracion" type="text">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>PERIODO</mat-label>
+        <input [disabled]="data.visualizationMode" matInput formControlName="periodo" type="number" required>
+        <mat-error *ngIf="form.get('periodo').hasError('required')">
+          El campo es requerido
+        </mat-error>
+      </mat-form-field>
+    
+      <mat-form-field class="example-full-width">
+        <mat-label>OBSERVACIONES</mat-label>
+        <input [disabled]="data.visualizationMode" matInput formControlName="observacionesVacaciones">
+      </mat-form-field>
+  
+    </form>
+  
+  </div>
+  
+  <div mat-dialog-actions fxLayoutAlign="end center" fxLayoutGap="8px">
+    <button *ngIf="!data.visualizationMode" style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+      (click)="onNoClick()">Cancelar</button>
+    <button color="primary" mat-raised-button [disabled]="!form.valid"
+      (click)="data.visualizationMode ? onNoClick() : enviarFormulario()" cdkFocusInitial>
+      {{data.visualizationMode ? 'Cerrar' : 'Guardar'}}
+    </button>
+  </div>
+  

@@ -1,0 +1,74 @@
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Cargando...</p>
+  </ngx-spinner>
+  
+  <vex-page-layout>
+    <vex-page-layout-header class="page-head">
+  
+      <div @fadeInRight class="head-icon">
+        <mat-icon [icIcon]="roundCreditCard"></mat-icon>
+        <h3 class="head-icon-title" style="z-index: 1;
+          position: relative;"> Solicitud {{title}}</h3>
+      </div>
+      
+  
+      <div class="head-app-bar-search" style="display:flex">
+  
+        <div class="head-options" style="margin-top:3%; width: max-content">
+          <div class="search-bar">
+            <input [formControl]="searchCtrl" [(ngModel)]="buscar"
+              class="px-4 py-3 border-0 outline-none w-full bg-transparent input-text"
+              placeholder="Identificación o código de uniformado" type="search" (keyup.enter)="consultarParticipe(buscar)">
+            <button (click)="consultarParticipe(buscar)" class="head-button" mat-button="mat-button" matTooltip="Buscar">
+              <mat-icon [icIcon]="icroundSearch"></mat-icon>
+              Consultar
+            </button>
+          </div>
+  
+        </div>
+      </div>
+  
+  
+    </vex-page-layout-header>
+  
+
+      <mat-card  class="card value-card center" style="margin-top: -3% !important;">
+        <div style="display: flex; grid-template-columns: repeat(4, 1fr);">
+            <div class="avatar-card center" style="grid-column-end: 1;grid-column-start: 1;" mat-card-avatar="mat-card-avatar">
+                <mat-icon class="icon-card center" [icIcon]="icroundPerson"></mat-icon>
+            </div>
+            <div style="grid-column-end: 2;grid-column-start: 4; margin-left: 10px;" *ngIf="participe">
+              <mat-card-title>{{participe.nombres}} {{participe.apellidos}}</mat-card-title>
+              <mat-card-subtitle *ngIf="participe.codigoUniformado" class="content-resum-card" style="display: flex; justify-content: center;">Cod. Uniformado #{{participe.codigoUniformado}}</mat-card-subtitle> 
+            </div>
+            
+        </div>
+        <div style="display: flex; justify-content: center; margin: 0.5rem;"> 
+          <button color="primary" [disabled]="!participe?.idParticipe" mat-raised-button (click)="actualizarOpen()">Actualizar Datos</button>
+          <div class="flex-initial  mx-2 row-archivo-options" *ngIf="participe?.idParticipe">
+            <mat-icon style="color: green; transform: scale(1.4);" matTooltip="Datos verificados" [icIcon]="icCheck"
+                *ngIf="verificarDatos"></mat-icon>
+            <mat-icon style="color: red;  transform: scale(1.4)"
+                [icIcon]="icPriority_high"
+                [matTooltip]="'Verifica que los datos del partícipe estén actualizados'"
+                *ngIf="!verificarDatos"></mat-icon>
+        </div>  
+        </div>
+    </mat-card>
+  
+    <div *ngIf="!noPermitido" @fadeInUp class="card overflow-hidden" style="margin:1.5rem;">
+        <vex-normal *ngIf="isCredito" [productosFinancieros]="productosFinancieros" (changeVerificarDatos)="changeVerificarDatos()"></vex-normal>
+        <vex-novacion *ngIf="isNovacion" [productosFinancieros]="productosFinancieros" (changeVerificarDatos)="changeVerificarDatos()"></vex-novacion>
+        <vex-refinanciamiento *ngIf="isRefinanciamiento" [productosFinancieros]="productosFinancieros" (changeVerificarDatos)="changeVerificarDatos()"></vex-refinanciamiento>
+        <vex-restructuracion *ngIf="isRestructuracion" [productosFinancieros]="productosFinancieros" (changeVerificarDatos)="changeVerificarDatos()"></vex-restructuracion>
+    </div>
+    
+    <div *ngIf="noPermitido">
+      <vex-info-message
+          [message]='infoMessage'
+          [icon]='icroundBackHand'
+          [typeicon]="'icIcon'"></vex-info-message>
+  </div>
+
+
+  </vex-page-layout>

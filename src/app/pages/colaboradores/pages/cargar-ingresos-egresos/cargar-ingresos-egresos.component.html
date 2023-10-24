@@ -1,0 +1,89 @@
+<!-- <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Cargando Ingresos/Egresos...</p>
+</ngx-spinner>
+ 
+<vex-page-layout>
+
+    <vex-page-layout-header class="page-head">
+        
+        <div @fadeInRight class="head-icon">
+            <mat-icon [icIcon]="icroundUploadFile"></mat-icon>
+            <h3 class="head-icon-title text-center"> Nómina</h3>
+        </div>
+    </vex-page-layout-header>
+
+    
+    <div @stagger>
+         <div class="text-center  header">
+            <div class="container">
+
+                <div >
+
+
+                    <div *ngIf="!isUpdate">
+                          <vex-seccion-buscar-ingresos-egresos [codigoNominaI]="codigoNomina" (changeController)="updateCarga($event)"></vex-seccion-buscar-ingresos-egresos>
+                    </div>
+
+                    <div *ngIf="isUpdate">
+                      <vex-seccion-cargar-ingresos-egresos (changeController)="updateCarga($event)"></vex-seccion-cargar-ingresos-egresos>
+                    </div>
+        </div>
+    </div>
+</div>
+</div>
+    </vex-page-layout> -->
+    <vex-page-layout> 
+<!--      <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Cargando Ingresos/Egresos...</p>
+</ngx-spinner>
+  -->
+
+
+    <vex-page-layout-header class="page-head">
+    
+        <div @fadeInRight class="head-icon">
+            <mat-icon [icIcon]="icroundUploadFile"></mat-icon>
+            <h3 class="head-icon-title text-center"> Nómina</h3>
+        </div>
+    </vex-page-layout-header>
+
+    
+<!--     <vex-page-layout-content @stagger [class.container]="layoutCtrl.value === 'fullwidth'" [class.px-gutter]="layoutCtrl.value === 'fullwidth'" class="-mt-6">
+      
+     -->
+        <div class="-mt-14 pt-0 overflow-hidden flex px-gutter" >
+          <mat-drawer-container  class="bg-transparent flex-auto flex">
+  
+            <mat-drawer-content class=" pt-0 flex-auto flex items-start">
+              <vex-table-menu [activeCategory]="activeCategory" [items]="items" (filterChange)="filterChange($event)"></vex-table-menu>
+  
+      
+              <div class="h-full overflow-hidden flex-auto">
+                <div *ngIf="activeItem[0]">
+                    <vex-seccion-cargar-ingresos-egresos (changeController)="updateCarga($event)"></vex-seccion-cargar-ingresos-egresos>
+                </div>
+                <div *ngIf="activeItem[1]">
+                    <vex-seccion-buscar-ingresos-egresos [codigoNominaI]="codigoNomina"></vex-seccion-buscar-ingresos-egresos>
+                </div>
+                <div *ngIf="activeItem[2]">
+                    <vex-history-ingresos-egresos></vex-history-ingresos-egresos>
+                    <br>
+                    <vex-pagos-nomina></vex-pagos-nomina>
+                </div>
+               
+                
+              </div>
+            </mat-drawer-content>
+      
+          </mat-drawer-container>
+        </div>
+<!--     </vex-page-layout-content> -->
+    </vex-page-layout> 

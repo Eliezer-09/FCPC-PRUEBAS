@@ -1,0 +1,99 @@
+<div class="content" *ngIf="!vista">
+    <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+        <p style="font-size: 20px; color: white">Generando...</p>
+    </ngx-spinner>
+    <div class="text-center py-18 header" style="position: relative;">
+        <div class="container">
+            <div class="img-container">
+                <img src="../../../assets/img/logoBlanco.png" style="width:450px;">
+            </div>
+            <h2 @fadeInUp class="display-2 mt-16 mb-8" style="color: white;">Bienvenido, ¿Cómo podemos ayudarte?</h2>
+            <div @fadeInUp class="border rounded-full bg-card py-2 pl-6 pr-3 text-secondary max-w-xl mx-auto shadow-8" fxLayout="row" fxLayoutAlign="start center">
+                <input class="border-0 ml-4 placeholder:text-secondary subheading-2 outline-none font-medium w-0 bg-card" fxFlex="auto" [(ngModel)]="identificacion" placeholder="Número de cedula" type="text" maxlength="10" oninput="this.value=this.value.slice(0,this.maxLength)">
+                <button *ngIf="!cargando" class="rounded-full" color="primary" fxFlex="none" mat-raised-button type="button" (click)="buscar()">Buscar</button>
+                <button *ngIf="cargando" class="rounded-full" color="primary" fxFlex="none" mat-raised-button type="button">Cargando . . .</button>
+            </div>
+
+            <!-- Cuando es participe -->
+            <div @fadeInUp *ngIf="esParticipe && esParticipe != undefined" class="border rounded-full bg-card py-2 pl-6 pr-3 text-secondary max-w-xl mx-auto shadow-8" fxLayoutAlign="center" style="margin-top: 40px;">
+                <div class="row">
+                    <div class="col-12">
+                        <span class="datos-tag">NOMBRE: </span>
+                        <span style="font-size: 18px;">{{nombre}}</span>
+                    </div>
+                    <div class="col-12">
+                        <span class="datos-tag">ESTADO: </span>
+                        <span *ngIf="estado == 'PARTICIPE ACTIVO'" style="color: green; font-size: 18px;">{{estado}}</span>
+                        <span *ngIf="estado != 'PARTICIPE ACTIVO'" style="color: red; font-size: 18px;">{{estado}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div @stagger *ngIf="esParticipe && esParticipe != undefined" class="mt-24 -mb-16 mx-auto" fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px" fxLayoutGap.xs="16px">
+                <a *ngIf="estado == 'NoDisponible'" (click)="aderirPasivo()" @fadeInUp class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2" fxFlex fxFlex.xs="auto" fxLayout="column" fxLayoutAlign="center center" matRipple routerLinkActive>
+                    <ic-icon [icIcon]="personAdd" class="text-hint" size="42px"></ic-icon>
+                    <h3 class="title mb-0 mt-4">Solicitud de Adhesiòn</h3>
+                </a>
+
+                <a (click)="creditos()" @fadeInUp class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2" fxFlex fxFlex.xs="auto" fxLayout="column" fxLayoutAlign="center center" matRipple routerLinkActive>
+                    <ic-icon [icIcon]="icAttachMoney" class="text-hint" size="42px"></ic-icon>
+                    <h3 class="title mb-0 mt-4">Créditos</h3>
+                </a>
+
+                <a (click)="serviciosParticipe()" @fadeInUp class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2" fxFlex fxFlex.xs="auto" fxLayout="column" fxLayoutAlign="center center" matRipple routerLinkActive>
+                    <ic-icon [icIcon]="personAdd" class="text-hint" size="42px"></ic-icon>
+                    <h3 class="title mb-0 mt-4">Servicio al Participe</h3>
+                </a>
+            </div>
+            <div @stagger *ngIf="esParticipe && esParticipe != undefined" class="mt-24 -mb-16 mx-auto" fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px" fxLayoutGap.xs="16px">
+                <a (click)="legal()" @fadeInUp class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2" fxFlex fxFlex.xs="auto" fxLayout="column" fxLayoutAlign="center center" matRipple routerLinkActive>
+                    <ic-icon [icIcon]="icFolder" class="text-hint" size="42px"></ic-icon>
+                    <h3 class="title mb-0 mt-4">Legal</h3>
+                </a>
+                <a (click)="cesantia()" @fadeInUp class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2" fxFlex fxFlex.xs="auto" fxLayout="column" fxLayoutAlign="center center" matRipple routerLinkActive>
+                    <ic-icon [icIcon]="icAtm" class="text-hint" size="42px"></ic-icon>
+                    <h3 class="title mb-0 mt-4">Cesantía</h3>
+                </a>
+            </div>
+
+            <!-- Cuando no es participe -->
+
+            <div style="margin-top:60px" *ngIf="!esParticipe && esParticipe != undefined">
+                <div style="margin-bottom: 20px;">
+                    <span style="color: red; font-size: 22px; font-weight: bold;">Participe no adherido: </span>
+                </div>
+                <div @fadeInUp class="border rounded-full bg-card py-2 pl-6 pr-3 text-secondary max-w-xl mx-auto shadow-8" fxLayout="row">
+                    <input class="border-0 ml-4 placeholder:text-secondary subheading-2 outline-none font-medium w-0 bg-card" fxFlex="auto" [(ngModel)]="nombre_nuevo" placeholder="Ingrese su nombre para continuar" type="text" fxLayoutAlign="start center">
+                </div>
+            </div>
+
+            <div @stagger *ngIf="!esParticipe && esParticipe != undefined" class="mt-24 -mb-16 mx-auto" fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px" fxLayoutGap.xs="16px">
+                <a (click)="aderir()" @fadeInUp class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2" fxFlex fxFlex.xs="auto" fxLayout="column" fxLayoutAlign="center center" matRipple routerLinkActive>
+                    <ic-icon [icIcon]="personAdd" class="text-hint" size="42px"></ic-icon>
+                    <h3 class="title mb-0 mt-4">Solicitud de Adhesiòn</h3>
+                </a>
+                <a (click)="cuentaIndividual()" @fadeInUp class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2" fxFlex fxFlex.xs="auto" fxLayout="column" fxLayoutAlign="center center" matRipple routerLinkActive>
+                    <ic-icon [icIcon]="icPerson" class="text-hint" size="42px"></ic-icon>
+                    <h3 class="title mb-0 mt-4">Cuenta Individual</h3>
+                </a>
+                <a (click)="oficio()" @fadeInUp class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2" fxFlex fxFlex.xs="auto" fxLayout="column" fxLayoutAlign="center center" matRipple routerLinkActive>
+                    <ic-icon [icIcon]="icPerson" class="text-hint" size="42px"></ic-icon>
+                    <h3 class="title mb-0 mt-4">Oficio</h3>
+                </a>
+            </div>
+
+            <div @stagger *ngIf="!esParticipe && esParticipe != undefined" class="mt-24 -mb-16 mx-auto" fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px" fxLayoutGap.xs="16px">
+                <a (click)="consultaDeuda()" @fadeInUp class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2" fxFlex fxFlex.xs="auto" fxLayout="column" fxLayoutAlign="center center" matRipple routerLinkActive>
+                    <ic-icon [icIcon]="icAttachMoney" class="text-hint" size="42px"></ic-icon>
+                    <h3 class="title mb-0 mt-4">Consulta de deuda</h3>
+                </a>
+                <a (click)="consultaDeudaPasivos()" @fadeInUp class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2" fxFlex fxFlex.xs="auto" fxLayout="column" fxLayoutAlign="center center" matRipple
+                    routerLinkActive>
+                    <ic-icon [icIcon]="icAttachMoney" class="text-hint" size="42px"></ic-icon>
+                    <h3 class="title mb-0 mt-4">Pasivos consulta de deuda</h3>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<vex-solicitar-ticket *ngIf="vista" [participe]="participe" (messageEvent)="mensajeRecibido($event)" (clearEvent)="limpiarVentana($event)"></vex-solicitar-ticket>

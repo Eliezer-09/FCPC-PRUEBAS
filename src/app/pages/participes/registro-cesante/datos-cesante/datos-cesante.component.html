@@ -1,0 +1,52 @@
+
+    <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+        <p style="font-size: 20px; color: white">Cargando...</p>
+    </ngx-spinner>
+
+    <section class="example-section">
+        <mat-checkbox class="example-margin" [(ngModel)]="esFallecido" (change)="seleccionarTipoCesante(esFallecido)">¿Es Fallecido?</mat-checkbox>
+    </section>
+<form [formGroup]="cesanteFormGroup">
+    <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+        
+        
+        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                <mat-label>Fecha de Salida</mat-label>
+                <input readonly placeholder="Selecciona una fecha" formControlName="fechaSalida" matInput [matDatepicker]="picker">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="cesanteFormGroup.get('fechaSalida').hasError('required')">Ingrese una fecha de salida</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                <mat-label>Motivo de terminación</mat-label>
+                <mat-select formControlName="motivoTerminacion" required>
+                    <mat-option *ngFor="let item of motivosTerminacion" [value]="item">{{item}}</mat-option>
+                </mat-select> 
+                <mat-error *ngIf="cesanteFormGroup.get('motivoTerminacion').hasError('required')">Motivo de terminación es requerido</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                <mat-label>Motivo</mat-label>
+                <textarea required formControlName="motivoSalida" matInput type="text"></textarea>
+                <mat-error *ngIf="cesanteFormGroup.get('motivoSalida').hasError('required')">Ingrese un motivo salida</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                <mat-label>Comentarios</mat-label>
+                <textarea required formControlName="comentarios" matInput type="text"></textarea>
+                <mat-error *ngIf="cesanteFormGroup.get('comentarios').hasError('required')">Ingrese un comentario</mat-error>
+            </mat-form-field>
+        </div>
+
+    </div>
+</form>
+    
+<div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px" style="margin-top: 2%;">
+    <button color="primary" mat-raised-button matStepperPrevious>ANTERIOR</button>
+    <button color="primary" mat-raised-button [disabled]="cesanteFormGroup.invalid" (click)="guardar()">GUARDAR</button>        
+</div>

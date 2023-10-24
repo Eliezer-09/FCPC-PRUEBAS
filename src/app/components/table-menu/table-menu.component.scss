@@ -1,0 +1,28 @@
+.content-option{
+    background: white;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.linkbutton {
+    padding: 0 10px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 0;
+    width: auto;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+.linkbutton:hover {
+    color: var(--COLOR-PRIMARY-CONTRAST) !important;
+    background-color: var(--COLOR-PRIMARY);
+    .linkiconbutton {
+        color: var(--COLOR-PRIMARY-CONTRAST);
+    }
+}
+
+.linkiconbutton {
+    color: var(--COLOR-PRIMARY);
+    margin-right: 10px;
+}

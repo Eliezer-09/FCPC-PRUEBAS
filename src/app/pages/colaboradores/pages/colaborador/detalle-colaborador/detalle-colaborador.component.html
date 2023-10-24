@@ -1,0 +1,105 @@
+
+<vex-datos-colaborador></vex-datos-colaborador>
+
+  <div *ngIf="items"
+     class="p-gutter"
+     gdColumns="1fr 1fr 1fr 1fr 1fr"
+     gdColumns.lt-md="1fr 1fr 1fr"
+     gdColumns.lt-sm="1fr"
+     gdGap="16px"
+     style="padding-right:0;padding-left:0"
+     vexContainer>
+    
+    
+    <vex-values-data
+        matTooltip="Ingresos"
+        (click)="handleClick('ingresos', 'ingresos-section')"
+        [change]="124.4"
+        [icon]="icroundMonetizationOn"
+        [segmento]="seccion"
+        [detalles]="dataCreditos"
+        iconClass="text-primary bg-primary-light"
+        gdColumn.lt-sm="1"
+        label="Ingresos"
+        [spinner]="false">
+    </vex-values-data>
+
+    <vex-values-data
+    matTooltip="Egresos"
+    (click)="handleClick('egresos', 'egresos-section')"
+    (click)="cambiarSeccion('egresos')"
+    [change]="124.4"
+    [icon]="icroundShopify"
+    [segmento]="seccion"
+    [detalles]="dataCreditos"
+    iconClass="text-primary bg-primary-light"
+    gdColumn.lt-sm="1"
+    label="Egresos"
+    [spinner]="false">
+    
+</vex-values-data>
+
+
+  <vex-values-data
+  matTooltip="Vacaciones"
+  (click)="handleClick('vacaciones', 'vacaciones-section')"
+  [change]="124.4"
+  [icon]="icroundBeachAccess"
+  [segmento]="seccion"
+  [detalles]="dataCreditos"
+  iconClass="text-primary bg-primary-light"
+  gdColumn.lt-sm="1"
+  label="Vacaciones"
+  [spinner]="false">
+  </vex-values-data>
+
+
+  <vex-values-data
+  matTooltip="Descuentos"
+  (click)="handleClick('descuentos', 'descuentos-section')"
+  [change]="124.4"
+  [icon]="icroundPercent"
+  [segmento]="seccion"
+  [detalles]="dataCreditos"
+  iconClass="text-primary bg-primary-light"
+  gdColumn.lt-sm="1"
+  label="Descuentos"
+  [spinner]="false">
+  </vex-values-data>
+
+
+  <vex-values-data
+  matTooltip="Rubros"
+  (click)="handleClick('rubros', 'rubros-section')"
+  [change]="124.4"
+  [icon]="icroundCurrencyRuble"
+  [segmento]="seccion"
+  [detalles]="dataCreditos"
+  iconClass="text-primary bg-primary-light"
+  gdColumn.lt-sm="1"
+  label="Rubros"
+  [spinner]="false">
+  </vex-values-data>
+</div>
+
+<div style="margin-top:10px"  *ngIf="seccion != ''">
+
+<div id="ingresos-section" style="margin-top:10px" *ngIf="seccion == 'ingresos'" >
+
+  <vex-ingresos-colaborador></vex-ingresos-colaborador>
+  </div>
+
+
+  <div id="descuentos-section" style="margin-top:10px" *ngIf="seccion == 'descuentos'">
+    <div class="card" style="width: inherit;">
+      <vex-descuentos-colaborador></vex-descuentos-colaborador>
+    </div>
+  </div>
+  
+
+  <div id="vacaciones-section" style="margin-top:10px" *ngIf="seccion == 'vacaciones'">
+    <div class="card" style="width: inherit;">
+      <vex-vacaciones-colaborador></vex-vacaciones-colaborador>
+    </div>
+  </div>
+</div>

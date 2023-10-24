@@ -1,0 +1,63 @@
+.mat-column-numCuota {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 6% !important;
+    width: 15% !important;
+  }
+  
+  .mat-column-dias {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 20% !important;
+    width: 15% !important;
+  }
+  
+  .mat-column-capital {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 20% !important;
+    width: 15% !important;
+  }
+  
+  .mat-column-fechaVencimiento {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 20% !important;
+    width: 15% !important;
+  }
+  
+  .mat-column-interes {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 20% !important;
+    width: 15% !important;
+  }
+  
+  .mat-column-total {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 20% !important;
+    width: 15% !important;
+  }
+  
+  input.right-align::-webkit-outer-spin-button,
+  input.right-align::-webkit-inner-spin-button {
+    display: none;
+  }
+  .right-align {
+    text-align: right;
+  }
+  .center-align {
+    text-align: center;
+  }
+  input.right-align {
+    -moz-appearance: textfield;
+  }
+  
+  
+  th.mat-header-cell {
+    background-color: var(--COLOR-PRIMARY);
+    color: var(--COLOR-PRIMARY-CONTRAST);
+  }
+  
+  

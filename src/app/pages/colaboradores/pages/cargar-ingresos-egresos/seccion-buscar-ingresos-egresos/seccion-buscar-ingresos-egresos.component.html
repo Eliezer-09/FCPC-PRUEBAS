@@ -1,0 +1,64 @@
+ <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Cargando...</p>
+</ngx-spinner>
+ 
+
+<div class="card overflow-auto -mt-16" style="padding: 10px; margin: auto; text-align: center;">
+    <p><b>NÓMINA PENDIENTE</b></p>
+    <form [formGroup]="parameters">
+
+        
+  <div class="mat-selects" >
+    <mat-form-field class="flex-100" fxFlex="auto">
+        <mat-label>Filtro:</mat-label>
+        <mat-select formControlName="filtro">
+          <mat-option [value]="true">Fecha</mat-option>
+          <mat-option [value]="false">Código</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+    <vex-mat-datepicker-month-year *ngIf="parameters.value.filtro"
+    (date_month_year_value)="setMonthAndYear($event)"></vex-mat-datepicker-month-year>
+
+
+  <mat-form-field  *ngIf="!parameters.value.filtro"
+        class="flex-100"
+        fxFlex="auto">
+        <mat-label>ID:</mat-label>
+        <input 
+            id="idNomina"
+            matInput="matInput"
+            formControlName="codigoNomina"  />
+    </mat-form-field>
+</div>
+</form>
+<br>
+      <button
+          mat-raised-button="mat-raised-button"
+          [disabled]="(!parameters.value.codigoNomina && !parameters.value.filtro ) || ((!parameters.value.mes || !parameters.value.anio) && parameters.value.filtro)"
+          color="primary"
+          type="button"
+          id="excel"
+          class="forms-full-button button-download"
+          (click)="cargar()">
+          <mat-icon style="height: 18px" [icIcon]="icroundSearch"></mat-icon>
+          <span style="margin-left: 4px">Buscar Ingresos/Egresos</span>
+      </button>
+</div>
+
+
+
+
+
+<div *ngIf="listadoNominaNoProcesada.length>0">
+<vex-listado-nomina [nominaNoProcesada]="listadoNominaNoProcesada"
+                     [codigoNomina]="parameters.value.codigoNomina"
+                     [mes]="parameters.value.mes"
+                     [anio]="parameters.value.anio"></vex-listado-nomina>
+</div>
+

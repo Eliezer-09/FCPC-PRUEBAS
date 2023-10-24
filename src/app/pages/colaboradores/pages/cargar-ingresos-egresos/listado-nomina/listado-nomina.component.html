@@ -1,0 +1,28 @@
+
+<div class="card overflow-auto mt-16"  [class.container]="layoutCtrl.value === 'boxed'">
+        <div class="head-options">
+            <div class="search-bar">
+                <button
+                    (click)="guardarNominaNoProcesada()"
+                    class="head-buttons"
+                    mat-button="mat-button"
+                    matTooltip="Guardar Ingresos/Egresos">
+                    <mat-icon [fontIcon]="faSave" fontSet="fa"></mat-icon>
+                </button>
+        </div>
+    </div>
+
+<div style="margin: 10px; text-align:center" [class.px-gutter]="layoutCtrl.value === 'fullwidth'">
+    <br>
+        <p><b>LISTADO DE NÓMINA ID: {{codigoNomina}}</b></p>
+    <br>
+
+  <vex-listado-nomina-colaborador #ListadoNominaHonorarioComponent 
+                                    [titleNomina]="'REDEP'" [nominaNoProcesada]="taskREDEP" [tipoColaborador]="1"
+                                    (download)="descargarNomina($event)"></vex-listado-nomina-colaborador>
+  <vex-listado-nomina-colaborador #ListadoNominaREDEPComponent
+                                     [titleNomina]="'Honorarios'" [nominaNoProcesada]="taskHonorarios" [tipoColaborador]="2"
+                                     (download)="descargarNomina($event)"></vex-listado-nomina-colaborador>
+
+</div>
+</div>

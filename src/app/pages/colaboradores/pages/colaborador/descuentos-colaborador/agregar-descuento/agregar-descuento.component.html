@@ -1,0 +1,55 @@
+<div mat-dialog-content>
+
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">{{data.action}} Descuento</h4>
+  </div>  
+
+  <form [formGroup]="form">
+
+    <mat-form-field class="example-full-width">
+      <mat-label>TIPO RUBRO</mat-label>
+      <mat-select [disabled]="data.visualizationMode" formControlName="tipo" required>
+        <mat-option *ngFor="let tipo of tipo" [value]="tipo">
+          {{tipo}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('tipo').hasError('required')">
+        El campo es requerido
+      </mat-error>
+    </mat-form-field>
+  
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>VALOR</mat-label>
+      <input [disabled]="data.visualizationMode" matInput formControlName="valor" type="number" required>
+      <mat-error *ngIf="form.get('valor').hasError('required')">
+        El campo es requerido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>FECHA DESCUENTO</mat-label>
+      <input [disabled]="data.visualizationMode" matInput [matDatepicker]="picker1" type="text" formControlName="fechaRegistro" required>
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>OBSERVACIONES</mat-label>
+      <input [disabled]="data.visualizationMode" matInput formControlName="observacio">
+   </mat-form-field>
+   
+
+  </form>
+
+</div>
+
+<div mat-dialog-actions fxLayoutAlign="end center" fxLayoutGap="8px">
+  <button *ngIf="!data.visualizationMode" style="color: #fff; background-color: #EF2E2E;" mat-raised-button
+    (click)="onNoClick()">Cancelar</button>
+  <button color="primary" mat-raised-button [disabled]="!form.valid"
+    (click)="data.visualizationMode ? onNoClick() : enviarFormulario()" cdkFocusInitial>
+    {{data.visualizationMode ? 'Cerrar' : 'Guardar'}}
+  </button>
+</div>

@@ -1,0 +1,16 @@
+
+.contentBox{
+    margin: 0% 5% 0% 5%;;
+}
+
+.content{
+    min-height:100px;
+}
+
+::ng-deep .file-info{
+    text-align: initial !important;
+}
+
+::ng-deep .remove-btn{
+    float: left !important;
+}

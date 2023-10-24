@@ -1,0 +1,7 @@
+node_modules
+dist
+.vscode
+.vs
+.src.zip.icloud
+*.icloud
+.DS_Store 

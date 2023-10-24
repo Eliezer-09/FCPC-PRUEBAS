@@ -1,0 +1,200 @@
+
+
+    <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+        <p style="font-size: 20px; color: white">Cargando...</p>
+    </ngx-spinner>
+    <div class="card-body d-flex justify-content-between align-items-center">
+        <div class="subheading-1" style="font-weight: bold; color: gray;">Datos del partícipe<br>
+            <strong style="color: black;">Por favor ingrese una identificación</strong>
+        </div>
+    </div>
+
+    <form [formGroup]="formCesanteActualizar">
+        <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+
+            <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+                    <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+                    </h2>
+                <div class="bg-card rounded-full border px-4"
+                    fxFlex="400px" 
+                    fxFlex.lt-md="auto"
+                    fxHide.xs
+                    fxLayout="row"
+                    fxLayoutAlign="start center">
+                <input  [formControl]="searchCtrl"
+                        [(ngModel)]="buscar"
+                        class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+                        placeholder="Digita la cédula..."
+                        type="Buscar..."
+                        (keyup.enter)="buscarParticipe()">
+                        <button (click)="buscarParticipe()"  mat-mini-fab color="primary">
+                            <i class="fa fa-search"></i>
+                        </button>
+                </div>
+            </div>
+
+            <div *ngIf="existeCedula" @fadeInUp>
+                <strong>Datos personales</strong>
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Nombres</mat-label>
+                        <input [(ngModel)]="participe.nombres" formControlName="nombres" matInput>
+                        <mat-error *ngIf="formCesanteActualizar.get('nombres').hasError('required')">El nombre es requerido</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Apellidos</mat-label>
+                        <input required [(ngModel)]="participe.apellidos" formControlName="apellidos" matInput>
+                        <mat-error *ngIf="formCesanteActualizar.get('apellidos').hasError('required')">Apellidos es requerido</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Estado civil</mat-label>
+                        <mat-select formControlName="idEstadoCivil" required [(value)]="participe.idEstadoCivil">
+                            <mat-option *ngFor="let estado of estadosCivil" [value]="estado.idEstadoCivil">{{estado.descripcion}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="formCesanteActualizar.get('idEstadoCivil').hasError('required')">Estado Civil es requerido</mat-error>
+                    </mat-form-field>
+
+                </div>
+
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Nacionalidad</mat-label>
+                        <input readonly formControlName="nacionalidad" matInput [(ngModel)]="participe.nacionalidad">
+                    </mat-form-field>
+
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto" *ngIf="direccion">
+                        <mat-label>Provincia</mat-label>
+                        <mat-select readonly [(value)]="direccion.idProvincia">
+                            <mat-option *ngFor="let nivel of provincias" [value]="nivel.idProvincia">{{nivel.descripcion}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto" *ngIf="direccion">
+                        <mat-label>Ciudad</mat-label>
+                        <mat-select readonly [(value)]="direccion.idCanton">
+                            <mat-option *ngFor="let nivel of ciudades" [value]="nivel.idCiudad">{{nivel.descripcion}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Género</mat-label>
+                        <mat-select formControlName="idGenero" required [(value)]="participe.idGenero">
+                            <mat-option *ngFor="let gen of generos" [value]="gen.idGenero">{{gen.descripcion}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="formCesanteActualizar.get('idGenero').hasError('required')">Género es requerido</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Fecha de nacimiento</mat-label>
+                        <input [(ngModel)]="participe.fechaNacimiento" formControlName="fechaNacimiento" matInput [matDatepicker]="picker">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="formCesanteActualizar.get('fechaNacimiento').hasError('required')">Fecha nacimiento es requerido</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Fecha de expedición de la cédula</mat-label>
+                        <input [(ngModel)]="participe.fechaExpedicionCedula" formControlName="fechaExpedicionCedula" matInput [matDatepicker]="picker2">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                        <mat-error *ngIf="formCesanteActualizar.get('fechaExpedicionCedula').hasError('required')">Fecha expedición es requerido</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <strong>Datos de contacto</strong>
+
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                    
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Dirección</mat-label>
+                        <input *ngIf="participe.direcciones[0]" formControlName="calleprincipal" matInput [(ngModel)]="participe.direcciones[0].callePrincipal">
+                        <input *ngIf="!participe.direcciones[0]" readonly formControlName="calleprincipal" matInput [(ngModel)]="sinInformacion">
+                    </mat-form-field>
+
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Referencia</mat-label>
+                        <input *ngIf="participe.direcciones[0]" formControlName="referencia" matInput [(ngModel)]="participe.direcciones[0].referencia">
+                        <input *ngIf="!participe.direcciones[0]" readonly formControlName="referencia" matInput [(ngModel)]="sinInformacion">
+                    </mat-form-field>
+
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Celular</mat-label>
+                        <input required [(ngModel)]="participe.celular" formControlName="celular" matInput>
+                        <mat-error *ngIf="formCesanteActualizar.get('celular').hasError('required')">Celular es requerido</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Correo 1</mat-label>
+                        <input [(ngModel)]="participe.correo1" formControlName="correo1" matInput>
+                        <mat-error *ngIf="formCesanteActualizar.get('correo1').hasError('required')">Correo 1 es requerido</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Correo 2</mat-label>
+                        <input [(ngModel)]="participe.correo2" formControlName="correo2" matInput>
+                    </mat-form-field>
+
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Teléfono 1</mat-label>
+                        <input required [(ngModel)]="participe.telefono1" formControlName="telefono1" matInput>
+                        <mat-error *ngIf="formCesanteActualizar.get('telefono1').hasError('required')">Teléfono 1 es requerido</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Teléfono 2</mat-label>
+                        <input [(ngModel)]="participe.telefono2" formControlName="telefono2" matInput>
+                    </mat-form-field>
+                </div>
+
+                <strong>Datos del partícipe</strong>
+
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Grado</mat-label>
+                        <mat-select required [(value)]="participe.idGrado">
+                            <mat-option *ngFor="let grado of grados" [value]="grado.idGrado">{{grado.descripcion}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="formCesanteActualizar.get('idGrado').hasError('required')">Grado es requerido</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Profesión</mat-label>
+                        <mat-select required [(value)]="participe.idProfesion" formControlName="idProfesion">
+                          <mat-option
+                            *ngFor="let item of profesiones"
+                            [value]="item.idProfesion"
+                            >{{ item.descripcion }}</mat-option
+                          >
+                        </mat-select>
+                      </mat-form-field>
+
+                </div>
+
+                <strong>Información del cónyuge</strong>
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Nombre completos del Cónyuge</mat-label>
+                        <input [(ngModel)]="participe.conyuge" formControlName="conyuge" matInput>
+                    </mat-form-field>
+                    <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                        <mat-label>Identificación del Cónyuge</mat-label>
+                        <input [(ngModel)]="participe.identificacionConyuge" formControlName="identificacionConyuge" matInput>
+                    </mat-form-field>
+                </div>
+            </div>
+    
+        </div>
+    </form>
+
+    <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px" style="margin-top: 2%;">
+        <button *ngIf="existeCedula" [disabled]="formCesanteActualizar.invalid" color="primary" mat-raised-button (click)="actualizar()">SIGUIENTE</button>
+    </div> 

@@ -1,0 +1,1 @@
+export const IDPARAMETRO=69

@@ -1,0 +1,25 @@
+.mat-dialog-content {
+
+    display: block !important;
+
+}
+
+.modal-header{
+  justify-content: center;
+  background-color:  var(--COLOR-PRIMARY);
+  color: var(--COLOR-PRIMARY-CONTRAST);
+  margin-bottom: 15px;
+}
+
+.example-section {
+    display: flex;
+    margin-top: 40px;
+    height: 60px;
+  }
+  
+  .example-margin {
+    margin: 0 10px;
+  }
+  .example-full-width {
+    width: 100%;
+  }

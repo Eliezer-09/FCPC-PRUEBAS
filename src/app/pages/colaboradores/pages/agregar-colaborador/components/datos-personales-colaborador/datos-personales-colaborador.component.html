@@ -1,0 +1,398 @@
+<div [formGroup]="datosPersonales" #ngForm="ngForm" *ngIf="!loading">
+    <br>
+
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+        <div class="flex justify-center	">
+            <div>
+                <img [src]="avatarUrl" alt="avatar"
+                    style="width: 200px; height: 200px; box-shadow: 10px 10px 8px #b9b3b3;" />
+                <input hidden class="btn" (change)="imagePreview($event)" type="file" #fileInput accept="image/*" />
+            </div>
+
+            <div class="flex flex-col justify-between" *ngIf="!visualizationMode">
+
+                <button type="button" (click)="fileInput.click()" class="btn agregar-imagen"
+                    matTooltip="Agregar imagen">
+
+                    <mat-icon style="color: #222B53 " [icIcon]="icUpload"></mat-icon>
+                </button>
+
+                <button type="button" class="btn eliminar-imagen" (click)="deleteImage()"
+                    *ngIf="avatarUrl != '../../../../../../../../assets/img/sinPerfil.jpg'"
+                    matTooltip="Eliminar imagen">
+                    <mat-icon style="color: red">delete</mat-icon>
+                </button>
+
+            </div>
+        </div>
+
+        <div fxLayout="column" style="width: 100%;">
+            <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                    <mat-label>Tipo de identificación</mat-label>
+                    <mat-select (selectionChange)="cambiarValidaciones($event.value)" required
+                        formControlName="idTipoIdentificacion">
+                        <mat-option [disabled]="visualizationMode" *ngFor="let tipoId of tiposID"
+                            [value]="tipoId.idTipoIdentificacion">
+                            {{tipoId.descripcion}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="isValidField(datosPersonales, 'idTipoIdentificacion')">
+                        El campo es requerido
+                    </mat-error>
+                </mat-form-field>
+
+
+                <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                    <mat-label>Número de identificación</mat-label>
+                    <input [readonly]="visualizationMode" matInput formControlName="identificacion"
+                        maxlength="{{datosPersonales.get('idTipoIdentificacion').value == 1 ? 10 : 13}}" required
+                        (change)="cargarDatosColaborador()">
+
+                    <mat-error *ngIf="isValidField(datosPersonales, 'identificacion')">
+                        {{
+                        getFieldErrorMessage(datosPersonales, 'identificacion')
+                        }}
+
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+                <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+
+                    <mat-label>Nombres</mat-label>
+                    <input [readonly]="visualizationMode" (keydown)="utilsService.validacionSoloLetras($event)" matInput
+                        formControlName="nombres" required>
+
+                    <mat-error *ngIf="isValidField(datosPersonales, 'nombres')">
+                        {{
+                        getFieldErrorMessage(datosPersonales, 'nombres')
+                        }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+
+                    <mat-label>Apellidos</mat-label>
+                    <input [readonly]="visualizationMode" (keydown)="utilsService.validacionSoloLetras($event)" matInput
+                        formControlName="apellidos" required>
+                    <mat-error *ngIf="isValidField(datosPersonales, 'apellidos')">
+                        {{
+                        getFieldErrorMessage(datosPersonales, 'apellidos')
+                        }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+                    <mat-label>Nombre de pila</mat-label>
+                    <input [readonly]="visualizationMode" matInput formControlName="nombrePila">
+                </mat-form-field>
+
+            </div>
+        </div>
+    </div>
+
+    <mat-divider class="mt-10"></mat-divider>
+
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto" style="width: 73px;">
+            <mat-label>Fecha de nacimiento</mat-label>
+            <input [readonly]="visualizationMode" matInput type="datetime"
+                max="{{utilsService.fechaActual() | date:'yyyy-MM-dd'}}" [matDatepicker]="pickeraaa"
+                formControlName="fechaNacimiento" required (dateChange)="calcularEdad($event.value)">
+            <mat-datepicker-toggle [disabled]="visualizationMode" matSuffix [for]="pickeraaa"></mat-datepicker-toggle>
+            <mat-datepicker #pickeraaa></mat-datepicker>
+            <mat-error *ngIf="isValidField(datosPersonales, 'fechaNacimiento')">
+                {{
+                getFieldErrorMessage(datosPersonales, 'fechaNacimiento')
+                }}
+            </mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+            <mat-label>Edad</mat-label>
+            <input [readonly]="visualizationMode" matInput formControlName="edad" [attr.disabled]="true" required>
+        </mat-form-field>
+
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+            <mat-label>Lugar de nacimiento</mat-label>
+            <input required [readonly]="visualizationMode" matInput formControlName="lugarNacimiento" [matAutocomplete]="auto"
+                (keydown)="utilsService.validacionSoloLetras($event)">
+            <mat-error *ngIf="isValidField(datosPersonales, 'lugarNacimiento')">
+                El campo es requerido
+            </mat-error>
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    <small> {{option}} </small>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+            <mat-label>Estado civil</mat-label>
+            <mat-select required formControlName="idEstadoCivil">
+                <mat-option [disabled]="visualizationMode" *ngFor="let estadoCivil of estadosCivil"
+                    [value]="estadoCivil.idEstadoCivil">
+                    {{estadoCivil.descripcion}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="isValidField(datosPersonales, 'idEstadoCivil')">
+                El campo es requerido
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+            <mat-label>Género</mat-label>
+            <mat-select required formControlName="idGenero">
+                <mat-option [disabled]="visualizationMode" *ngFor="let genero of generos" [value]="genero.idGenero">
+                    {{genero.descripcion}}</mat-option>
+            </mat-select>
+
+
+            <mat-error *ngIf="isValidField(datosPersonales, 'idGenero')">
+                El campo es requerido
+            </mat-error>
+
+        </mat-form-field>
+
+
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+
+            <mat-label>Nacionalidad</mat-label>
+            <mat-select required formControlName="idNacionalidad">
+                <mat-option [disabled]="visualizationMode" *ngFor="let nacionalidad of nacionalidades"
+                    [value]="nacionalidad.idPais">
+                    {{nacionalidad.nacionalidad}}</mat-option>
+            </mat-select>
+
+            <mat-error *ngIf="isValidField(datosPersonales, 'idNacionalidad')">
+                El campo es requerido
+            </mat-error>
+
+        </mat-form-field>
+
+
+
+
+    </div>
+    <mat-divider style="margin-bottom: 20px;"></mat-divider>
+    <strong>Datos de contacto</strong>
+
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+
+
+
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+            <mat-label>Correo personal</mat-label>
+            <input [readonly]="visualizationMode" matInput formControlName="correo1" required type="email">
+            <mat-error *ngIf="isValidField(datosPersonales, 'correo1')">
+                {{
+                getFieldErrorMessage(datosPersonales, 'correo1')
+                }}
+            </mat-error>
+
+
+
+        </mat-form-field>
+
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+            <mat-label>Número de celular</mat-label>
+            <input [readonly]="visualizationMode" matInput formControlName="celular" maxlength="13" required>
+
+            <mat-error *ngIf="isValidField(datosPersonales, 'celular')">
+                {{
+                getFieldErrorMessage(datosPersonales, 'celular')
+                }}
+
+            </mat-error>
+
+
+
+        </mat-form-field>
+
+
+
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+            <mat-label>Operadora</mat-label>
+            <mat-select required formControlName="operadoraMovil">
+                <mat-option [disabled]="visualizationMode" *ngFor="let tipo of operadoras" [value]="tipo.descripcion">
+                    {{tipo.descripcion}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="isValidField(datosPersonales, 'operadoraMovil')">
+                El campo es requerido
+            </mat-error>
+        </mat-form-field>
+
+
+
+
+
+    </div>
+
+    <div fxLayout=" column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+            <mat-label>Teléfono o celular adicional 1</mat-label>
+            <input [readonly]="visualizationMode" maxlength="13" matInput formControlName="telefono1">
+
+            <mat-error *ngIf="isValidField(datosPersonales, 'telefono1')">
+                {{
+                getFieldErrorMessage(datosPersonales, 'telefono1')
+                }}
+            </mat-error>
+
+
+
+
+        </mat-form-field>
+
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+            <mat-label>Teléfono o celular adicional 2</mat-label>
+            <input [readonly]="visualizationMode" maxlength="13" matInput formControlName="telefono2">
+            <mat-error *ngIf="isValidField(datosPersonales, 'telefono2')">
+                {{
+                getFieldErrorMessage(datosPersonales, 'telefono2')
+                }}
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+
+
+
+
+
+
+    <mat-divider></mat-divider>
+
+
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px" *ngIf="tipoColaborador == 2">
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+            <mat-label>Actividad económica</mat-label>
+            <mat-select required formControlName="idActividadEconomica">
+                <mat-option [disabled]="visualizationMode">
+                    <ngx-mat-select-search placeholderLabel="Buscar actividad económica" [searching]="searching"
+                        noEntriesFoundLabel="'No se encuentra la actividad económica'"
+                        [formControl]="tipoTareaFilterCtrl">
+
+                    </ngx-mat-select-search>
+                </mat-option>
+                <mat-option [disabled]="visualizationMode" *ngFor="let item of filteredTipoTarea "
+                    [value]="item.idActividad">
+                    {{ item.descripcion }}
+                    <small>({{ item.area }})</small>
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <mat-divider style="margin-bottom: 20px;"></mat-divider>
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+        <section class="example-section" class="vex-flex-form-field" fxFlex="auto">
+            <label class="example-margin" required>¿Es madre o padre? *</label>
+            <mat-radio-group [disabled]="visualizationMode" required formControlName="tieneHijos" required>
+                <mat-radio-button class="example-margin" [value]="true">Si</mat-radio-button>
+                <mat-radio-button class="example-margin" [value]="false">No</mat-radio-button>
+                <mat-error *ngIf="isValidField(datosPersonales, 'tieneHijos')">
+                    El campo es requerido
+                </mat-error>
+            </mat-radio-group>
+        </section>
+    </div>
+
+    <mat-divider style="margin-bottom: 20px;"></mat-divider>
+
+
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px" *ngIf="tipoColaborador == 1">
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+            <mat-label>¿Es discapacitado o sustituto?</mat-label>
+            <mat-select required formControlName="discapacidadSustituto"
+                (selectionChange)="onTipoColaboradorDiscapacidad($event.value)">
+                <mat-option [disabled]="visualizationMode" *ngFor="let tipoId of selectTipoColaborador"
+                    [value]="tipoId.value">
+                    {{tipoId.descripcion}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="isValidField(datosPersonales, 'discapacidadSustituto')">
+                El campo es requerido
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px"
+        *ngIf="(datosPersonales.get('discapacidadSustituto').value == 1 || datosPersonales.get('discapacidadSustituto').value == 2)&& tipoColaborador == 1">
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+            <mat-label>Número conadis</mat-label>
+            <input [readonly]="visualizationMode" maxlength="10" matInput formControlName="numeroCarnetConadis"
+                required>
+
+            <mat-error *ngIf="isValidField(datosPersonales, 'numeroCarnetConadis')">
+                {{
+                getFieldErrorMessage(datosPersonales, 'numeroCarnetConadis')
+                }}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto" style="max-width: 73px;">
+            <mat-label>Fecha de emisión</mat-label>
+            <input [readonly]="visualizationMode" matInput [matDatepicker]="fechaEmisionConadis"
+                max="{{utilsService.fechaActual() | date:'yyyy-MM-dd'}}" formControlName="fechaEmisionConadis" required>
+            <mat-datepicker-toggle [disabled]="visualizationMode" matSuffix
+                [for]="fechaEmisionConadis"></mat-datepicker-toggle>
+            <mat-datepicker #fechaEmisionConadis></mat-datepicker>
+            <mat-error *ngIf="datosPersonales.get('fechaEmisionConadis').hasError('required')">
+                La fecha es requerida
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+            <mat-label>Tipo de discapacidad</mat-label>
+            <mat-select required formControlName="idTipoDiscapacidad">
+                <mat-option [disabled]="visualizationMode" *ngFor="let tipo of tiposDiscapacidad"
+                    [value]="tipo.idTipoDiscapacidad">
+                    {{tipo.descripcion}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="datosPersonales.get('idTipoDiscapacidad').hasError('required')">
+                El genero es requerido
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+            <mat-label>Porcentaje de discapacidad</mat-label>
+            <span matPrefix>% &nbsp;</span>
+            <input [readonly]="visualizationMode" matInput formControlName="porcentajeDiscapacidad" type="number"
+                required>
+            <mat-error *ngIf="datosPersonales.get('porcentajeDiscapacidad').hasError('max')">
+                El campo no puede ser mayor a 100
+            </mat-error>
+
+            <mat-error *ngIf="datosPersonales.get('porcentajeDiscapacidad').hasError('pattern')">
+                Solo se permiten 2 decimales
+            </mat-error>
+            <mat-error *ngIf="datosPersonales.get('porcentajeDiscapacidad').hasError('required')">
+                El campo es requerido
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px"
+        *ngIf="datosPersonales.get('discapacidadSustituto').value == 2 && tipoColaborador ==1">
+
+        <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+            <mat-label>Parentesco Sustituto</mat-label>
+            <mat-select formControlName="idParentescoSustituto">
+                <mat-option [disabled]="visualizationMode" *ngFor="let tipo of tiposParentesco"
+                    [value]="tipo.idParentesco">
+                    {{tipo.descripcion}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="datosPersonales.get('idParentescoSustituto')?.hasError('required')">
+                El parentesco es requerido
+            </mat-error>
+        </mat-form-field>
+
+    </div>
+</div>
+<div class="loading" *ngIf="loading">
+    <mat-progress-spinner diameter="60" mode="indeterminate"></mat-progress-spinner>
+</div>
