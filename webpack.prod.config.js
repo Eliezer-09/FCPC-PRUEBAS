@@ -10,13 +10,8 @@ try {
 
 module.exports = {
   // Fix for: https://github.com/recharts/recharts/issues/1463
- /*   node: {
+  node: {
     fs: 'empty'
-  }, */
-  resolve:{
-    fallback:{
-      fs:false
-    }
   },
   module: {
     rules: [
