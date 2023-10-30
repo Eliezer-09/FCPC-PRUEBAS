@@ -7,16 +7,16 @@
         <mat-divider></mat-divider>
         <mat-form-field class="example-full-width">
             <mat-label>Nombre</mat-label>
-            <input [disabled]="data.visualizationMode" matInput formControlName="nombre">
-            <mat-error *ngIf="form.get('nombre').hasError('required')">
+            <input [disabled]="data.visualizationMode" matInput formControlName="descripcion">
+            <mat-error *ngIf="form.get('descripcion').hasError('required')">
                 El campo es requerido
             </mat-error>
         </mat-form-field>
         <mat-form-field class="example-full-width">
             <mat-label>Rango de Fecha</mat-label>
             <mat-date-range-input [formGroup]="form" [rangePicker]="picker">
-                <input matStartDate placeholder="Inicio" formControlName="start">
-                <input matEndDate placeholder="Fin" formControlName="end">
+                <input matStartDate placeholder="Inicio" formControlName="fechaDesde">
+                <input matEndDate placeholder="Fin" formControlName="fechaHasta">
             </mat-date-range-input>
             <mat-hint>MM-DD-YYYY – MM-DD-YYYY</mat-hint>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

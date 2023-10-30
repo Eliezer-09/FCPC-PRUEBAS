@@ -6,6 +6,7 @@ import { stagger80ms } from 'src/@vex/animations/stagger.animation';
 import { iconify } from 'src/static-data/icons';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { DatePipe } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TableColumn } from 'src/@vex/interfaces/table-column.interface';
@@ -13,8 +14,8 @@ import { FormControl } from '@angular/forms';
 import { DiasNoLaborablesConfigure } from 'src/static-data/configure-table/colaboradores/configure-table-descuentos-vacaciones';
 import { UtilsService } from '../../utils/utils.service';
 import { AgregarDiaNoLaboralComponent } from './agregar-dia-no-laboral/agregar-dia-no-laboral.component';
-
-
+import { HttpClient } from '@angular/common/http';
+import { TThhService } from '../../services/tthh.service';
 @Component({
   selector: 'vex-dias-no-laborables',
   templateUrl: './dias-no-laborables.component.html',
@@ -42,23 +43,9 @@ export class DiasNoLaborablesComponent implements OnInit {
   infoMessage = 'No se ha encontrado Descuentos';
   cols: any[];
   tableData: any[];
-  dataFondoSource = new MatTableDataSource<any>([
-    { idFestivo: '1', fechaDesde: '08/05/2023', fechaHasta: '08/05/2023', descripcion:'FIESTAS PATRONALES'},
-    { idFestivo: '2', fechaDesde: '08/05/2023', fechaHasta: '08/05/2023', descripcion:'FIESTAS PATRONALES'},
-    { idFestivo: '3', fechaDesde: '08/05/2023', fechaHasta: '08/05/2023', descripcion:'FIESTAS PATRONALES'},
-    { idFestivo: '4', fechaDesde: '08/05/2023', fechaHasta: '08/05/2023', descripcion:'FIESTAS PATRONALES'},
-    { idFestivo: '5', fechaDesde: '08/05/2023', fechaHasta: '08/05/2023', descripcion:'FIESTAS PATRONALES'},
-    { idFestivo: '6', fechaDesde: '08/05/2023', fechaHasta: '08/05/2023', descripcion:'FIESTAS PATRONALES'},
-  ]);
+  dataFondoSource: MatTableDataSource<any>;
   tableColumns: TableColumn<any>[] = DiasNoLaborablesConfigure
-  
   menuOption = [
-    {
-      name: "Ver",
-      icon: "manage_search",
-      type: "function",
-      accion: "view",
-    },
     {
       name: "Editar",
       icon: "edit",
@@ -74,19 +61,18 @@ export class DiasNoLaborablesComponent implements OnInit {
   ];
   data: any;
   form: any;
-
-  constructor(public dialog: MatDialog,
-    public utilsService: UtilsService
+  constructor(private datePipe: DatePipe, public dialog: MatDialog,
+    public utilsService: UtilsService,
+    private http: HttpClient,
+    private tthhservice: TThhService,
     ) { }
   ngOnInit(): void {
-    this.dataFondoSource.sort = this.sort;
-    this.dataFondoSource.paginator = this.paginator;
-    this.cargarFeriado(1, this.pageSize); 
+    this.dataFondoSource = new MatTableDataSource<any>([]); 
+    this.cargarFeriado(1, this.pageSize);
   }
-  
   searchTerm(term: string) {
-     this.cargarFeriado(1, this.pageSize, term); 
-  }
+    this.cargarFeriado(1, this.pageSize, term); 
+  } 
   actionMenu(event) {
     if (event.action === 'view') {
       this.openDialog(event);
@@ -99,38 +85,77 @@ export class DiasNoLaborablesComponent implements OnInit {
       this.eliminarFeriado(event.data);
     }
   }
+
   onPaginateChange(event: PageEvent) {
-    this.pageSize = event.pageSize;
     let page = event.pageIndex;
     let size = event.pageSize;
     page = page + 1;
-    this.cargarFeriado(page, size);
+    this.cargarFeriado(page, size, this.filterValue);
   }
-
+  
   eliminarFeriado(element: any) {
     this.utilsService
       .confirmar(
         "Eliminar dia no laboral",
-        "¿Está seguro de eliminar este dia no laboral?"
+        "¿Está seguro de eliminar este dia no laborable?"
       )
       .then((result) => {
         if (result.isConfirmed) {
-          this.utilsService.alerta('success', 'Dia no laboral eliminado correctamente.');
+          this.tthhservice.eliminarFestivo(element.idFestivo).subscribe(
+            response => {
+              if (response.success) {
+                this.utilsService.alerta('success', 'Dia no laboral eliminado correctamente.');
+                this.cargarFeriado(1, this.pageSize);
+              } else {
+                this.utilsService.alerta('error', 'Hubo un error al eliminar el día no laborable.');
+              }
+            },
+            error => {
+              this.utilsService.alerta('error', 'Hubo un error al eliminar el día no laborable.');
+            }
+          );
         }
       });
   }
-  
   cargarFeriado(page, size, term = '') {
     this.isLoading = true;
-
-
-    this.isLoading = false;
+    this.tthhservice.getFestivos(page,size, term).subscribe(
+      (data) => {
+        this.paginator = data.result.length; 
+        data.result.forEach(item => {
+          item.fechaDesde = this.datePipe.transform(item.fechaDesde, 'dd/MM/yyyy');
+          item.fechaHasta = this.datePipe.transform(item.fechaHasta, 'dd/MM/yyyy');
+        });
+        this.dataFondoSource = new MatTableDataSource<any>(data.result);         
+        console.log(this.dataFondoSource.data.length)
+        this.isLoading = false;
+      },
+      (error) => {
+        this.utilsService.alerta('error', 'Hubo un error al cargar los días no laborables.');
+        console.error('Hubo un error al obtener los datos', error);
+        this.isLoading = false;
+      }
+    );
   }
-  
-
   openDialog(item: any): void {
     const dialogRef = this.dialog.open(AgregarDiaNoLaboralComponent, {
-      data:  item 
+      data: item 
     });
-  }
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+      if (result) {
+        if (result && result.idFestivo) {  
+          this.tthhservice.updateFestivo(result.idFestivo, result).subscribe(response => {
+            this.utilsService.alerta('success', 'Dia no laboral editado correctamente.');
+            this.cargarFeriado(1, this.pageSize);
+          });
+        } else { 
+          this.tthhservice.addFestivo(result).subscribe(response => {
+            this.utilsService.alerta('success', 'Dia no laboral agregado correctamente.');
+            this.cargarFeriado(1, this.pageSize);
+          });
+        }
+      }
+    });
+}
 }
